@@ -2,6 +2,7 @@ package Repository;
 
 import java.util.*;
 import Model.IDClass;
+import Repository.Interfaces.ICrud;
 
 /**
  * 
@@ -13,23 +14,30 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	 */
 	public Repository(String fileName) {
 		this.fileName = fileName;
-		InstantiteIDMapAndMaxID();
+		InstantiteIDMapAndMaxID(GetAll());
 	}
 
 	/**
-	 * 
+	 * Empty constructor.
+	 * Only used for efficient instantiation of UserRepository.
+	 * Dont use for instantiating normal repositories.
 	 */
-	private Serializer<T> serializer;
+	public Repository() {}
 
 	/**
 	 * 
 	 */
-	private String fileName;
+	protected Serializer<T> serializer;
 
 	/**
 	 * 
 	 */
-	protected HashSet<Integer> idMap;
+	protected String fileName;
+
+	/**
+	 * 
+	 */
+	protected HashSet<Integer> idMap = new HashSet<Integer>();
 
 	/**
 	 * 
@@ -104,21 +112,20 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	public abstract List<T> GetAll();
 
 
-	private int GenerateId(){
+	protected int GenerateId(){
 		do {
 			++currentMaxID;
 		} while (idMap.contains(currentMaxID));
 		return currentMaxID;
 	}
 
-	private void CheckIfIdExists(int id) throws Exception{
+	protected void CheckIfIdExists(int id) throws Exception{
 		if(!idMap.contains(id)){
 			throw new Exception("Element not found in idMap");
 		}
 	}
 
-	private void InstantiteIDMapAndMaxID(){
-		List<T> elements = GetAll();
+	protected void InstantiteIDMapAndMaxID(List<T> elements){
 		currentMaxID = elements.get(0).getId();
 		for (T element : elements) {
 			int id = element.getId();
