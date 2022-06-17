@@ -1,2 +1,6 @@
-INDEX VERSION 1.4+C:\Users\halid\Desktop\FitPassProject\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
-3745499084.index
+INDEX VERSION 1.4+C:\Users\halid\Desktop\WEB_Projekat\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+3957635576.index
+1254526960.index
+2384355117.index
+2461622611.index
+1162119632.index
