@@ -1,33 +1,35 @@
 Vue.component("login", { 
 	data: function () {
 	    return {
-	      products: null
+	      username : "",
+	      password : "",
+	      result : null
 	    }
 	},
 	    template: ` 
     	<div>
     		<table>
-			<tr><td>Username</td><td><input type="text" name="username" ></td></tr>
-			<tr><td>Password</td><td><input type="password" name="password"></td></tr>
-			<tr><td><input type="submit" v-on:click = "Log" v-bind:value = "this.value"></td></tr>
+			<tr><td>Username</td><td><input type="text" name="username" v-model="username"></td></tr>
+			<tr><td>Password</td><td><input type="password" name="password" v-model="password"></td></tr>
+			<tr><td><input type="submit" v-on:click = "Log"></td></tr>
 		</table>
     	</div>		  
     	`,
     mounted () {
 		
-		try {
-			axios.get('rest/admins/')
+		/*try {
+			axios.get('rest/managers/')
 			.then(response => (this.products = response.data))
 		}
 		catch(error)
 		{
 			console.log(error);
-		}
+		}*/
 		
     },
     methods: {
 		Log : function(){
-			router.push(`/products`);
+			axios.post('rest/login/' + this.username + '&' + this.password).then(response => (router.push(`/products/${response.data}`)))
 		}
     }
 });

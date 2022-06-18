@@ -20,8 +20,6 @@ import javax.ws.rs.core.MediaType;
 @Path("/admins")
 public class AdministratorService implements IAdministratorService {
     
-    //private IAdministratorRepository repository = new AdministratorRepository("");
-    
 	@Context
 	ServletContext ctx;
 	
@@ -31,7 +29,7 @@ public class AdministratorService implements IAdministratorService {
 	public void init() {
 		if (ctx.getAttribute("administratorRepository") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("administratorRepository", new AdministratorRepository(contextPath + "/products.csv"));
+			ctx.setAttribute("administratorRepository", new AdministratorRepository(contextPath + "/admins.csv"));
 			System.out.println(contextPath);
 		}
 	}
@@ -73,8 +71,6 @@ public class AdministratorService implements IAdministratorService {
     public List<Administrator> GetAll() {
     	AdministratorRepository repo = (AdministratorRepository) ctx.getAttribute("administratorRepository");
     	return repo.GetAll();
-    	//System.out.println("Uspesno");
-    	//return null;
     }
 
     
