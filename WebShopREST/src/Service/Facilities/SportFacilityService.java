@@ -9,7 +9,11 @@ import Service.Interfaces.Facilities.ISportFacilityService;
 
 public class SportFacilityService implements ISportFacilityService {
 
-    private ISportFacilityRepository repository = new SportFacilityRepository("");
+    private ISportFacilityRepository repository;
+
+    public SportFacilityService(String fileName) {
+        repository = new SportFacilityRepository(fileName);
+    }
 
     @Override
     public void Create(SportFacility element) throws Exception {
