@@ -13,14 +13,18 @@ public class Location extends IDClass {
 	public Location() {
 	}
 
-	public void name() {
-
+	public Location(float longitude, float latitude, Adress adress) {
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.adress = adress;
 	}
 
 	/**
 	 * 
 	 */
 	private float longitude;
+
+	
 
 	/**
 	 * 
@@ -34,16 +38,33 @@ public class Location extends IDClass {
 
 	@Override
 	public List<String> ToCSV() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> result = new ArrayList<>();
+		result.add(String.valueOf(longitude));
+		result.add(String.valueOf(latitude));
+		result.addAll(adress.ToCSV());
+		return result;
 	}
 
 	@Override
 	public int FromCSV(List<String> values) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = 0;
+		longitude = Float.valueOf(values.get(i++));
+		latitude= Float.valueOf(values.get(i++));
+		values = RemoveNElements(i, values);
+		adress = new Adress();
+		i = i + adress.FromCSV(values);
+		return i;
 	}
 
-
+	private List<String> RemoveNElements(int i, List<String> values){
+		ArrayList<String> result = new ArrayList<>();
+		for (int j = 0; j < values.size(); j++) {
+			if(j < i){
+				continue;
+			}
+			result.add(values.get(j));
+		}
+		return result;
+	}
 
 }

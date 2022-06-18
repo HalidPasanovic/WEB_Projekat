@@ -20,6 +20,13 @@ public class Adress extends IDClass {
 	 */
 	private String street;
 
+	public Adress(String street, int number, String place, int shipingCode) {
+		this.street = street;
+		this.number = number;
+		this.place = place;
+		this.shipingCode = shipingCode;
+	}
+
 	/**
 	 * 
 	 */

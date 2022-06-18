@@ -126,7 +126,7 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	}
 
 	protected void InstantiteIDMapAndMaxID(List<T> elements){
-		currentMaxID = elements.get(0).getId();
+		currentMaxID = 0;
 		for (T element : elements) {
 			int id = element.getId();
 			idMap.add(id);

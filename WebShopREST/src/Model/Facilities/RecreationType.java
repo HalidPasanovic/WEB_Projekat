@@ -15,21 +15,33 @@ public class RecreationType extends IDClass {
 	public RecreationType() {
 	}
 
+	public RecreationType(int id) {
+		this.id = id;
+	}
+
 	/**
 	 * 
 	 */
 	private String name;
 
+	public RecreationType(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public List<String> ToCSV() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> result = new ArrayList<>();
+		result.add(String.valueOf(id));
+		result.add(name);
+		return result;
 	}
 
 	@Override
 	public int FromCSV(List<String> values) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = 0;
+		id = Integer.parseInt(values.get(i++));
+		name = values.get(i++);
+		return i;
 	}
 
 	

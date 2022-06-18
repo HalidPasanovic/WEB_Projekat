@@ -14,7 +14,7 @@ public class SportFacilityRepository extends Repository<SportFacility> implement
 
     @Override
     public List<SportFacility> GetAll() {
-        List<SportFacility> result = new ArrayList<SportFacility>();
+    	ArrayList<SportFacility> result = new ArrayList<SportFacility>();
     	List<List<String>> objects = serializer.FromCSV(fileName);
         for (List<String> object : objects) {
             SportFacility element = new SportFacility();
