@@ -85,7 +85,7 @@ public class ProductDAO {
 	 * @param contextPath Putanja do aplikacije u Tomcatu
 	 */
 	private void loadProducts(String contextPath) {
-		/*BufferedReader in = null;
+		BufferedReader in = null;
 		try {
 			File file = new File(contextPath + "/products.txt");
 			System.out.println(file.getCanonicalPath());
@@ -111,77 +111,6 @@ public class ProductDAO {
 			if ( in != null ) {
 				try {
 					in.close();
-				}
-				catch (Exception e) { }
-			}
-		} */
-		/*String line = "";  
-		String splitBy = ",";  
-		BufferedReader in = null;
-		try   
-		{  
-		//parsing a CSV file into BufferedReader class constructor  
-			File file = new File(contextPath + "/products.csv");
-			System.out.println(file.getCanonicalPath());
-			in = new BufferedReader(new FileReader(file)); 
-			StringTokenizer st;
-			String id = "", name = "", price = "";
-		while ((line = in.readLine()) != null)   //returns a Boolean value  
-		{  
-			line = line.trim();
-			if (line.equals("") || line.indexOf('#') == 0)
-				continue;
-			st = new StringTokenizer(line, ",");
-			while (st.hasMoreTokens()) {
-				id = st.nextToken().trim();
-				name = st.nextToken().trim();
-				price = st.nextToken().trim();
-				price = price.substring(0, price.length()-1);
-				//System.out.println(id + " " + name + " " + price);
-				System.out.println(id);
-				System.out.println(name);
-				System.out.println(price);
-			}
-			products.put(id, new Product(id, name, Double
-					.parseDouble(price)));
-		}  
-		}   
-		catch (Exception e)   
-		{  
-		e.printStackTrace();  
-		}  
-		finally {
-			if ( in != null ) {
-				try {
-					in.close();
-				}
-				catch (Exception e) { }
-			}
-		}
-		}  */
-		
-		String line = "";  
-		String splitBy = ",";  
-		BufferedReader br = null;
-		try   
-		{  
-		//parsing a CSV file into BufferedReader class constructor  
-		br = new BufferedReader(new FileReader(contextPath + "/products.csv"));  
-		while ((line = br.readLine()) != null)   //returns a Boolean value  
-		{  
-		String[] productss = line.split(splitBy);
-		products.put(productss[0], new Product(productss[0], productss[1], Double
-				.parseDouble(productss[2])));
-		}  
-		}   
-		catch (Exception e)   
-		{  
-		e.printStackTrace();  
-		}
-		finally {
-			if ( br != null ) {
-				try {
-					br.close();
 				}
 				catch (Exception e) { }
 			}

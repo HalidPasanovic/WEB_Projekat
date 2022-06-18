@@ -27,7 +27,7 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	/**
 	 * 
 	 */
-	protected Serializer<T> serializer;
+	protected Serializer<T> serializer = new Serializer<T>();
 
 	/**
 	 * 

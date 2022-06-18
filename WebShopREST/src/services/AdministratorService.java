@@ -1,4 +1,4 @@
-package Service.Users;
+package services;
 
 import java.util.List;
 import Model.Users.Administrator;
@@ -71,10 +71,10 @@ public class AdministratorService implements IAdministratorService {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
     public List<Administrator> GetAll() {
-    	//AdministratorRepository repo = (AdministratorRepository) ctx.getAttribute("administratorRepository");
-        //return repo.GetAll();
-    	System.out.println("Uspesno");
-    	return null;
+    	AdministratorRepository repo = (AdministratorRepository) ctx.getAttribute("administratorRepository");
+    	return repo.GetAll();
+    	//System.out.println("Uspesno");
+    	//return null;
     }
 
     
