@@ -26,15 +26,39 @@ public class Location extends IDClass {
 
 	
 
+	public float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(float longitude) {
+		this.longitude = longitude;
+	}
+
 	/**
 	 * 
 	 */
 	private float latitude;
 
+	public float getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(float latitude) {
+		this.latitude = latitude;
+	}
+
 	/**
 	 * 
 	 */
 	private Adress adress;
+
+	public Adress getAdress() {
+		return adress;
+	}
+
+	public void setAdress(Adress adress) {
+		this.adress = adress;
+	}
 
 	@Override
 	public List<String> ToCSV() {

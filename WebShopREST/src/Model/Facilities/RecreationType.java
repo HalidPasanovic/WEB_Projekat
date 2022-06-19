@@ -15,6 +15,11 @@ public class RecreationType extends IDClass {
 	public RecreationType() {
 	}
 
+	public void Change(RecreationType type) {
+		this.id = type.id;
+		this.name = type.name;
+	}
+
 	public RecreationType(int id) {
 		this.id = id;
 	}
@@ -23,6 +28,14 @@ public class RecreationType extends IDClass {
 	 * 
 	 */
 	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public RecreationType(String name) {
 		this.name = name;

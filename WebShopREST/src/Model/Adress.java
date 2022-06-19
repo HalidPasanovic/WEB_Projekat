@@ -20,6 +20,14 @@ public class Adress extends IDClass {
 	 */
 	private String street;
 
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
 	public Adress(String street, int number, String place, int shipingCode) {
 		this.street = street;
 		this.number = number;
@@ -32,15 +40,39 @@ public class Adress extends IDClass {
 	 */
 	private int number;
 
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
 	/**
 	 * 
 	 */
 	private String place;
 
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
 	/**
 	 * 
 	 */
 	private int shipingCode;
+
+	public int getShipingCode() {
+		return shipingCode;
+	}
+
+	public void setShipingCode(int shipingCode) {
+		this.shipingCode = shipingCode;
+	}
 
 	@Override
 	public List<String> ToCSV() {

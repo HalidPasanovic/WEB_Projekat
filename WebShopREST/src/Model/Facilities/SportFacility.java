@@ -21,6 +21,14 @@ public class SportFacility extends IDClass {
 	 */
 	private String name;
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public SportFacility(String name, FacilityType type, List<RecreationType> recreationTypes,
 			boolean status, Location location) {
 		this.name = name;
@@ -35,20 +43,62 @@ public class SportFacility extends IDClass {
 	 */
 	private FacilityType type;
 
+	public FacilityType getType() {
+		return type;
+	}
+
+	public void setType(FacilityType type) {
+		this.type = type;
+	}
+
 	/**
 	 * 
 	 */
 	private List<RecreationType> recreationTypes;
+
+	public List<RecreationType> getRecreationTypes() {
+		return recreationTypes;
+	}
+
+	public void setRecreationTypes(List<RecreationType> recreationTypes) {
+		this.recreationTypes = recreationTypes;
+	}
 
 	/**
 	 * 
 	 */
 	private boolean status;
 
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
 	/**
 	 * 
 	 */
 	private Location location;
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+	
+	private String workRange;
+	
+	public String getWorkRange() {
+		return workRange;
+	}
+
+	public void setWorkRange(String workRange) {
+		this.workRange = workRange;
+	}
 
 	@Override
 	public List<String> ToCSV() {
@@ -61,6 +111,7 @@ public class SportFacility extends IDClass {
 			result.add(String.valueOf(it.getId()));
 		}
 		result.add(String.valueOf(status));
+		result.add(workRange);
 		result.addAll(location.ToCSV());
 		return result;
 	}
@@ -77,6 +128,7 @@ public class SportFacility extends IDClass {
 			recreationTypes.add(new RecreationType(Integer.parseInt(values.get(i++))));
 		}
 		status = Boolean.getBoolean(values.get(i++));
+		workRange = values.get(i++);
 		values = RemoveNElements(i, values);
 		location = new Location();
 		i = i + location.FromCSV(values);

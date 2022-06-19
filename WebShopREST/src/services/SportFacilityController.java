@@ -32,7 +32,7 @@ public class SportFacilityController implements ICrud<SportFacility> {
 	public void init() {
 		if (ctx.getAttribute("SportFacilityService") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("SportFacilityService", new SportFacilityService(contextPath + "/data/sportFacilities.csv"));
+			ctx.setAttribute("SportFacilityService", new SportFacilityService(contextPath, "/data/sportFacilities.csv"));
 			System.out.println(contextPath);
 		}
 	}

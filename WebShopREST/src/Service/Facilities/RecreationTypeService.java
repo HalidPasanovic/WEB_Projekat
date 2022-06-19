@@ -9,9 +9,13 @@ import Service.Interfaces.Facilities.IRecreationTypeService;
 
 public class RecreationTypeService implements IRecreationTypeService  {
 
-    private IRecreationTypeRepository repository = new RecreationTypeRepository("");
+    private IRecreationTypeRepository repository;
 
-    @Override
+    public RecreationTypeService(String string) {
+    	repository = new RecreationTypeRepository(string);
+	}
+
+	@Override
     public void Create(RecreationType element) throws Exception {
         repository.Create(element);
     }

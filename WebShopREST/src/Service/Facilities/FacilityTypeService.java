@@ -9,9 +9,13 @@ import Service.Interfaces.Facilities.IFacilityTypeService;
 
 public class FacilityTypeService implements IFacilityTypeService  {
 
-    private IFacilityTypeRepository repository = new FacilityTypeRepository("");
+    private IFacilityTypeRepository repository;
 
-    @Override
+    public FacilityTypeService(String contextPath, String fileName) {
+    	repository = new FacilityTypeRepository(contextPath + fileName);
+	}
+
+	@Override
     public void Create(FacilityType element) throws Exception {
         repository.Create(element);
     }
