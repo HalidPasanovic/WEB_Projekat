@@ -60,7 +60,7 @@ public class LoginService {
 	
 	@POST
 	@Path("/{username}&{password}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
     public int Read(@PathParam("username") String username,@PathParam("password") String password) throws Exception {
 		ManagerRepository repo = (ManagerRepository) ctx.getAttribute("managerRepository");
 		List<Manager> managers = repo.GetAll();
