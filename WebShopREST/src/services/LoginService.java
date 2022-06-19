@@ -1,5 +1,7 @@
 package services;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -7,63 +9,96 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.tomcat.websocket.server.UriTemplate;
+
+import Model.Users.Administrator;
+import Model.Users.Customer;
+import Model.Users.Manager;
+import Model.Users.Trainer;
+import Repository.Users.AdministratorRepository;
+import Repository.Users.CustomerRepository;
+import Repository.Users.ManagerRepository;
+import Repository.Users.TrainerRepository;
 import beans.User;
 import dao.UserDAO;
 
-@Path("")
+@Path("/login")
 public class LoginService {
 	
 	@Context
 	ServletContext ctx;
 	
 	public LoginService() {
-		
 	}
 	
 	@PostConstruct
-	// ctx polje je null u konstruktoru, mora se pozvati nakon konstruktora (@PostConstruct anotacija)
 	public void init() {
-		// Ovaj objekat se instancira vi�e puta u toku rada aplikacije
-		// Inicijalizacija treba da se obavi samo jednom
-		if (ctx.getAttribute("userDAO") == null) {
+    	
+		if (ctx.getAttribute("managerRepository") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("userDAO", new UserDAO(contextPath));
+			ctx.setAttribute("managerRepository", new ManagerRepository(contextPath + "/managers.csv"));
+		}
+		if (ctx.getAttribute("trainerRepository") == null) {
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("trainerRepository", new TrainerRepository(contextPath + "/trainers.csv"));
+		}
+		if (ctx.getAttribute("administratorRepository") == null) {
+			String contextPath = ctx.getRealPath("");
+			System.out.println(contextPath);
+			ctx.setAttribute("administratorRepository", new AdministratorRepository(contextPath + "/admins.csv"));
+		}
+		if (ctx.getAttribute("customersRepository") == null) {
+			String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("customersRepository", new CustomerRepository(contextPath + "/customers.csv"));
 		}
 	}
 	
 	@POST
-	@Path("/login")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/{username}&{password}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response login(User user, @Context HttpServletRequest request) {
-		UserDAO userDao = (UserDAO) ctx.getAttribute("userDAO");
-		User loggedUser = userDao.find(user.getUsername(), user.getPassword());
-		if (loggedUser != null) {
-			return Response.status(400).entity("Invalid username and/or password").build();
+    public int Read(@PathParam("username") String username,@PathParam("password") String password) throws Exception {
+		ManagerRepository repo = (ManagerRepository) ctx.getAttribute("managerRepository");
+		List<Manager> managers = repo.GetAll();
+		for(Manager manager : managers)
+		{
+			if((manager.getUsername().equals(username)) && (manager.getPassword().equals(password)))
+			{
+				return 1;
+			}
 		}
-		request.getSession().setAttribute("user", loggedUser);
-		return Response.status(200).build();
-	}
-	
-	
-	@POST
-	@Path("/logout")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public void logout(@Context HttpServletRequest request) {
-		request.getSession().invalidate();
-	}
-	
-	@GET
-	@Path("/currentUser")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public User login(@Context HttpServletRequest request) {
-		return (User) request.getSession().getAttribute("user");
-	}
+		CustomerRepository repoc = (CustomerRepository) ctx.getAttribute("customersRepository");
+		List<Customer> customers = repoc.GetAll();
+		for(Customer customer : customers)
+		{
+			if((customer.getUsername().equals(username)) && (customer.getPassword().equals(password)))
+			{
+				return 1;
+			}
+		}
+		AdministratorRepository repoa = (AdministratorRepository) ctx.getAttribute("administratorRepository");
+		List<Administrator> admins = repoa.GetAll();
+		for(Administrator admin : admins)
+		{
+			if((admin.getUsername().equals(username)) && (admin.getPassword().equals(password)))
+			{
+				return 1;
+			}
+		}
+		TrainerRepository repot = (TrainerRepository) ctx.getAttribute("trainerRepository");
+		List<Trainer> trainers = repot.GetAll();
+		for(Trainer t : trainers)
+		{
+			if((t.getUsername().equals(username)) && (t.getPassword().equals(password)))
+			{
+				return 1;
+			}
+		}
+		return -1;
+    }
 }
