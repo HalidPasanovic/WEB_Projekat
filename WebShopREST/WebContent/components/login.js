@@ -5,7 +5,8 @@ Vue.component("login", {
 	      password : "",
 	      mode: "IDLE",
 	      facilities: null,
-	      temp: null
+	      temp: null,
+	      searchQuery: null
 	    }
 	},
 	    template: ` 
@@ -26,8 +27,7 @@ Vue.component("login", {
 				  </header>
 				<div style="float: right; margin-right: 1.5%;">
 					<div class="search-container">
-						<input type="text" placeholder="Search.." name="search">
-						<button type="submit">Pretrazi</button>
+						<input type="text" class="form-control" v-model="searchQuery" placeholder="Search.." name="search">
 					</div>
 				</div>
 				<h5>Feeds</h5>
@@ -49,7 +49,7 @@ Vue.component("login", {
 							Radno vreme
 						</th>
 					</tr>
-					<tr v-for="(f, index) in facilities">
+					<tr v-for="(f, index) in resultQuery">
 						<td>{{f.name}}</td>
 						<td>{{f.type.name}}</td>
 						<td>{{f.location.adress.street + " " + f.location.adress.number + " " + f.location.adress.place}}</td>
@@ -83,7 +83,22 @@ Vue.component("login", {
 				this.username = "";
 				this.password = "";
 			}
-})
+		})
 		}
+    },
+    computed: {
+    resultQuery(){
+      if(this.searchQuery){
+      return this.facilities.filter((item)=>{
+        return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
+        	|| item.type.name.toLowerCase().includes(v) 
+        	|| item.location.adress.street.toLowerCase().includes(v) 
+        	|| item.location.adress.number.toString().toLowerCase().includes(v)
+        	|| item.location.adress.place.toLowerCase().includes(v))
+      })
+      }else{
+        return this.facilities;
+      }
     }
+  }
 });

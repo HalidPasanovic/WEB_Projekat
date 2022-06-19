@@ -7,6 +7,7 @@ Vue.component("create", {
 	      surname : "",
 	      gender : "",
 	      mode: "IDLE",
+	      mode2 : "IDLE",
 	      temp: null
 	    }
 	},
@@ -27,6 +28,7 @@ Vue.component("create", {
 			<tr><td><input type="submit" value="Create" v-on:click = "Create"></td></tr>
 		</table>
 		<p v-bind:hidden="mode == 'IDLE'" style="color:red">Username {{this.temp}} already exists</p>
+		<p v-bind:hidden="mode2 == 'IDLE'">Customer added to the list</p>
     	</div>		  
     	`,
     mounted () {
@@ -44,15 +46,10 @@ Vue.component("create", {
     methods: {
 		Create : function(){
 			this.mode = "IDLE";
+			this.mode2 = "IDLE";
 				axios
 			.post('rest/customers/add', {"username":''+this.username,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Customer'})
-				.then(response => 
-				{
-					toast("Customer added to the list"),
-					(err) => {
-          			toast("Error");
-        				}
-				})
+				.then(response => (this.mode2 = "ACCEPTED"))
 				.catch((e) => { this.mode = "REJECT";this.temp = this.username; this.username="";})
 			}
 	}
