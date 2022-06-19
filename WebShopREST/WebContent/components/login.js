@@ -14,7 +14,7 @@ Vue.component("login", {
 			<tr><td>Password</td><td><input type="password" name="password" v-model="password"></td></tr>
 			<tr><td><input type="submit" name="Create" value="Log in" v-on:click = "Log"></td></tr>
 		</table>
-		<p v-bind:hidden="mode == 'IDLE'" style="color:red">INCORRECT PASSWORD OR USERNAME</p>
+		<p v-bind:hidden="mode == 'IDLE'" style="color:red">Incorrect password or username</p>
 		<p>
 		<a href="#/create">Create account</a>
 		</p>
