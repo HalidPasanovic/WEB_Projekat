@@ -12,10 +12,12 @@ Vue.component("login", {
     		<table>
 			<tr><td>Username</td><td><input type="text" name="username" v-model="username"></td></tr>
 			<tr><td>Password</td><td><input type="password" name="password" v-model="password"></td></tr>
-			<tr><td>Password</td><td><input type="text" name="proba" v-model="proba"></td></tr>
-			<tr><td><input type="submit" v-on:click = "Log"></td></tr>
+			<tr><td><input type="submit" name="Create" value="Log in" v-on:click = "Log"></td></tr>
 		</table>
 		<p v-bind:hidden="mode == 'IDLE'" style="color:red">INCORRECT PASSWORD OR USERNAME</p>
+		<p>
+		<a href="#/create">Create account</a>
+		</p>
     	</div>		  
     	`,
     mounted () {

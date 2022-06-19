@@ -50,6 +50,7 @@ public class LoginService {
 		}
 		if (ctx.getAttribute("administratorRepository") == null) {
 			String contextPath = ctx.getRealPath("");
+			System.out.println(contextPath);
 			ctx.setAttribute("administratorRepository", new AdministratorRepository(contextPath + "/admins.csv"));
 		}
 		if (ctx.getAttribute("customersRepository") == null) {

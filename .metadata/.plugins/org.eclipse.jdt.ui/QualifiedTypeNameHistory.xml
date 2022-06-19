@@ -12,4 +12,6 @@
     <fullyQualifiedTypeName name="Model.Users.Administrator"/>
     <fullyQualifiedTypeName name="Repository.Users.TrainerRepository"/>
     <fullyQualifiedTypeName name="Model.Users.Trainer"/>
+    <fullyQualifiedTypeName name="javax.ws.rs.POST"/>
+    <fullyQualifiedTypeName name="javax.ws.rs.Consumes"/>
 </qualifiedTypeNameHistroy>
