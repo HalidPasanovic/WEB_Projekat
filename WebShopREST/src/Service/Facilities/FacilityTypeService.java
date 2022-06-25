@@ -1,6 +1,5 @@
 package Service.Facilities;
 
-import java.util.ArrayList;
 import java.util.List;
 import Model.Facilities.FacilityType;
 import Repository.Facilities.FacilityTypeRepository;
@@ -11,8 +10,8 @@ public class FacilityTypeService implements IFacilityTypeService  {
 
     private IFacilityTypeRepository repository;
 
-    public FacilityTypeService(String contextPath, String fileName) {
-    	repository = new FacilityTypeRepository(contextPath + fileName);
+    public FacilityTypeService(String contextPath) {
+    	repository = new FacilityTypeRepository(contextPath + "/data/facilityTypes.csv");
 	}
 
 	@Override

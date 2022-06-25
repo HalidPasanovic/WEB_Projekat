@@ -1,6 +1,5 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -14,13 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import Model.Users.Manager;
 import Model.Users.Trainer;
-import Repository.Interfaces.ICrud;
-import Repository.Interfaces.Users.ITrainerRepository;
-import Repository.Users.ManagerRepository;
-import Repository.Users.TrainerRepository;
-import Service.Interfaces.Users.ITrainerService;
+import Service.Interfaces.ICrud;
+import Service.Users.TrainerService;
 
 @Path("/trainers")
 public class TrainerController implements ICrud<Trainer> {
@@ -32,15 +27,15 @@ public class TrainerController implements ICrud<Trainer> {
 	
     @PostConstruct
 	public void init() {
-		if (ctx.getAttribute("trainerRepository") == null) {
+		if (ctx.getAttribute("trainerService") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("trainerRepository", new TrainerRepository(contextPath + "/data/trainers.csv"));
+			ctx.setAttribute("trainerService", new TrainerService(contextPath));
 			System.out.println(contextPath);
 		}
 	}
     
     public void Create(Trainer element) throws Exception {
-    	TrainerRepository repo = (TrainerRepository) ctx.getAttribute("trainerRepository");
+    	TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
         repo.Create(element);
     }
 
@@ -48,7 +43,7 @@ public class TrainerController implements ICrud<Trainer> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public Trainer Read(@PathParam("id") int id) throws Exception {
-    	TrainerRepository repo = (TrainerRepository) ctx.getAttribute("trainerRepository");
+    	TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
         return repo.Read(id);
     }
 
@@ -56,7 +51,7 @@ public class TrainerController implements ICrud<Trainer> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Trainer element) throws Exception {
-    	TrainerRepository repo = (TrainerRepository) ctx.getAttribute("trainerRepository");
+    	TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
     	repo.Update(element);
     }
 
@@ -64,7 +59,7 @@ public class TrainerController implements ICrud<Trainer> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Delete(@PathParam("id") int id) throws Exception {
-    	TrainerRepository repo = (TrainerRepository) ctx.getAttribute("trainerRepository");
+    	TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
     	repo.Delete(id);
     }
 
@@ -72,7 +67,7 @@ public class TrainerController implements ICrud<Trainer> {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
     public List<Trainer> GetAll() {
-    	TrainerRepository repo = (TrainerRepository) ctx.getAttribute("trainerRepository");
+    	TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
     	return repo.GetAll();
     }
 

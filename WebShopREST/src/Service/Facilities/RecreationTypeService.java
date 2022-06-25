@@ -1,6 +1,5 @@
 package Service.Facilities;
 
-import java.util.ArrayList;
 import java.util.List;
 import Model.Facilities.RecreationType;
 import Repository.Facilities.RecreationTypeRepository;
@@ -11,8 +10,8 @@ public class RecreationTypeService implements IRecreationTypeService  {
 
     private IRecreationTypeRepository repository;
 
-    public RecreationTypeService(String string) {
-    	repository = new RecreationTypeRepository(string);
+    public RecreationTypeService(String contextPath) {
+    	repository = new RecreationTypeRepository(contextPath + "/data/recreationTypes.csv");
 	}
 
 	@Override

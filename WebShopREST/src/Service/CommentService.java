@@ -1,17 +1,29 @@
 package Service;
 
+import java.util.HashMap;
 import java.util.List;
 import Model.Comment;
+import Model.Facilities.SportFacility;
+import Model.Users.Customer;
 import Repository.CommentRepository;
 import Repository.Interfaces.ICommentRepository;
+import Service.Facilities.SportFacilityService;
 import Service.Interfaces.ICommentService;
+import Service.Interfaces.Facilities.ISportFacilityService;
+import Service.Interfaces.Users.ICustomerService;
+import Service.Users.CustomerService;
+import Utilities.DataStructureConverter;
 
 public class CommentService implements ICommentService {
 
     private ICommentRepository repository;
+    private ICustomerService customerService;
+    private ISportFacilityService sportFacilityService;
 
-    public CommentService(String fileName) {
-        repository = new CommentRepository(fileName);
+    public CommentService(String contextPath) {
+        repository = new CommentRepository(contextPath + "/data/comments.csv");
+        customerService = new CustomerService(contextPath);
+        sportFacilityService = new SportFacilityService(contextPath);
     }
 
     @Override
@@ -21,7 +33,7 @@ public class CommentService implements ICommentService {
 
     @Override
     public Comment Read(int id) throws Exception {
-        return repository.Read(id);
+        return FindByID(GetAll(), id);
     }
 
     @Override
@@ -36,7 +48,40 @@ public class CommentService implements ICommentService {
 
     @Override
     public List<Comment> GetAll() {
-        return repository.GetAll();
+        List<Comment> comments = repository.GetAll();
+        comments = SetCustomerForComments(comments);
+        return SetFacilityForComments(comments);
+    }
+
+    private List<Comment> SetCustomerForComments(List<Comment> comments){
+        DataStructureConverter<Customer> converter = new DataStructureConverter<Customer>();
+        HashMap<Integer, Customer> customers = converter.ConvertListToMap(customerService.GetAll());
+        for (Comment comment : comments) {
+            if(customers.containsKey(comment.getCustomer().getId())){
+                comment.setCustomer(customers.get(comment.getCustomer().getId()));
+            }
+        }
+        return comments;
+    }
+
+    private List<Comment> SetFacilityForComments(List<Comment> comments){
+        DataStructureConverter<SportFacility> converter = new DataStructureConverter<SportFacility>();
+        HashMap<Integer, SportFacility> facilities = converter.ConvertListToMap(sportFacilityService.GetAll());
+        for (Comment comment : comments) {
+            if(facilities.containsKey(comment.getFacility().getId())){
+                comment.setFacility(facilities.get(comment.getFacility().getId()));
+            }
+        }
+        return comments;
+    }
+
+    private Comment FindByID(List<Comment> comments, int id) throws Exception{
+        for (Comment comment : comments) {
+            if(comment.getId() == id){
+                return comment;
+            }
+        }
+        throw new Exception("Element not found");
     }
     
 }

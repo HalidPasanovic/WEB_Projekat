@@ -84,10 +84,13 @@ public class Comment extends IDClass {
 	public int FromCSV(List<String> values) {
 		int i = 0;
 		id = Integer.parseInt(values.get(i++));
+
 		customer = new Customer();
 		customer.setId(Integer.parseInt(values.get(i++)));
+
 		facility = new SportFacility();
 		facility.setId(Integer.parseInt(values.get(i++)));
+		
 		content = values.get(i++);
 		rating = Float.parseFloat(values.get(i++));
 		return i;

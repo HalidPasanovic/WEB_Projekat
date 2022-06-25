@@ -1,11 +1,8 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.List;
 import Model.Facilities.SportFacility;
-import Model.Users.Administrator;
 import Repository.Interfaces.ICrud;
-import Repository.Users.AdministratorRepository;
 import Service.Facilities.SportFacilityService;
 
 import javax.annotation.PostConstruct;
@@ -32,7 +29,7 @@ public class SportFacilityController implements ICrud<SportFacility> {
 	public void init() {
 		if (ctx.getAttribute("SportFacilityService") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("SportFacilityService", new SportFacilityService(contextPath, "/data/sportFacilities.csv"));
+			ctx.setAttribute("SportFacilityService", new SportFacilityService(contextPath));
 			System.out.println(contextPath);
 		}
 	}

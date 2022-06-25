@@ -2,9 +2,8 @@ package services;
 
 import java.util.List;
 import Model.Users.Administrator;
-import Repository.Interfaces.ICrud;
-import Repository.Users.AdministratorRepository;
-import Service.Interfaces.Users.IAdministratorService;
+import Service.Interfaces.ICrud;
+import Service.Users.AdministratorService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -28,9 +27,9 @@ public class AdministratorController implements ICrud<Administrator> {
 	
     @PostConstruct
 	public void init() {
-		if (ctx.getAttribute("administratorRepository") == null) {
+		if (ctx.getAttribute("administratorService") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("administratorRepository", new AdministratorRepository(contextPath + "/data/admins.csv"));
+			ctx.setAttribute("administratorService", new AdministratorService(contextPath));
 			System.out.println(contextPath);
 		}
 	}
@@ -38,7 +37,7 @@ public class AdministratorController implements ICrud<Administrator> {
     
     
     public void Create(Administrator element) throws Exception {
-    	AdministratorRepository repo = (AdministratorRepository) ctx.getAttribute("administratorRepository");
+    	AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
         repo.Create(element);
     }
 
@@ -46,7 +45,7 @@ public class AdministratorController implements ICrud<Administrator> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public Administrator Read(@PathParam("id") int id) throws Exception {
-    	AdministratorRepository repo = (AdministratorRepository) ctx.getAttribute("administratorRepository");
+    	AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
         return repo.Read(id);
     }
 
@@ -54,7 +53,7 @@ public class AdministratorController implements ICrud<Administrator> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Administrator element) throws Exception {
-    	AdministratorRepository repo = (AdministratorRepository) ctx.getAttribute("administratorRepository");
+    	AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
     	repo.Update(element);
     }
 
@@ -62,7 +61,7 @@ public class AdministratorController implements ICrud<Administrator> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Delete(@PathParam("id") int id) throws Exception {
-    	AdministratorRepository repo = (AdministratorRepository) ctx.getAttribute("administratorRepository");
+    	AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
     	repo.Delete(id);
     }
 
@@ -70,7 +69,7 @@ public class AdministratorController implements ICrud<Administrator> {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
     public List<Administrator> GetAll() {
-    	AdministratorRepository repo = (AdministratorRepository) ctx.getAttribute("administratorRepository");
+    	AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
     	return repo.GetAll();
     }
 

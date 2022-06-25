@@ -10,8 +10,8 @@ public class TrainingTypeService implements ITrainingTypeService {
 
     private ITrainingTypeRepository repository;
 
-    public TrainingTypeService(String fileName) {
-        repository = new TrainingTypeRepository(fileName);
+    public TrainingTypeService(String contextPath) {
+        repository = new TrainingTypeRepository(contextPath + "/data/trainingTypes.csv");
     }
 
     @Override

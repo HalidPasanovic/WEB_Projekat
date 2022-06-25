@@ -15,8 +15,7 @@ public class Training extends IDClass {
 	/**
 	 * Default constructor
 	 */
-	public Training() {
-	}
+	public Training() {}
 
 	/**
 	 * 
@@ -111,13 +110,38 @@ public class Training extends IDClass {
 
 	@Override
 	public List<String> ToCSV() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> result = new ArrayList<>();
+		result.add(String.valueOf(id));
+		result.add(name);
+		result.add(String.valueOf(type.getId()));
+		result.add(String.valueOf(facility.getId()));
+		result.add(String.valueOf(duration));
+		result.add(String.valueOf(trainer.getId()));
+		result.add(description);
+		result.add(pictureLocation);
+		return result;
 	}
 
 	@Override
 	public int FromCSV(List<String> values) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = 0;
+		id = Integer.parseInt(values.get(i++));
+		name = values.get(i++);
+
+		type = new TrainingType();
+		type.setId(Integer.parseInt(values.get(i++)));
+
+		facility = new SportFacility();
+		facility.setId(Integer.parseInt(values.get(i++)));
+
+		duration = LocalTime.parse(values.get(i++));
+
+		trainer = new Trainer();
+		trainer.setId(Integer.parseInt(values.get(i++)));
+
+		description = values.get(i++);
+		pictureLocation = values.get(i++);
+
+		return i;
 	}
 }

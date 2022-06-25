@@ -3,12 +3,8 @@ package services;
 import java.util.List;
 
 import Model.Facilities.RecreationType;
-import Model.Facilities.SportFacility;
-import Model.Users.Administrator;
 import Repository.Interfaces.ICrud;
-import Repository.Users.AdministratorRepository;
 import Service.Facilities.RecreationTypeService;
-import Service.Interfaces.Users.IAdministratorService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -36,7 +32,7 @@ public class RecreationTypeController implements ICrud<RecreationType> {
 	public void init() {
 		if (ctx.getAttribute("RecreationTypeService") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("RecreationTypeService", new RecreationTypeService(contextPath + "/data/recreationTypes.csv"));
+			ctx.setAttribute("RecreationTypeService", new RecreationTypeService(contextPath));
 			System.out.println(contextPath);
 		}
 	}

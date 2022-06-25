@@ -138,6 +138,7 @@ public class SportFacility extends IDClass {
 		values = RemoveNElements(i, values);
 		location = new Location();
 		i = i + location.FromCSV(values);
+		
 		return i;
 	}
 

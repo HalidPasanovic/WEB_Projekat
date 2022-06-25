@@ -1,7 +1,5 @@
 package Model.Users;
 
-import java.util.*;
-
 import Model.IDClass;
 
 /**

@@ -21,10 +21,10 @@ import Model.Users.Administrator;
 import Model.Users.Customer;
 import Model.Users.Manager;
 import Model.Users.Trainer;
-import Repository.Users.AdministratorRepository;
-import Repository.Users.CustomerRepository;
-import Repository.Users.ManagerRepository;
-import Repository.Users.TrainerRepository;
+import Service.Users.AdministratorService;
+import Service.Users.CustomerService;
+import Service.Users.ManagerService;
+import Service.Users.TrainerService;
 
 @Path("/login")
 public class LoginController {
@@ -37,23 +37,19 @@ public class LoginController {
 	
 	@PostConstruct
 	public void init() {
-    	
-		if (ctx.getAttribute("managerRepository") == null) {
-	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("managerRepository", new ManagerRepository(contextPath + "/managers.csv"));
+    	String contextPath = ctx.getRealPath("");
+		System.out.println(contextPath);
+		if (ctx.getAttribute("managerService") == null) {
+			ctx.setAttribute("managerService", new ManagerService(contextPath));
 		}
-		if (ctx.getAttribute("trainerRepository") == null) {
-			String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("trainerRepository", new TrainerRepository(contextPath + "/trainers.csv"));
+		if (ctx.getAttribute("trainerService") == null) {
+			ctx.setAttribute("trainerService", new TrainerService(contextPath));
 		}
-		if (ctx.getAttribute("administratorRepository") == null) {
-			String contextPath = ctx.getRealPath("");
-			System.out.println(contextPath);
-			ctx.setAttribute("administratorRepository", new AdministratorRepository(contextPath + "/admins.csv"));
+		if (ctx.getAttribute("administratorService") == null) {
+			ctx.setAttribute("administratorService", new AdministratorService(contextPath));
 		}
-		if (ctx.getAttribute("customersRepository") == null) {
-			String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("customersRepository", new CustomerRepository(contextPath + "/customers.csv"));
+		if (ctx.getAttribute("customersService") == null) {
+			ctx.setAttribute("customersService", new CustomerService(contextPath));
 		}
 	}
 	
@@ -61,7 +57,7 @@ public class LoginController {
 	@Path("/{username}&{password}")
 	@Produces(MediaType.APPLICATION_JSON)
     public int Read(@PathParam("username") String username,@PathParam("password") String password) throws Exception {
-		ManagerRepository repo = (ManagerRepository) ctx.getAttribute("managerRepository");
+		ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
 		List<Manager> managers = repo.GetAll();
 		for(Manager manager : managers)
 		{
@@ -70,7 +66,7 @@ public class LoginController {
 				return 1;
 			}
 		}
-		CustomerRepository repoc = (CustomerRepository) ctx.getAttribute("customersRepository");
+		CustomerService repoc = (CustomerService) ctx.getAttribute("customersService");
 		List<Customer> customers = repoc.GetAll();
 		for(Customer customer : customers)
 		{
@@ -79,7 +75,7 @@ public class LoginController {
 				return 1;
 			}
 		}
-		AdministratorRepository repoa = (AdministratorRepository) ctx.getAttribute("administratorRepository");
+		AdministratorService repoa = (AdministratorService) ctx.getAttribute("administratorService");
 		List<Administrator> admins = repoa.GetAll();
 		for(Administrator admin : admins)
 		{
@@ -88,7 +84,7 @@ public class LoginController {
 				return 1;
 			}
 		}
-		TrainerRepository repot = (TrainerRepository) ctx.getAttribute("trainerRepository");
+		TrainerService repot = (TrainerService) ctx.getAttribute("trainerService");
 		List<Trainer> trainers = repot.GetAll();
 		for(Trainer t : trainers)
 		{

@@ -3,14 +3,8 @@ package services;
 import java.util.List;
 
 import Model.Facilities.FacilityType;
-import Model.Facilities.RecreationType;
-import Model.Facilities.SportFacility;
-import Model.Users.Administrator;
 import Repository.Interfaces.ICrud;
-import Repository.Users.AdministratorRepository;
 import Service.Facilities.FacilityTypeService;
-import Service.Facilities.RecreationTypeService;
-import Service.Interfaces.Users.IAdministratorService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -36,7 +30,7 @@ public class FacilityTypeController implements ICrud<FacilityType> {
 	public void init() {
 		if (ctx.getAttribute("FacilityTypeService") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("FacilityTypeService", new FacilityTypeService(contextPath, "/data/facilityTypes.csv"));
+			ctx.setAttribute("FacilityTypeService", new FacilityTypeService(contextPath));
 			System.out.println(contextPath);
 		}
 	}

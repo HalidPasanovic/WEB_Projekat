@@ -10,8 +10,8 @@ public class MembershipTypeService implements IMembershipTypeService {
 
     private IMembershipTypeRepository repository;
 
-    public MembershipTypeService(String fileName) {
-        repository = new MembershipTypeRepository(fileName);
+    public MembershipTypeService(String contextPath) {
+        repository = new MembershipTypeRepository(contextPath + "/data/membershipTypes.csv");
     }
 
     @Override

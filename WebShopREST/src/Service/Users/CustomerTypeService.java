@@ -1,6 +1,5 @@
 package Service.Users;
 
-import java.util.ArrayList;
 import java.util.List;
 import Model.Users.CustomerType;
 import Repository.Interfaces.Users.ICustomerTypeRepository;
@@ -11,8 +10,8 @@ public class CustomerTypeService implements ICustomerTypeService {
 
     private ICustomerTypeRepository repository;
 
-    public CustomerTypeService(String fileName) {
-        repository = new CustomerTypeRepository(fileName);
+    public CustomerTypeService(String contextPath) {
+        repository = new CustomerTypeRepository(contextPath + "/data/customerTypes.csv");
     }
 
     @Override

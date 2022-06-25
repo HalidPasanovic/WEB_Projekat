@@ -1,7 +1,5 @@
 package services;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -15,13 +13,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import Model.Users.Administrator;
 import Model.Users.Manager;
-import Repository.Interfaces.ICrud;
-import Repository.Interfaces.Users.IManagerRepository;
-import Repository.Users.AdministratorRepository;
-import Repository.Users.ManagerRepository;
-import Service.Interfaces.Users.IManagerService;
+import Service.Interfaces.ICrud;
+import Service.Users.ManagerService;
 
 @Path("/managers")
 public class ManagerController implements ICrud<Manager> {
@@ -35,15 +29,15 @@ public class ManagerController implements ICrud<Manager> {
     @PostConstruct
 	public void init() {
     	
-		if (ctx.getAttribute("managerRepository") == null) {
+		if (ctx.getAttribute("managerService") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("managerRepository", new ManagerRepository(contextPath + "/data/managers.csv"));
+			ctx.setAttribute("managerService", new ManagerService(contextPath));
 			System.out.println(contextPath);
 		}
 	}
     
     public void Create(Manager element) throws Exception {
-    	ManagerRepository repo = (ManagerRepository) ctx.getAttribute("managerRepository");
+    	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
         repo.Create(element);
     }
 
@@ -51,7 +45,7 @@ public class ManagerController implements ICrud<Manager> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public Manager Read(@PathParam("id") int id) throws Exception {
-    	ManagerRepository repo = (ManagerRepository) ctx.getAttribute("managerRepository");
+    	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
         return repo.Read(id);
     }
 
@@ -59,7 +53,7 @@ public class ManagerController implements ICrud<Manager> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Manager element) throws Exception {
-    	ManagerRepository repo = (ManagerRepository) ctx.getAttribute("managerRepository");
+    	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
     	repo.Update(element);
     }
 
@@ -67,7 +61,7 @@ public class ManagerController implements ICrud<Manager> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Delete(@PathParam("id") int id) throws Exception {
-    	ManagerRepository repo = (ManagerRepository) ctx.getAttribute("managerRepository");
+    	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
     	repo.Delete(id);
     }
 
@@ -75,7 +69,7 @@ public class ManagerController implements ICrud<Manager> {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
     public List<Manager> GetAll() {
-    	ManagerRepository repo = (ManagerRepository) ctx.getAttribute("managerRepository");
+    	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
     	return repo.GetAll();
     }
 

@@ -1,6 +1,5 @@
 package services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -16,13 +15,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import Model.Users.Administrator;
 import Model.Users.Customer;
-import Repository.Interfaces.ICrud;
-import Repository.Interfaces.Users.ICustomerRepository;
-import Repository.Users.AdministratorRepository;
-import Repository.Users.CustomerRepository;
-import Service.Interfaces.Users.ICustomerService;
+import Service.Interfaces.ICrud;
+import Service.Users.CustomerService;
 
 @Path("/customers")
 public class CustomerController implements ICrud<Customer> {
@@ -34,9 +29,9 @@ public class CustomerController implements ICrud<Customer> {
 	
 	@PostConstruct
 	public void init() {
-		if (ctx.getAttribute("customerRepository") == null) {
+		if (ctx.getAttribute("customerService") == null) {
 	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("customerRepository", new CustomerRepository(contextPath + "/data/customers.csv"));
+			ctx.setAttribute("customerService", new CustomerService(contextPath));
 			System.out.println(contextPath);
 		}
 	}
@@ -47,7 +42,7 @@ public class CustomerController implements ICrud<Customer> {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void Create(Customer element) throws Exception {
-		CustomerRepository repo = (CustomerRepository) ctx.getAttribute("customerRepository");
+		CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
         repo.Create(element);
     }
 	
@@ -55,7 +50,7 @@ public class CustomerController implements ICrud<Customer> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public Customer Read(@PathParam("id") int id) throws Exception {
-    	CustomerRepository repo = (CustomerRepository) ctx.getAttribute("customerRepository");
+    	CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
         return repo.Read(id);
     }
 
@@ -63,7 +58,7 @@ public class CustomerController implements ICrud<Customer> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Customer element) throws Exception {
-    	CustomerRepository repo = (CustomerRepository) ctx.getAttribute("customerRepository");
+    	CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
     	repo.Update(element);
     }
 
@@ -71,7 +66,7 @@ public class CustomerController implements ICrud<Customer> {
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Delete(@PathParam("id") int id) throws Exception {
-    	CustomerRepository repo = (CustomerRepository) ctx.getAttribute("customerRepository");
+    	CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
     	repo.Delete(id);
     }
 
@@ -79,7 +74,7 @@ public class CustomerController implements ICrud<Customer> {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
     public List<Customer> GetAll() {
-    	CustomerRepository repo = (CustomerRepository) ctx.getAttribute("customerRepository");
+    	CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
     	return repo.GetAll();
     	
     }

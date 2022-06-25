@@ -125,14 +125,36 @@ public class Membership extends IDClass {
 
 	@Override
 	public List<String> ToCSV() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> result = new ArrayList<>();
+		result.add(String.valueOf(id));
+		result.add(identifier);
+		result.add(String.valueOf(type.getId()));
+		result.add(String.valueOf(paymentDate));
+		result.add(String.valueOf(validUntil));
+		result.add(String.valueOf(price));
+		result.add(String.valueOf(buyer.getId()));
+		result.add(String.valueOf(status));
+		return result;
 	}
 
 	@Override
 	public int FromCSV(List<String> values) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = 0;
+		id = Integer.parseInt(values.get(i++));
+		identifier = values.get(i++);
+
+		type = new MembershipType();
+		type.setId(Integer.parseInt(values.get(i++)));
+
+		paymentDate = LocalDate.parse(values.get(i++));
+		validUntil = LocalDateTime.parse(values.get(i++));
+		price = Float.parseFloat(values.get(i++));
+
+		buyer = new Customer();
+		buyer.setId(Integer.parseInt(values.get(i++)));
+
+		status = Boolean.parseBoolean(values.get(i++));
+		return i;
 	}
 
 	
