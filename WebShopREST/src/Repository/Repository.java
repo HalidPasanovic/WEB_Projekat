@@ -14,15 +14,8 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	 */
 	public Repository(String fileName) {
 		this.fileName = fileName;
-		InstantiteIDMapAndMaxID(GetAll());
+		InstantiateRepository();
 	}
-
-	/**
-	 * Empty constructor.
-	 * Only used for efficient instantiation of UserRepository.
-	 * Dont use for instantiating normal repositories.
-	 */
-	public Repository() {}
 
 	/**
 	 * 
@@ -38,11 +31,6 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	 * 
 	 */
 	protected HashSet<Integer> idMap = new HashSet<Integer>();
-
-	/**
-	 * 
-	 */
-	protected int currentMaxID;
 
 	/**
 	 * @param T
@@ -113,10 +101,12 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 
 
 	protected int GenerateId(){
+		int id;
+		Random random = new Random();
 		do {
-			++currentMaxID;
-		} while (idMap.contains(currentMaxID));
-		return currentMaxID;
+			id = random.nextInt();
+		} while (idMap.contains(id));
+		return id;
 	}
 
 	protected void CheckIfIdExists(int id) throws Exception{
@@ -125,14 +115,14 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 		}
 	}
 
+	protected void InstantiateRepository(){
+		InstantiteIDMapAndMaxID(GetAll());
+	}
+
 	protected void InstantiteIDMapAndMaxID(List<T> elements){
-		currentMaxID = 0;
 		for (T element : elements) {
 			int id = element.getId();
 			idMap.add(id);
-			if(currentMaxID < id){
-				currentMaxID = id;
-			}
 		}
 	}
 }

@@ -9,7 +9,11 @@ import Service.Interfaces.Users.ICustomerTypeService;
 
 public class CustomerTypeService implements ICustomerTypeService {
 
-    private ICustomerTypeRepository repository = new CustomerTypeRepository("");
+    private ICustomerTypeRepository repository;
+
+    public CustomerTypeService(String fileName) {
+        repository = new CustomerTypeRepository(fileName);
+    }
 
     @Override
     public void Create(CustomerType element) throws Exception {

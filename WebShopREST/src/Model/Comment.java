@@ -37,16 +37,60 @@ public class Comment extends IDClass {
 	 */
 	private float rating;
 
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public SportFacility getFacility() {
+		return facility;
+	}
+
+	public void setFacility(SportFacility facility) {
+		this.facility = facility;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public float getRating() {
+		return rating;
+	}
+
+	public void setRating(float rating) {
+		this.rating = rating;
+	}
+
 	@Override
 	public List<String> ToCSV() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> result = new ArrayList<>();
+		result.add(String.valueOf(id));
+		result.add(String.valueOf(customer.getId()));
+		result.add(String.valueOf(facility.getId()));
+		result.add(content);
+		result.add(String.valueOf(rating));
+		return result;
 	}
 
 	@Override
 	public int FromCSV(List<String> values) {
-		// TODO Auto-generated method stub
-		return 0;
+		int i = 0;
+		id = Integer.parseInt(values.get(i++));
+		customer = new Customer();
+		customer.setId(Integer.parseInt(values.get(i++)));
+		facility = new SportFacility();
+		facility.setId(Integer.parseInt(values.get(i++)));
+		content = values.get(i++);
+		rating = Float.parseFloat(values.get(i++));
+		return i;
 	}
 
 }

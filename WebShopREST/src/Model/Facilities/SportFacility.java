@@ -16,19 +16,6 @@ public class SportFacility extends IDClass {
 	public SportFacility() {
 	}
 
-	/**
-	 * 
-	 */
-	private String name;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public SportFacility(String name, FacilityType type, List<RecreationType> recreationTypes,
 			boolean status, Location location) {
 		this.name = name;
@@ -41,7 +28,40 @@ public class SportFacility extends IDClass {
 	/**
 	 * 
 	 */
+	private String name;
+	
+	/**
+	 * 
+	 */
 	private FacilityType type;
+
+	/**
+	 * 
+	 */
+	private List<RecreationType> recreationTypes;
+
+	/**
+	 * 
+	 */
+	private boolean status;
+
+	/**
+	 * 
+	 */
+	private Location location;
+
+	/**
+	 * 
+	 */
+	private String workRange;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public FacilityType getType() {
 		return type;
@@ -51,11 +71,6 @@ public class SportFacility extends IDClass {
 		this.type = type;
 	}
 
-	/**
-	 * 
-	 */
-	private List<RecreationType> recreationTypes;
-
 	public List<RecreationType> getRecreationTypes() {
 		return recreationTypes;
 	}
@@ -63,11 +78,6 @@ public class SportFacility extends IDClass {
 	public void setRecreationTypes(List<RecreationType> recreationTypes) {
 		this.recreationTypes = recreationTypes;
 	}
-
-	/**
-	 * 
-	 */
-	private boolean status;
 
 	public boolean isStatus() {
 		return status;
@@ -77,11 +87,6 @@ public class SportFacility extends IDClass {
 		this.status = status;
 	}
 
-	/**
-	 * 
-	 */
-	private Location location;
-
 	public Location getLocation() {
 		return location;
 	}
@@ -89,8 +94,6 @@ public class SportFacility extends IDClass {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-	
-	private String workRange;
 	
 	public String getWorkRange() {
 		return workRange;
@@ -122,13 +125,16 @@ public class SportFacility extends IDClass {
 		id = Integer.parseInt(values.get(i++));
 		name = values.get(i++);
 		type = new FacilityType(Integer.parseInt(values.get(i++)));
+
 		int count = Integer.parseInt(values.get(i++)) + i;
 		recreationTypes = new ArrayList<RecreationType>();
 		while(i < count) {
 			recreationTypes.add(new RecreationType(Integer.parseInt(values.get(i++))));
 		}
+
 		status = Boolean.getBoolean(values.get(i++));
 		workRange = values.get(i++);
+
 		values = RemoveNElements(i, values);
 		location = new Location();
 		i = i + location.FromCSV(values);

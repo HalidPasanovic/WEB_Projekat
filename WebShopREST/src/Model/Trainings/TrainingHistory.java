@@ -38,6 +38,38 @@ public class TrainingHistory extends IDClass {
 	 */
 	private Trainer trainer;
 
+	public LocalDateTime getApplicationDateTime() {
+		return applicationDateTime;
+	}
+
+	public void setApplicationDateTime(LocalDateTime applicationDateTime) {
+		this.applicationDateTime = applicationDateTime;
+	}
+
+	public Training getTraining() {
+		return training;
+	}
+
+	public void setTraining(Training training) {
+		this.training = training;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Trainer getTrainer() {
+		return trainer;
+	}
+
+	public void setTrainer(Trainer trainer) {
+		this.trainer = trainer;
+	}
+
 	@Override
 	public List<String> ToCSV() {
 		// TODO Auto-generated method stub

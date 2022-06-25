@@ -12,7 +12,10 @@ public class RecreationType extends IDClass {
 	/**
 	 * Default constructor
 	 */
-	public RecreationType() {
+	public RecreationType() {}
+
+	public RecreationType(String name) {
+		this.name = name;
 	}
 
 	public void Change(RecreationType type) {
@@ -37,9 +40,6 @@ public class RecreationType extends IDClass {
 		this.name = name;
 	}
 
-	public RecreationType(String name) {
-		this.name = name;
-	}
 
 	@Override
 	public List<String> ToCSV() {

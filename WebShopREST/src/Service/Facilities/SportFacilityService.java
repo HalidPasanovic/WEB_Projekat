@@ -2,6 +2,8 @@ package Service.Facilities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.List;
 import Model.Facilities.FacilityType;
 import Model.Facilities.RecreationType;
@@ -13,6 +15,7 @@ import Repository.Interfaces.Facilities.IFacilityTypeRepository;
 import Repository.Interfaces.Facilities.IRecreationTypeRepository;
 import Repository.Interfaces.Facilities.ISportFacilityRepository;
 import Service.Interfaces.Facilities.ISportFacilityService;
+import Utilities.DataStructureConverter;
 
 public class SportFacilityService implements ISportFacilityService {
 
@@ -55,20 +58,29 @@ public class SportFacilityService implements ISportFacilityService {
     @Override
     public List<SportFacility> GetAll() {
         List<SportFacility> facilities = repository.GetAll();
-        List<RecreationType> types = typeRepository.GetAll();
-        List<FacilityType> facilityTypes = facilityTypeRepository.GetAll();
+        facilities = SetRecreationTypesForFacilities(facilities);
+        return SetFacilityTypeForFacilities(facilities);
+    }
+
+    private List<SportFacility> SetRecreationTypesForFacilities(List<SportFacility> facilities){
+        DataStructureConverter<RecreationType> converter = new DataStructureConverter<RecreationType>();
+        HashMap<Integer, RecreationType> types = converter.ConvertListToMap(typeRepository.GetAll());
         for (SportFacility facility : facilities) {
-            for (RecreationType it : facility.getRecreationTypes()) {
-                for (RecreationType recreationType : types) {
-                    if(it.getId() == recreationType.getId()){
-                        it.Change(recreationType);
-                    }
+            for (RecreationType type : facility.getRecreationTypes()) {
+                if(types.containsKey(type.getId())){
+                    type.Change(types.get(type.getId()));
                 }
             }
-            for (FacilityType facilityType : facilityTypes) {
-                if(facility.getType().getId() == facilityType.getId()){
-                    facility.setType(facilityType);
-                }
+        }
+        return facilities;
+    }
+
+    private List<SportFacility> SetFacilityTypeForFacilities(List<SportFacility> facilities){
+        DataStructureConverter<FacilityType> converter = new DataStructureConverter<FacilityType>();
+        HashMap<Integer, FacilityType> types = converter.ConvertListToMap(facilityTypeRepository.GetAll());
+        for (SportFacility facility : facilities) {
+            if(types.containsKey(facility.getType().getId())){
+                facility.setType(types.get(facility.getType().getId()));
             }
         }
         return facilities;

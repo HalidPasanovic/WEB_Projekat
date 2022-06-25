@@ -19,6 +19,10 @@ public class FacilityType extends IDClass {
 		this.id = id;
 	}
 
+	public FacilityType(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * 
 	 */
@@ -29,10 +33,6 @@ public class FacilityType extends IDClass {
 	}
 
 	public void setName(String name) {
-		this.name = name;
-	}
-
-	public FacilityType(String name) {
 		this.name = name;
 	}
 

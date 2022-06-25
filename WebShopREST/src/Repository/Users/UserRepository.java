@@ -7,12 +7,11 @@ import Repository.Repository;
 
 public abstract class UserRepository<T extends User> extends Repository<T> {
 
+    /**
+	 * 
+	 */
     public UserRepository(String fileName) {
-        super();
-        this.fileName = fileName;
-        List<T> elements = GetAll();
-        InstantiteIDMapAndMaxID(elements);
-        InstantiteUserDictionary(elements);
+        super(fileName);
     }
 
     /**
@@ -63,5 +62,12 @@ public abstract class UserRepository<T extends User> extends Repository<T> {
         if(userDictionary.containsKey(username)){
             throw new Exception("Username already exists");
         }
+    }
+
+    @Override
+    protected void InstantiateRepository() {
+        List<T> elements = GetAll();
+        InstantiteIDMapAndMaxID(elements);
+        InstantiteUserDictionary(elements);
     }
 }
