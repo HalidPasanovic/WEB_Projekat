@@ -1,7 +1,9 @@
 package Service.Users;
 
+import java.util.HashMap;
 import java.util.List;
 import Model.Users.Customer;
+import Model.Users.User;
 import Repository.Interfaces.Users.ICustomerRepository;
 import Repository.Users.CustomerRepository;
 import Service.Interfaces.Users.ICustomerService;
@@ -9,13 +11,17 @@ import Service.Interfaces.Users.ICustomerService;
 public class CustomerService implements ICustomerService {
 
     private ICustomerRepository repository;
+    private String contexString;
 
     public CustomerService(String contextPath) {
-        repository = new CustomerRepository(contextPath + "/data/customers.csv");
+        contexString = contextPath;
+        repository = CustomerRepository.getInstance(contextPath);
     }
 
     @Override
     public void Create(Customer element) throws Exception {
+        UserService usernameService = new UserService(contexString);
+        usernameService.CheckIfUsernameExists(element.getUsername());
         repository.Create(element);
     }
 
@@ -26,6 +32,8 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public void Update(Customer element) throws Exception {
+        UserService usernameService = new UserService(contexString);
+        usernameService.CheckIfUsernameExists(element.getUsername());
         repository.Update(element);
     }
 
@@ -37,6 +45,11 @@ public class CustomerService implements ICustomerService {
     @Override
     public List<Customer> GetAll() {
         return repository.GetAll();
+    }
+
+    @Override
+    public HashMap<String, User> GetUsers() {
+        return repository.GetUsers();
     }
     
 }

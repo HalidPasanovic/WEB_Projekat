@@ -20,7 +20,7 @@ public class MembershipService implements IMembershipService {
     private ICustomerService customerService;
 
     public MembershipService(String contextPath) {
-        repository = new MembershipRepository(contextPath + "/data/memberships.csv");
+        repository = MembershipRepository.getInstance(contextPath);
         typeService = new MembershipTypeService(contextPath);
         customerService = new CustomerService(contextPath);
     }

@@ -24,7 +24,7 @@ public class TrainingService implements ITrainingService {
     private ITrainerService trainerService;
 
     public TrainingService(String contextPath) {
-        repository = new TrainingRepository(contextPath + "/data/trainings.csv");
+        repository = TrainingRepository.getInstance(contextPath);
         trainingTypeService = new TrainingTypeService(contextPath);
         sportFacilityService = new SportFacilityService(contextPath);
         trainerService = new TrainerService(contextPath);

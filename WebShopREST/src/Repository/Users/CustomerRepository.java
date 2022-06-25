@@ -7,9 +7,19 @@ import Repository.Interfaces.Users.ICustomerRepository;
 
 public class CustomerRepository extends UserRepository<Customer> implements ICustomerRepository {
 
-    public CustomerRepository(String fileName) {
-        super(fileName);
-        //TODO Auto-generated constructor stub
+    private static CustomerRepository instance;
+
+    public static CustomerRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new CustomerRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public CustomerRepository(String contextPath) {
+        super();
+        this.fileName = contextPath  + "/data/customers.csv";
+        InstantiateRepository();
     }
 
     @Override

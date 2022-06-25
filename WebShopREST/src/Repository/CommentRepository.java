@@ -7,9 +7,19 @@ import Repository.Interfaces.ICommentRepository;
 
 public class CommentRepository extends Repository<Comment> implements ICommentRepository {
 
-    public CommentRepository(String fileName) {
-        super(fileName);
-        //TODO Auto-generated constructor stub
+    private static CommentRepository instance;
+
+    public static CommentRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new CommentRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public CommentRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/comments.csv";
+        InstantiateRepository();
     }
 
     @Override

@@ -24,7 +24,7 @@ public class TrainingHistoryService implements ITrainingHistoryService {
     private ITrainerService trainerService;
 
     public TrainingHistoryService(String contextPath) {
-        repository = new TrainingHistoryRepository(contextPath + "/data/trainingHistories.csv");
+        repository = TrainingHistoryRepository.getInstance(contextPath);
         trainingService = new TrainingService(contextPath);
         customerService = new CustomerService(contextPath);
         trainerService = new TrainerService(contextPath);

@@ -1,7 +1,9 @@
 package Service.Users;
 
+import java.util.HashMap;
 import java.util.List;
 import Model.Users.Manager;
+import Model.Users.User;
 import Repository.Interfaces.Users.IManagerRepository;
 import Repository.Users.ManagerRepository;
 import Service.Interfaces.Users.IManagerService;
@@ -9,13 +11,17 @@ import Service.Interfaces.Users.IManagerService;
 public class ManagerService implements IManagerService {
 
     private IManagerRepository repository;
+    private String contexString;
 
     public ManagerService(String contextPath) {
-        repository = new ManagerRepository(contextPath + "/data/managers.csv");
+        contexString = contextPath;
+        repository = ManagerRepository.getInstance(contextPath);
     }
 
     @Override
     public void Create(Manager element) throws Exception {
+        UserService usernameService = new UserService(contexString);
+        usernameService.CheckIfUsernameExists(element.getUsername());
         repository.Create(element);
     }
 
@@ -26,6 +32,8 @@ public class ManagerService implements IManagerService {
 
     @Override
     public void Update(Manager element) throws Exception {
+        UserService usernameService = new UserService(contexString);
+        usernameService.CheckIfUsernameExists(element.getUsername());
         repository.Update(element);
     }
 
@@ -37,6 +45,11 @@ public class ManagerService implements IManagerService {
     @Override
     public List<Manager> GetAll() {
         return repository.GetAll();
+    }
+
+    @Override
+    public HashMap<String, User> GetUsers() {
+        return repository.GetUsers();
     }
     
 }

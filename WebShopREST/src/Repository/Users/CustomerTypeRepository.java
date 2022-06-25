@@ -8,8 +8,19 @@ import Repository.Interfaces.Users.ICustomerTypeRepository;
 
 public class CustomerTypeRepository extends Repository<CustomerType> implements ICustomerTypeRepository {
 
-    public CustomerTypeRepository(String fileName) {
-        super(fileName);
+    private static CustomerTypeRepository instance;
+
+    public static CustomerTypeRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new CustomerTypeRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public CustomerTypeRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/customerTypes.csv";
+        InstantiateRepository();
     }
 
     @Override

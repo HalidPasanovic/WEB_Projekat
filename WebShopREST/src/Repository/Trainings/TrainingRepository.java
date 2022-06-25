@@ -8,8 +8,19 @@ import Repository.Interfaces.Trainings.ITrainingRepository;
 
 public class TrainingRepository extends Repository<Training> implements ITrainingRepository {
 
-    public TrainingRepository(String fileName) {
-        super(fileName);
+    private static TrainingRepository instance;
+
+    public static TrainingRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new TrainingRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public TrainingRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/trainings.csv";
+        InstantiateRepository();
     }
 
     @Override

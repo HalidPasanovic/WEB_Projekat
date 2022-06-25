@@ -11,7 +11,7 @@ public class TrainingTypeService implements ITrainingTypeService {
     private ITrainingTypeRepository repository;
 
     public TrainingTypeService(String contextPath) {
-        repository = new TrainingTypeRepository(contextPath + "/data/trainingTypes.csv");
+        repository = TrainingTypeRepository.getInstance(contextPath);
     }
 
     @Override

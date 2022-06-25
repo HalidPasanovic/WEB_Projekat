@@ -11,7 +11,7 @@ public class MembershipTypeService implements IMembershipTypeService {
     private IMembershipTypeRepository repository;
 
     public MembershipTypeService(String contextPath) {
-        repository = new MembershipTypeRepository(contextPath + "/data/membershipTypes.csv");
+        repository = MembershipTypeRepository.getInstance(contextPath);
     }
 
     @Override

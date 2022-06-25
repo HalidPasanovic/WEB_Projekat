@@ -4,20 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import Model.Users.User;
 import Repository.Repository;
+import Repository.Interfaces.Users.IUserRepository;
 
-public abstract class UserRepository<T extends User> extends Repository<T> {
-
-    /**
-	 * 
-	 */
-    public UserRepository(String fileName) {
-        super(fileName);
-    }
+public abstract class UserRepository<T extends User> extends Repository<T> implements IUserRepository<T> {
 
     /**
 	 * 
 	 */
-	protected HashMap<String, User> userDictionary = new HashMap<String, User>();
+	protected HashMap<String, User> userDictionary = new HashMap<>();
     
     /**
 	 * 
@@ -65,9 +59,14 @@ public abstract class UserRepository<T extends User> extends Repository<T> {
     }
 
     @Override
+    public HashMap<String, User> GetUsers() {
+        return userDictionary;
+    }
+
+    @Override
     protected void InstantiateRepository() {
         List<T> elements = GetAll();
-        InstantiteIDMapAndMaxID(elements);
+        InstantiteIDMap(elements);
         InstantiteUserDictionary(elements);
     }
 }

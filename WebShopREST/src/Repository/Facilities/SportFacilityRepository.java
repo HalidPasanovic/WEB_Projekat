@@ -8,8 +8,19 @@ import Repository.Interfaces.Facilities.ISportFacilityRepository;
 
 public class SportFacilityRepository extends Repository<SportFacility> implements ISportFacilityRepository {
 
-    public SportFacilityRepository(String fileName) {
-        super(fileName);
+    private static SportFacilityRepository instance;
+
+    public static SportFacilityRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new SportFacilityRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public SportFacilityRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/sportFacilities.csv";
+        InstantiateRepository();
     }
 
     @Override

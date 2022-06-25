@@ -8,8 +8,19 @@ import Repository.Interfaces.Trainings.ITrainingHistoryRepository;
 
 public class TrainingHistoryRepository extends Repository<TrainingHistory> implements ITrainingHistoryRepository {
 
-    public TrainingHistoryRepository(String fileName) {
-        super(fileName);
+    private static TrainingHistoryRepository instance;
+
+    public static TrainingHistoryRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new TrainingHistoryRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public TrainingHistoryRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/trainingHistories.csv";
+        InstantiateRepository();
     }
 
     @Override

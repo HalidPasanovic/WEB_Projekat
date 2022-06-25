@@ -1,7 +1,9 @@
 package Service.Users;
 
+import java.util.HashMap;
 import java.util.List;
 import Model.Users.Trainer;
+import Model.Users.User;
 import Repository.Interfaces.Users.ITrainerRepository;
 import Repository.Users.TrainerRepository;
 import Service.Interfaces.Users.ITrainerService;
@@ -9,13 +11,17 @@ import Service.Interfaces.Users.ITrainerService;
 public class TrainerService implements ITrainerService {
 
     private ITrainerRepository repository;
+    private String contexString;
 
     public TrainerService(String contextPath) {
-        repository = new TrainerRepository(contextPath + "/data/trainers.csv");
+        contexString = contextPath;
+        repository = TrainerRepository.getInstance(contextPath);
     }
 
     @Override
     public void Create(Trainer element) throws Exception {
+        UserService usernameService = new UserService(contexString);
+        usernameService.CheckIfUsernameExists(element.getUsername());
         repository.Create(element);
     }
 
@@ -26,6 +32,8 @@ public class TrainerService implements ITrainerService {
 
     @Override
     public void Update(Trainer element) throws Exception {
+        UserService usernameService = new UserService(contexString);
+        usernameService.CheckIfUsernameExists(element.getUsername());
         repository.Update(element);
     }
 
@@ -37,6 +45,11 @@ public class TrainerService implements ITrainerService {
     @Override
     public List<Trainer> GetAll() {
         return repository.GetAll();
+    }
+
+    @Override
+    public HashMap<String, User> GetUsers() {
+        return repository.GetUsers();
     }
     
 }

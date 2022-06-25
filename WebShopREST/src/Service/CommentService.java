@@ -21,7 +21,7 @@ public class CommentService implements ICommentService {
     private ISportFacilityService sportFacilityService;
 
     public CommentService(String contextPath) {
-        repository = new CommentRepository(contextPath + "/data/comments.csv");
+        repository = CommentRepository.getInstance(contextPath);
         customerService = new CustomerService(contextPath);
         sportFacilityService = new SportFacilityService(contextPath);
     }

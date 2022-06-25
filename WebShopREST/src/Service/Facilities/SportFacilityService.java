@@ -19,7 +19,7 @@ public class SportFacilityService implements ISportFacilityService {
     private IFacilityTypeService facilityTypeService;
 
     public SportFacilityService(String contextPath) {
-        repository = new SportFacilityRepository(contextPath + "/data/sportFacilities.csv");
+        repository = SportFacilityRepository.getInstance(contextPath);
         typeService = new RecreationTypeService(contextPath);
         facilityTypeService = new FacilityTypeService(contextPath);
     }
@@ -50,7 +50,7 @@ public class SportFacilityService implements ISportFacilityService {
         repository.Delete(id);
     }
 
-    @Override
+	@Override
     public List<SportFacility> GetAll() {
         List<SportFacility> facilities = repository.GetAll();
         facilities = SetRecreationTypesForFacilities(facilities);

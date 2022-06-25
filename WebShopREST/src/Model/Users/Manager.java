@@ -22,27 +22,27 @@ public class Manager extends User {
 
 	@Override
 	public List<String> ToCSV() {
-		List<String> result = new ArrayList<String>();
-		result.add(Integer.toString(id));
-		result.add(username);
-		result.add(password);
-		result.add(name);
-		result.add(surname);
-		result.add(gender.toString());
-		result.add(role.toString());
+		List<String> result = super.ToCSV();
+
+		result.add(String.valueOf(facilities.size()));
+		for (SportFacility facility : facilities) {
+			result.add(String.valueOf(facility.getId()));
+		}
+
 		return result;
 	}
 
 	@Override
 	public int FromCSV(List<String> values) {
-		int i = 0;
-		this.id = Integer.parseInt(values.get(i++));
-		this.username = values.get(i++);
-		this.password = values.get(i++);
-		this.name = values.get(i++);
-		this.surname = values.get(i++);
-		this.gender = Gender.valueOf(values.get(i++));
-		this.role = UserRole.valueOf(values.get(i++));
+		int i = super.FromCSV(values);
+
+		int count = i + Integer.parseInt(values.get(i++));
+		while (i < count) {
+			SportFacility facility = new SportFacility();
+			facility.setId(Integer.parseInt(values.get(i++)));
+			facilities.add(facility);
+		}
+
 		return i;
 	}
 

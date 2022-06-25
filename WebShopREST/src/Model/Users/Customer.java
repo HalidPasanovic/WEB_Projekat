@@ -38,27 +38,38 @@ public class Customer extends User {
 
 	@Override
 	public List<String> ToCSV() {
-		List<String> result = new ArrayList<String>();
-		result.add(Integer.toString(id));
-		result.add(username);
-		result.add(password);
-		result.add(name);
-		result.add(surname);
-		result.add(gender.toString());
-		result.add(role.toString());
+		List<String> result = super.ToCSV();
+		result.add(String.valueOf(membership.getId()));
+
+		result.add(String.valueOf(visitedFacilities.size()));
+		for (SportFacility facility : visitedFacilities) {
+			result.add(String.valueOf(facility.getId()));
+		}
+
+		result.add(String.valueOf(points));
+		result.add(String.valueOf(type.getId()));
 		return result;
 	}
 
 	@Override
 	public int FromCSV(List<String> values) {
-		int i = 0;
-		this.id = Integer.parseInt(values.get(i++));
-		this.username = values.get(i++);
-		this.password = values.get(i++);
-		this.name = values.get(i++);
-		this.surname = values.get(i++);
-		this.gender = Gender.valueOf(values.get(i++));
-		this.role = UserRole.valueOf(values.get(i++));
+		int i = super.FromCSV(values);
+
+		membership = new Membership();
+		membership.setId(Integer.parseInt(values.get(i++)));
+
+		int count = i + Integer.parseInt(values.get(i++));
+		while (i < count) {
+			SportFacility facility = new SportFacility();
+			facility.setId(Integer.parseInt(values.get(i++)));
+			visitedFacilities.add(facility);
+		}
+
+		points = Float.parseFloat(values.get(i++));
+
+		type = new CustomerType();
+		type.setId(Integer.parseInt(values.get(i++)));
+		
 		return i;
 	}
 

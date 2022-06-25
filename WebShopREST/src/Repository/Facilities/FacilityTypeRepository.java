@@ -6,10 +6,21 @@ import Model.Facilities.FacilityType;
 import Repository.Repository;
 import Repository.Interfaces.Facilities.IFacilityTypeRepository;
 
-public class FacilityTypeRepository extends Repository<FacilityType> implements IFacilityTypeRepository  {
+public class FacilityTypeRepository extends Repository<FacilityType> implements IFacilityTypeRepository  { 
 
-    public FacilityTypeRepository(String fileName) {
-        super(fileName);
+    private static FacilityTypeRepository instance;
+
+    public static FacilityTypeRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new FacilityTypeRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public FacilityTypeRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/facilityTypes.csv";
+        InstantiateRepository();
     }
 
     @Override

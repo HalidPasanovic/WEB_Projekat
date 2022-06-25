@@ -11,7 +11,7 @@ public class CustomerTypeService implements ICustomerTypeService {
     private ICustomerTypeRepository repository;
 
     public CustomerTypeService(String contextPath) {
-        repository = new CustomerTypeRepository(contextPath + "/data/customerTypes.csv");
+        repository = CustomerTypeRepository.getInstance(contextPath);
     }
 
     @Override

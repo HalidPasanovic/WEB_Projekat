@@ -7,8 +7,19 @@ import Repository.Interfaces.Users.ITrainerRepository;
 
 public class TrainerRepository extends UserRepository<Trainer> implements ITrainerRepository {
 
-    public TrainerRepository(String fileName) {
-        super(fileName);
+    private static TrainerRepository instance;
+
+    public static TrainerRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new TrainerRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public TrainerRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/trainers.csv";
+        InstantiateRepository();
     }
 
     @Override

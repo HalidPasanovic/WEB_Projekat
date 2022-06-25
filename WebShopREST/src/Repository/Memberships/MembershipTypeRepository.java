@@ -8,9 +8,19 @@ import Repository.Interfaces.Memberships.IMembershipTypeRepository;
 
 public class MembershipTypeRepository extends Repository<MembershipType> implements IMembershipTypeRepository {
 
-    public MembershipTypeRepository(String fileName) {
-        super(fileName);
-        //TODO Auto-generated constructor stub
+    private static MembershipTypeRepository instance;
+
+    public static MembershipTypeRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new MembershipTypeRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public MembershipTypeRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/membershipTypes.csv";
+        InstantiateRepository();
     }
 
     @Override

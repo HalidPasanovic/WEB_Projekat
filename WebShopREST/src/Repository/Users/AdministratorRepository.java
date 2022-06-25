@@ -7,8 +7,19 @@ import Repository.Interfaces.Users.IAdministratorRepository;
 
 public class AdministratorRepository extends UserRepository<Administrator> implements IAdministratorRepository {
 
-    public AdministratorRepository(String fileName) {
-        super(fileName);
+    private static AdministratorRepository instance;
+
+    public static AdministratorRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new AdministratorRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public AdministratorRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/admins.csv";
+        InstantiateRepository();
     }
 
     @Override

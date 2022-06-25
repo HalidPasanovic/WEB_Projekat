@@ -7,9 +7,19 @@ import Repository.Interfaces.Users.IManagerRepository;
 
 public class ManagerRepository extends UserRepository<Manager> implements IManagerRepository {
 
-    public ManagerRepository(String fileName) {
-        super(fileName);
-        //TODO Auto-generated constructor stub
+    private static ManagerRepository instance;
+
+    public static ManagerRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new ManagerRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public ManagerRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/managers.csv";
+        InstantiateRepository();
     }
 
     @Override

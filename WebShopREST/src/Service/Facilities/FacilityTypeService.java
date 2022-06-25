@@ -11,7 +11,7 @@ public class FacilityTypeService implements IFacilityTypeService  {
     private IFacilityTypeRepository repository;
 
     public FacilityTypeService(String contextPath) {
-    	repository = new FacilityTypeRepository(contextPath + "/data/facilityTypes.csv");
+    	repository = FacilityTypeRepository.getInstance(contextPath);
 	}
 
 	@Override

@@ -10,14 +10,6 @@ import Repository.Interfaces.ICrud;
 public abstract class Repository<T extends IDClass> implements ICrud<T> {
 
 	/**
-	 * Default constructor
-	 */
-	public Repository(String fileName) {
-		this.fileName = fileName;
-		InstantiateRepository();
-	}
-
-	/**
 	 * 
 	 */
 	protected Serializer<T> serializer = new Serializer<T>();
@@ -30,7 +22,7 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	/**
 	 * 
 	 */
-	protected HashSet<Integer> idMap = new HashSet<Integer>();
+	protected HashSet<Integer> idMap = new HashSet<>();
 
 	/**
 	 * @param T
@@ -116,10 +108,10 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	}
 
 	protected void InstantiateRepository(){
-		InstantiteIDMapAndMaxID(GetAll());
+		InstantiteIDMap(GetAll());
 	}
 
-	protected void InstantiteIDMapAndMaxID(List<T> elements){
+	protected void InstantiteIDMap(List<T> elements){
 		for (T element : elements) {
 			int id = element.getId();
 			idMap.add(id);

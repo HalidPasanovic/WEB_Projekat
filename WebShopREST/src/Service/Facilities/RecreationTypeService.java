@@ -11,7 +11,7 @@ public class RecreationTypeService implements IRecreationTypeService  {
     private IRecreationTypeRepository repository;
 
     public RecreationTypeService(String contextPath) {
-    	repository = new RecreationTypeRepository(contextPath + "/data/recreationTypes.csv");
+    	repository = RecreationTypeRepository.getInstance(contextPath);
 	}
 
 	@Override

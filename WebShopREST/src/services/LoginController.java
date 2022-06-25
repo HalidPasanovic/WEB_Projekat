@@ -25,6 +25,7 @@ import Service.Users.AdministratorService;
 import Service.Users.CustomerService;
 import Service.Users.ManagerService;
 import Service.Users.TrainerService;
+import Service.Users.UserService;
 
 @Path("/login")
 public class LoginController {
@@ -38,18 +39,8 @@ public class LoginController {
 	@PostConstruct
 	public void init() {
     	String contextPath = ctx.getRealPath("");
-		System.out.println(contextPath);
-		if (ctx.getAttribute("managerService") == null) {
-			ctx.setAttribute("managerService", new ManagerService(contextPath));
-		}
-		if (ctx.getAttribute("trainerService") == null) {
-			ctx.setAttribute("trainerService", new TrainerService(contextPath));
-		}
-		if (ctx.getAttribute("administratorService") == null) {
-			ctx.setAttribute("administratorService", new AdministratorService(contextPath));
-		}
-		if (ctx.getAttribute("customersService") == null) {
-			ctx.setAttribute("customersService", new CustomerService(contextPath));
+		if (ctx.getAttribute("UserService") == null) {
+			ctx.setAttribute("UserService", new UserService(contextPath));
 		}
 	}
 	
@@ -57,42 +48,12 @@ public class LoginController {
 	@Path("/{username}&{password}")
 	@Produces(MediaType.APPLICATION_JSON)
     public int Read(@PathParam("username") String username,@PathParam("password") String password) throws Exception {
-		ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
-		List<Manager> managers = repo.GetAll();
-		for(Manager manager : managers)
-		{
-			if((manager.getUsername().equals(username)) && (manager.getPassword().equals(password)))
-			{
-				return 1;
-			}
+		UserService userService = (UserService) ctx.getAttribute("UserService");
+		try {
+			userService.Login(username, password);
+			return 1;
+		} catch (Exception e) {
+			return -1;
 		}
-		CustomerService repoc = (CustomerService) ctx.getAttribute("customersService");
-		List<Customer> customers = repoc.GetAll();
-		for(Customer customer : customers)
-		{
-			if((customer.getUsername().equals(username)) && (customer.getPassword().equals(password)))
-			{
-				return 1;
-			}
-		}
-		AdministratorService repoa = (AdministratorService) ctx.getAttribute("administratorService");
-		List<Administrator> admins = repoa.GetAll();
-		for(Administrator admin : admins)
-		{
-			if((admin.getUsername().equals(username)) && (admin.getPassword().equals(password)))
-			{
-				return 1;
-			}
-		}
-		TrainerService repot = (TrainerService) ctx.getAttribute("trainerService");
-		List<Trainer> trainers = repot.GetAll();
-		for(Trainer t : trainers)
-		{
-			if((t.getUsername().equals(username)) && (t.getPassword().equals(password)))
-			{
-				return 1;
-			}
-		}
-		return -1;
     }
 }

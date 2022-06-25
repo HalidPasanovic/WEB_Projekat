@@ -8,8 +8,19 @@ import Repository.Interfaces.Facilities.IRecreationTypeRepository;
 
 public class RecreationTypeRepository extends Repository<RecreationType> implements IRecreationTypeRepository  {
 
-    public RecreationTypeRepository(String fileName) {
-        super(fileName);
+    private static RecreationTypeRepository instance;
+
+    public static RecreationTypeRepository getInstance(String contextPath) {
+        if (instance == null) {
+            instance = new RecreationTypeRepository(contextPath);
+        }
+        return instance;
+    }
+
+    public RecreationTypeRepository(String contextPath) {
+        super();
+        this.fileName = contextPath + "/data/recreationTypes.csv";
+        InstantiateRepository();
     }
 
     @Override
