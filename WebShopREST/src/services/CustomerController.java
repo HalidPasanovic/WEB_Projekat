@@ -78,5 +78,17 @@ public class CustomerController implements ICrud<Customer> {
     	return repo.GetAll();
     	
     }
+
+	@Override
+	public void DeletePhysically(int id) throws Exception {
+		CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
+    	repo.DeletePhysically(id);
+	}
+
+	@Override
+	public List<Customer> GetAllWithLogicalyDeleted() {
+		// TODO Auto-generated method stub
+		return null;
+	}
  
 }

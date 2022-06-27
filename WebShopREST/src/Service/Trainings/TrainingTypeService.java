@@ -38,5 +38,15 @@ public class TrainingTypeService implements ITrainingTypeService {
     public List<TrainingType> GetAll() {
         return repository.GetAll();
     }
+
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        repository.DeletePhysically(id);
+    }
+
+    @Override
+    public List<TrainingType> GetAllWithLogicalyDeleted() {
+        return repository.GetAllWithLogicalyDeleted();
+    }
     
 }

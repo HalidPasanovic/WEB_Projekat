@@ -39,4 +39,14 @@ public class RecreationTypeService implements IRecreationTypeService  {
         return repository.GetAll();
     }
 
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        repository.DeletePhysically(id);
+    }
+
+    @Override
+    public List<RecreationType> GetAllWithLogicalyDeleted() {
+        return repository.GetAllWithLogicalyDeleted();
+    }
+
 }

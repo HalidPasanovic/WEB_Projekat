@@ -36,6 +36,38 @@ public class Customer extends User {
 	 */
 	private CustomerType type;
 
+	public Membership getMembership() {
+		return membership;
+	}
+
+	public void setMembership(Membership membership) {
+		this.membership = membership;
+	}
+
+	public Set<SportFacility> getVisitedFacilities() {
+		return visitedFacilities;
+	}
+
+	public void setVisitedFacilities(Set<SportFacility> visitedFacilities) {
+		this.visitedFacilities = visitedFacilities;
+	}
+
+	public float getPoints() {
+		return points;
+	}
+
+	public void setPoints(float points) {
+		this.points = points;
+	}
+
+	public CustomerType getType() {
+		return type;
+	}
+
+	public void setType(CustomerType type) {
+		this.type = type;
+	}
+
 	@Override
 	public List<String> ToCSV() {
 		List<String> result = super.ToCSV();

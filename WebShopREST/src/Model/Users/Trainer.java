@@ -20,6 +20,14 @@ public class Trainer extends User {
 	 */
 	private Set<Training> trainings;
 
+	public Set<Training> getTrainings() {
+		return trainings;
+	}
+
+	public void setTrainings(Set<Training> trainings) {
+		this.trainings = trainings;
+	}
+
 	@Override
 	public List<String> ToCSV() {
 		List<String> result = super.ToCSV();

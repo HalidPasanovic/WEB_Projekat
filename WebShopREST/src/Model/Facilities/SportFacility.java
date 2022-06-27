@@ -14,6 +14,7 @@ public class SportFacility extends IDClass {
 	 * Default constructor
 	 */
 	public SportFacility() {
+
 	}
 
 	public SportFacility(String name, FacilityType type, List<RecreationType> recreationTypes,
@@ -105,8 +106,7 @@ public class SportFacility extends IDClass {
 
 	@Override
 	public List<String> ToCSV() {
-		ArrayList<String> result = new ArrayList<>();
-		result.add(String.valueOf(id));
+		List<String> result = super.ToCSV();
 		result.add(name);
 		result.add(String.valueOf(type.getId()));
 		result.add(String.valueOf(recreationTypes.size()));
@@ -121,8 +121,7 @@ public class SportFacility extends IDClass {
 
 	@Override
 	public int FromCSV(List<String> values) {
-		int i = 0;
-		id = Integer.parseInt(values.get(i++));
+		int i = super.FromCSV(values);
 		name = values.get(i++);
 		type = new FacilityType(Integer.parseInt(values.get(i++)));
 

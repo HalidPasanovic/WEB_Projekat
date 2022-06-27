@@ -14,7 +14,6 @@ public class Comment extends IDClass {
 	 * Default constructor
 	 */
 	public Comment() {
-
 	}
 
 	/**
@@ -71,8 +70,7 @@ public class Comment extends IDClass {
 
 	@Override
 	public List<String> ToCSV() {
-		ArrayList<String> result = new ArrayList<>();
-		result.add(String.valueOf(id));
+		List<String> result = super.ToCSV();
 		result.add(String.valueOf(customer.getId()));
 		result.add(String.valueOf(facility.getId()));
 		result.add(content);
@@ -82,8 +80,7 @@ public class Comment extends IDClass {
 
 	@Override
 	public int FromCSV(List<String> values) {
-		int i = 0;
-		id = Integer.parseInt(values.get(i++));
+		int i = super.FromCSV(values);
 
 		customer = new Customer();
 		customer.setId(Integer.parseInt(values.get(i++)));

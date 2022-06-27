@@ -73,5 +73,17 @@ public class AdministratorController implements ICrud<Administrator> {
     	return repo.GetAll();
     }
 
+	@Override
+	public void DeletePhysically(int id) throws Exception {
+		AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
+    	repo.DeletePhysically(id);
+	}
+
+	@Override
+	public List<Administrator> GetAllWithLogicalyDeleted() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
     
 }

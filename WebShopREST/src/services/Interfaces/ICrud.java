@@ -29,7 +29,18 @@ public interface ICrud<T> {
 	public void Delete(int id);
 
 	/**
+	 * @param id
+	 * @throws Exception
+	 */
+	public void DeletePhysically(int id) throws Exception;
+
+	/**
 	 * 
 	 */
 	public List<T> GetAll();
+
+	/**
+	 * 
+	 */
+	public List<T> GetAllWithLogicalyDeleted();
 }

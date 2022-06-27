@@ -76,5 +76,17 @@ public class FacilityTypeController implements ICrud<FacilityType> {
     	return repo.GetAll();
     }
 
+	@Override
+	public void DeletePhysically(int id) throws Exception {
+		FacilityTypeService repo = (FacilityTypeService) ctx.getAttribute("FacilityTypeService");
+    	repo.DeletePhysically(id);
+	}
+
+	@Override
+	public List<FacilityType> GetAllWithLogicalyDeleted() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
     
 }

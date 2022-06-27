@@ -15,7 +15,9 @@ public class TrainingHistory extends IDClass {
 	/**
 	 * Default constructor
 	 */
-	public TrainingHistory() {}
+	public TrainingHistory() {
+
+	}
 
 	/**
 	 * 
@@ -71,8 +73,7 @@ public class TrainingHistory extends IDClass {
 
 	@Override
 	public List<String> ToCSV() {
-		ArrayList<String> result = new ArrayList<>();
-		result.add(String.valueOf(id));
+		List<String> result = super.ToCSV();
 		result.add(String.valueOf(applicationDateTime));
 		result.add(String.valueOf(training.getId()));
 		result.add(String.valueOf(customer.getId()));
@@ -82,8 +83,7 @@ public class TrainingHistory extends IDClass {
 
 	@Override
 	public int FromCSV(List<String> values) {
-		int i = 0;
-		id = Integer.parseInt(values.get(i++));
+		int i = super.FromCSV(values);
 		applicationDateTime = LocalDateTime.parse(values.get(i++));
 
 		training = new Training();

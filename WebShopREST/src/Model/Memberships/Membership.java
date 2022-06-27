@@ -16,6 +16,7 @@ public class Membership extends IDClass {
 	 * Default constructor
 	 */
 	public Membership() {
+
 	}
 
 	/**
@@ -125,8 +126,7 @@ public class Membership extends IDClass {
 
 	@Override
 	public List<String> ToCSV() {
-		ArrayList<String> result = new ArrayList<>();
-		result.add(String.valueOf(id));
+		List<String> result = super.ToCSV();
 		result.add(identifier);
 		result.add(String.valueOf(type.getId()));
 		result.add(String.valueOf(paymentDate));
@@ -139,8 +139,7 @@ public class Membership extends IDClass {
 
 	@Override
 	public int FromCSV(List<String> values) {
-		int i = 0;
-		id = Integer.parseInt(values.get(i++));
+		int i = super.FromCSV(values);
 		identifier = values.get(i++);
 
 		type = new MembershipType();

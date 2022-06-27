@@ -51,5 +51,15 @@ public class AdministratorService implements IAdministratorService {
     public HashMap<String, User> GetUsers() {
         return repository.GetUsers();
     }
+
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        repository.DeletePhysically(id);
+    }
+
+    @Override
+    public List<Administrator> GetAllWithLogicalyDeleted() {
+        return repository.GetAllWithLogicalyDeleted();
+    }
     
 }

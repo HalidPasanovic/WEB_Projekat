@@ -73,4 +73,16 @@ public class ManagerController implements ICrud<Manager> {
     	return repo.GetAll();
     }
 
+	@Override
+	public void DeletePhysically(int id) throws Exception {
+		ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
+    	repo.DeletePhysically(id);
+	}
+
+	@Override
+	public List<Manager> GetAllWithLogicalyDeleted() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

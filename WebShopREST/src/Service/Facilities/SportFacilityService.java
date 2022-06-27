@@ -81,4 +81,14 @@ public class SportFacilityService implements ISportFacilityService {
         return facilities;
     }
 
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        repository.DeletePhysically(id);
+    }
+
+    @Override
+    public List<SportFacility> GetAllWithLogicalyDeleted() {
+        return repository.GetAllWithLogicalyDeleted();
+    }
+
 }

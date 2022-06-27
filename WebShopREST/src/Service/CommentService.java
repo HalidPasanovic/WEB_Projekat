@@ -83,5 +83,15 @@ public class CommentService implements ICommentService {
         }
         throw new Exception("Element not found");
     }
+
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        repository.DeletePhysically(id);
+    }
+
+    @Override
+    public List<Comment> GetAllWithLogicalyDeleted() {
+        return repository.GetAllWithLogicalyDeleted();
+    }
     
 }

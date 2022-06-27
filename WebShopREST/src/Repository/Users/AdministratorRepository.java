@@ -29,9 +29,31 @@ public class AdministratorRepository extends UserRepository<Administrator> imple
         for (List<String> object : objects) {
             Administrator element = new Administrator();
             element.FromCSV(object);
+            if(!element.isDeleted()){
+                result.add(element);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Administrator> GetAllWithLogicalyDeleted() {
+        List<Administrator> result = new ArrayList<Administrator>();
+    	List<List<String>> objects = serializer.FromCSV(fileName);
+        for (List<String> object : objects) {
+            Administrator element = new Administrator();
+            element.FromCSV(object);
             result.add(element);
         }
         return result;
     }
-    
+
+    @Override
+    public void CheckIfElementEligableForDeletion(Administrator element) throws Exception {}
+
+    @Override
+    protected void DeleteDependanciesInOtherRepositories(Administrator element) throws Exception {}
+
+    @Override
+    protected void DeleteDependanciesInOtherRepositoriesPhysically(Administrator element) throws Exception {}
 }

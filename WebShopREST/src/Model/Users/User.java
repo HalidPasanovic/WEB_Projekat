@@ -95,8 +95,7 @@ public abstract class User extends IDClass {
 
 	@Override
 	public int FromCSV(List<String> values) {
-		int i = 0;
-		this.id = Integer.parseInt(values.get(i++));
+		int i = super.FromCSV(values);
 		this.username = values.get(i++);
 		this.password = values.get(i++);
 		this.name = values.get(i++);
@@ -108,8 +107,7 @@ public abstract class User extends IDClass {
 
 	@Override
 	public List<String> ToCSV() {
-		List<String> result = new ArrayList<String>();
-		result.add(Integer.toString(id));
+		List<String> result = super.ToCSV();
 		result.add(username);
 		result.add(password);
 		result.add(name);

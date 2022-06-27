@@ -30,10 +30,33 @@ public class CustomerType extends IDClass {
 	 */
 	private float pointsRequired;
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public float getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(float discount) {
+		this.discount = discount;
+	}
+
+	public float getPointsRequired() {
+		return pointsRequired;
+	}
+
+	public void setPointsRequired(float pointsRequired) {
+		this.pointsRequired = pointsRequired;
+	}
+
 	@Override
 	public List<String> ToCSV() {
-		ArrayList<String> result = new ArrayList<>();
-		result.add(String.valueOf(id));
+		List<String> result = super.ToCSV();
 		result.add(name);
 		result.add(String.valueOf(discount));
 		result.add(String.valueOf(pointsRequired));
@@ -42,8 +65,7 @@ public class CustomerType extends IDClass {
 
 	@Override
 	public int FromCSV(List<String> values) {
-		int i = 0;
-		id = Integer.parseInt(values.get(i++));
+		int i = super.FromCSV(values);
 		name = values.get(i++);
 		discount = Float.parseFloat(values.get(i++));
 		pointsRequired = Float.parseFloat(values.get(i++));

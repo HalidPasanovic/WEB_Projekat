@@ -76,9 +76,19 @@ public class RecreationTypeController implements ICrud<RecreationType> {
     public List<RecreationType> GetAll() {
     	RecreationTypeService repo = (RecreationTypeService) ctx.getAttribute("RecreationTypeService");
     	return repo.GetAll();
-    	//System.out.println("Uspesno");
-    	//return null;
     }
+
+	@Override
+	public void DeletePhysically(int id) throws Exception {
+		RecreationTypeService repo = (RecreationTypeService) ctx.getAttribute("RecreationTypeService");
+    	repo.DeletePhysically(id);
+	}
+
+	@Override
+	public List<RecreationType> GetAllWithLogicalyDeleted() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
     
 }

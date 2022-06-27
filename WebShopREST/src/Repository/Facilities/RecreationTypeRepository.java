@@ -5,10 +5,12 @@ import java.util.List;
 import Model.Facilities.RecreationType;
 import Repository.Repository;
 import Repository.Interfaces.Facilities.IRecreationTypeRepository;
+import Repository.Interfaces.Facilities.ISportFacilityRepository;
 
 public class RecreationTypeRepository extends Repository<RecreationType> implements IRecreationTypeRepository  {
 
     private static RecreationTypeRepository instance;
+    private String contextString;
 
     public static RecreationTypeRepository getInstance(String contextPath) {
         if (instance == null) {
@@ -19,6 +21,7 @@ public class RecreationTypeRepository extends Repository<RecreationType> impleme
 
     public RecreationTypeRepository(String contextPath) {
         super();
+        contextString = contextPath;
         this.fileName = contextPath + "/data/recreationTypes.csv";
         InstantiateRepository();
     }
@@ -30,9 +33,35 @@ public class RecreationTypeRepository extends Repository<RecreationType> impleme
         for (List<String> object : objects) {
             RecreationType element = new RecreationType();
             element.FromCSV(object);
+            if(!element.isDeleted()){
+                result.add(element);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<RecreationType> GetAllWithLogicalyDeleted() {
+        List<RecreationType> result = new ArrayList<RecreationType>();
+    	List<List<String>> objects = serializer.FromCSV(fileName);
+        for (List<String> object : objects) {
+            RecreationType element = new RecreationType();
+            element.FromCSV(object);
             result.add(element);
         }
         return result;
     }
+
+    @Override
+    public void CheckIfElementEligableForDeletion(RecreationType element) throws Exception {
+        ISportFacilityRepository sportFacilityRepository = SportFacilityRepository.getInstance(contextString);
+        sportFacilityRepository.CheckIfRecreationTypeIsUsed(element);
+    }
+
+    @Override
+    protected void DeleteDependanciesInOtherRepositories(RecreationType element) throws Exception {}
+
+    @Override
+    protected void DeleteDependanciesInOtherRepositoriesPhysically(RecreationType element) throws Exception {}
     
 }

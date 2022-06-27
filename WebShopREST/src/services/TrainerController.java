@@ -71,5 +71,17 @@ public class TrainerController implements ICrud<Trainer> {
     	return repo.GetAll();
     }
 
+	@Override
+	public void DeletePhysically(int id) throws Exception {
+		TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
+    	repo.DeletePhysically(id);
+	}
+
+	@Override
+	public List<Trainer> GetAllWithLogicalyDeleted() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
     
 }

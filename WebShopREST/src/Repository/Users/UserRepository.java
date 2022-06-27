@@ -36,6 +36,23 @@ public abstract class UserRepository<T extends User> extends Repository<T> imple
 		for (int i = 0; i < elements.size(); i++) {
 			if(elements.get(i).getId() == id) {
                 String username = elements.get(i).getUsername();
+				elements.get(i).setDeleted(true);
+				serializer.ToCSV(fileName, elements);
+				idMap.remove(id);
+                userDictionary.remove(username);
+				return;
+			}
+		}
+		throw new Exception("Element not found");
+    }
+
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        CheckIfIdExists(id);
+		List<T> elements = GetAll();
+		for (int i = 0; i < elements.size(); i++) {
+			if(elements.get(i).getId() == id) {
+                String username = elements.get(i).getUsername();
 				elements.remove(i);
 				serializer.ToCSV(fileName, elements);
 				idMap.remove(id);
@@ -69,4 +86,5 @@ public abstract class UserRepository<T extends User> extends Repository<T> imple
         InstantiteIDMap(elements);
         InstantiteUserDictionary(elements);
     }
+
 }

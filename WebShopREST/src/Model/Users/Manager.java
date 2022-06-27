@@ -20,6 +20,14 @@ public class Manager extends User {
 	 */
 	private Set<SportFacility> facilities;
 
+	public Set<SportFacility> getFacilities() {
+		return facilities;
+	}
+
+	public void setFacilities(Set<SportFacility> facilities) {
+		this.facilities = facilities;
+	}
+
 	@Override
 	public List<String> ToCSV() {
 		List<String> result = super.ToCSV();

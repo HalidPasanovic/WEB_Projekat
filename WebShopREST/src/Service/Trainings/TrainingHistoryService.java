@@ -99,5 +99,15 @@ public class TrainingHistoryService implements ITrainingHistoryService {
         }
         throw new Exception("Element not found");
     }
+
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        repository.DeletePhysically(id);
+    }
+
+    @Override
+    public List<TrainingHistory> GetAllWithLogicalyDeleted() {
+        return repository.GetAllWithLogicalyDeleted();
+    }
     
 }

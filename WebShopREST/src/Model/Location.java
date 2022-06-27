@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 
  */
-public class Location extends IDClass {
+public class Location implements Serializable {
 
 	/**
 	 * Default constructor

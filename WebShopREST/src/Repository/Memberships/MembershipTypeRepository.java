@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import Model.Memberships.MembershipType;
 import Repository.Repository;
+import Repository.Interfaces.Memberships.IMembershipRepository;
 import Repository.Interfaces.Memberships.IMembershipTypeRepository;
 
 public class MembershipTypeRepository extends Repository<MembershipType> implements IMembershipTypeRepository {
 
     private static MembershipTypeRepository instance;
+    private String contextString;
 
     public static MembershipTypeRepository getInstance(String contextPath) {
         if (instance == null) {
@@ -19,6 +21,7 @@ public class MembershipTypeRepository extends Repository<MembershipType> impleme
 
     public MembershipTypeRepository(String contextPath) {
         super();
+        contextString = contextPath;
         this.fileName = contextPath + "/data/membershipTypes.csv";
         InstantiateRepository();
     }
@@ -30,9 +33,35 @@ public class MembershipTypeRepository extends Repository<MembershipType> impleme
         for (List<String> object : objects) {
             MembershipType element = new MembershipType();
             element.FromCSV(object);
+            if(!element.isDeleted()){
+                result.add(element);
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<MembershipType> GetAllWithLogicalyDeleted() {
+        List<MembershipType> result = new ArrayList<MembershipType>();
+    	List<List<String>> objects = serializer.FromCSV(fileName);
+        for (List<String> object : objects) {
+            MembershipType element = new MembershipType();
+            element.FromCSV(object);
             result.add(element);
         }
         return result;
     }
-    
+
+    @Override
+    public void CheckIfElementEligableForDeletion(MembershipType element) throws Exception {
+        IMembershipRepository membershipRepository = MembershipRepository.getInstance(contextString);
+        membershipRepository.CheckIfMembershipTypeIsUsed(element);
+    }
+
+    @Override
+    protected void DeleteDependanciesInOtherRepositories(MembershipType element) throws Exception {}
+
+    @Override
+    protected void DeleteDependanciesInOtherRepositoriesPhysically(MembershipType element) throws Exception {}
+
 }

@@ -93,5 +93,21 @@ public class SportFacilityController implements ICrud<SportFacility> {
             return null;
         }
     }
+
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        try {
+            SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
+            service.DeletePhysically(id);
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+    }
+
+    @Override
+    public List<SportFacility> GetAllWithLogicalyDeleted() {
+        // TODO Auto-generated method stub
+        return null;
+    }
     
 }

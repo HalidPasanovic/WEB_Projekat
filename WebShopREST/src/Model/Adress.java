@@ -5,14 +5,13 @@ import java.util.*;
 /**
  * 
  */
-public class Adress extends IDClass {
+public class Adress implements Serializable {
 
 	/**
 	 * Default constructor
 	 */
 	public Adress() {
 		super();
-		this.id = 1;
 	}
 
 	/**
@@ -77,7 +76,6 @@ public class Adress extends IDClass {
 	@Override
 	public List<String> ToCSV() {
 		List<String> result = new ArrayList<String>();
-		result.add(Integer.toString(id));
 		result.add(street);
 		result.add(Integer.toString(number));
 		result.add(place);
@@ -88,7 +86,6 @@ public class Adress extends IDClass {
 	@Override
 	public int FromCSV(List<String> values) {
 		int i = 0;
-		this.id = Integer.parseInt(values.get(i++));
 		this.street = values.get(i++);
 		this.number = Integer.parseInt(values.get(i++));
 		this.place = values.get(i++);

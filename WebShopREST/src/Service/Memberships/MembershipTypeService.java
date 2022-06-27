@@ -38,5 +38,15 @@ public class MembershipTypeService implements IMembershipTypeService {
     public List<MembershipType> GetAll() {
         return repository.GetAll();
     }
+
+    @Override
+    public void DeletePhysically(int id) throws Exception {
+        repository.DeletePhysically(id);
+    }
+
+    @Override
+    public List<MembershipType> GetAllWithLogicalyDeleted() {
+        return repository.GetAllWithLogicalyDeleted();
+    }
     
 }
