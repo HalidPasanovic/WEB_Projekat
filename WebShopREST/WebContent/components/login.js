@@ -16,11 +16,11 @@ Vue.component("login", {
 				<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
 				<div class="form-floating">
-					<input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-					<label for="floatingInput">Email address</label>
+					<input type="text" class="form-control" id="floatingInput" placeholder="username" v-model="username">
+					<label for="floatingInput">Username</label>
 				</div>
 				<div class="form-floating">
-					<input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+					<input type="password" class="form-control" id="floatingPassword" placeholder="Password" v-model="password">
 					<label for="floatingPassword">Password</label>
 				</div>
 
@@ -29,32 +29,32 @@ Vue.component("login", {
 						<input type="checkbox" value="remember-me"> Remember me
 					</label>
 				</div>
-				<button class="w-100 btn btn-lg btn-dark" type="submit">Sign in</button>
+				<p v-bind:hidden="mode == 'IDLE'" style="color:red">Incorrect password or username</p>
+				<button class="w-100 btn btn-lg btn-dark" type="submit" v-on:click = "Log">Sign in</button>
 				<p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p>
 			</form>
 		</main>	  
     	`,
 	mounted() {
-		axios
-			.get('rest/facility/')
-			.then(response => (this.facilities = response.data))
 	},
 	methods: {
-		Log: function () {
+		Log : function(){
 			axios
-				.post('rest/login/' + this.username + '&' + this.password)
-				.then(response => {
-					if (response.data == 1) {
-						this.temp = this.username;
-						router.push('/products/')
-
-					}
-					else {
-						this.mode = "REJECT";
-						this.username = "";
-						this.password = "";
-					}
-				})
+          .post('rest/login/' + this.username + '&' + this.password)
+          .then(response =>
+          {
+			this.user = response.data;
+			if(this.user.username == null)
+			{
+				this.mode = "REJECT";
+				this.username = "";
+				this.password = "";
+			}
+			else
+			{
+				router.push('/products/' + this.user.username)
+			}
+		  })
 		}
 	},
 	computed: {
