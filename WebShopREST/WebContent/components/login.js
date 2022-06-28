@@ -73,16 +73,15 @@ Vue.component("login", {
           .then(response =>
           {
 			this.user = response.data;
-			if(this.user != null)
-			{
-				this.temp = this.username;
-				router.push('/products/' + this.user.username)
-			}
-			else
+			if(this.user.username == undefined)
 			{
 				this.mode = "REJECT";
 				this.username = "";
 				this.password = "";
+			}
+			else
+			{
+				router.push('/products/' + this.user.username)
 			}
 		})
 		}
