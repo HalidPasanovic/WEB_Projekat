@@ -32,11 +32,11 @@ public class UserService {
         }
     }
 
-    public void Login(String username, String password) throws Exception {
+    public User Login(String username, String password) throws Exception {
         if(users.containsKey(username)){
             User user = users.get(username);
             if(user.getPassword().equals(password)){
-                return;
+                return user;
             }
         }
         throw new Exception("Username or password isn't correct");

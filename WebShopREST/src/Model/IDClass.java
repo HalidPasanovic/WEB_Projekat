@@ -45,7 +45,7 @@ public abstract class IDClass implements Serializable {
 		int i = 0;
 		id = Integer.parseInt(values.get(i++));
 		deleted = Boolean.parseBoolean(values.get(i++));
-		return 0;
+		return i;
 	}
 
 	@Override
