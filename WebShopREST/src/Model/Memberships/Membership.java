@@ -19,6 +19,19 @@ public class Membership extends IDClass {
 
 	}
 
+	public Membership(String identifier, MembershipType type, LocalDate paymentDate,
+			LocalDateTime validUntil, float price, Customer buyer, boolean status,
+			int dailyVisitationCount) {
+		this.identifier = identifier;
+		this.type = type;
+		this.paymentDate = paymentDate;
+		this.validUntil = validUntil;
+		this.price = price;
+		this.buyer = buyer;
+		this.status = status;
+		this.dailyVisitationCount = dailyVisitationCount;
+	}
+
 	/**
 	 * 
 	 */
@@ -59,7 +72,8 @@ public class Membership extends IDClass {
 	 * 
 	 */
 	private int dailyVisitationCount;
-	
+
+
 	public String getIdentifier() {
 		return identifier;
 	}

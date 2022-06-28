@@ -20,6 +20,12 @@ public class Manager extends User {
 	 */
 	private Set<SportFacility> facilities;
 
+	public Manager(String username, String password, String name, String surname, Gender gender,
+			UserRole role, Set<SportFacility> facilities) {
+		super(username, password, name, surname, gender, role);
+		this.facilities = facilities;
+	}
+
 	public Set<SportFacility> getFacilities() {
 		return facilities;
 	}

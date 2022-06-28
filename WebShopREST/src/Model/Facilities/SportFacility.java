@@ -17,13 +17,18 @@ public class SportFacility extends IDClass {
 
 	}
 
+	public SportFacility(int id) {
+		this.id = id;
+	}
+
 	public SportFacility(String name, FacilityType type, List<RecreationType> recreationTypes,
-			boolean status, Location location) {
+			boolean status, String workRange, Location location) {
 		this.name = name;
 		this.type = type;
 		this.recreationTypes = recreationTypes;
 		this.status = status;
 		this.location = location;
+		this.workRange = workRange;
 	}
 
 	/**

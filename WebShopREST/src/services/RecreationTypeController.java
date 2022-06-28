@@ -33,7 +33,6 @@ public class RecreationTypeController implements ICrud<RecreationType> {
 		if (ctx.getAttribute("RecreationTypeService") == null) {
 	    	String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("RecreationTypeService", new RecreationTypeService(contextPath));
-			System.out.println(contextPath);
 		}
 	}
 

@@ -1,7 +1,9 @@
 package services;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -14,8 +16,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
+import Model.Facilities.SportFacility;
+import Model.Memberships.Membership;
 import Model.Users.Customer;
+import Model.Users.CustomerType;
+import Model.Users.Gender;
+import Model.Users.UserRole;
 import services.Interfaces.ICrud;
 import Service.Users.CustomerService;
 

@@ -16,10 +16,15 @@ public class TrainingType extends IDClass {
 
 	}
 
+	public TrainingType(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * 
 	 */
 	private String name;
+
 
 	public String getName() {
 		return name;

@@ -41,7 +41,11 @@ public class TrainingTypeController implements ICrud<TrainingType>{
     @Override
     public void Create(TrainingType element) throws Exception {
         ITrainingTypeService service = (ITrainingTypeService) ctx.getAttribute("TrainingTypeService");
-        service.Create(element);
+        service.Create(new TrainingType("Group training"));
+		service.Create(new TrainingType("Personal training"));
+		service.Create(new TrainingType("Sauna"));
+		service.Create(new TrainingType("Gym"));
+        //service.Create(element);
     }
 
     @GET

@@ -16,10 +16,16 @@ public class MembershipType extends IDClass {
 
 	}
 
+	public MembershipType(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * 
 	 */
 	private String name;
+
+	
 
 	public String getName() {
 		return name;

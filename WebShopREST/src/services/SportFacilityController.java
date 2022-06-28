@@ -1,6 +1,11 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.List;
+import Model.Adress;
+import Model.Location;
+import Model.Facilities.FacilityType;
+import Model.Facilities.RecreationType;
 import Model.Facilities.SportFacility;
 import services.Interfaces.ICrud;
 import Service.Facilities.SportFacilityService;

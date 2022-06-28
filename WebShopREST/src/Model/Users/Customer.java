@@ -16,6 +16,16 @@ public class Customer extends User {
 	public Customer() {
 	}
 
+	public Customer(String username, String password, String name, String surname, Gender gender,
+			UserRole role, Membership membership, Set<SportFacility> visitedFacilities,
+			float points, CustomerType type) {
+		super(username, password, name, surname, gender, role);
+		this.membership = membership;
+		this.visitedFacilities = visitedFacilities;
+		this.points = points;
+		this.type = type;
+	}
+
 	/**
 	 * 
 	 */
@@ -35,6 +45,7 @@ public class Customer extends User {
 	 * 
 	 */
 	private CustomerType type;
+
 
 	public Membership getMembership() {
 		return membership;

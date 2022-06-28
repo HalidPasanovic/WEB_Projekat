@@ -20,6 +20,12 @@ public class Trainer extends User {
 	 */
 	private Set<Training> trainings;
 
+	public Trainer(String username, String password, String name, String surname, Gender gender,
+			UserRole role, Set<Training> trainings) {
+		super(username, password, name, surname, gender, role);
+		this.trainings = trainings;
+	}
+
 	public Set<Training> getTrainings() {
 		return trainings;
 	}
