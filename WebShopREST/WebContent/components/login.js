@@ -6,7 +6,8 @@ Vue.component("login", {
 	      mode: "IDLE",
 	      facilities: null,
 	      temp: null,
-	      searchQuery: null
+	      searchQuery: null,
+	      user : null
 	    }
 	},
 	    template: ` 
@@ -71,11 +72,11 @@ Vue.component("login", {
           .post('rest/login/' + this.username + '&' + this.password)
           .then(response =>
           {
-			if(response.data == 1)
+			this.user = response.data;
+			if(this.user != null)
 			{
 				this.temp = this.username;
-				router.push('/products/')
-				
+				router.push('/products/' + this.user.username)
 			}
 			else
 			{

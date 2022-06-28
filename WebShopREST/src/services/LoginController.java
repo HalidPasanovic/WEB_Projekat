@@ -21,6 +21,7 @@ import Model.Users.Administrator;
 import Model.Users.Customer;
 import Model.Users.Manager;
 import Model.Users.Trainer;
+import Model.Users.User;
 import Service.Users.AdministratorService;
 import Service.Users.CustomerService;
 import Service.Users.ManagerService;
@@ -47,13 +48,13 @@ public class LoginController {
 	@POST
 	@Path("/{username}&{password}")
 	@Produces(MediaType.APPLICATION_JSON)
-    public int Read(@PathParam("username") String username,@PathParam("password") String password) throws Exception {
+    public User Read(@PathParam("username") String username,@PathParam("password") String password) throws Exception {
 		UserService userService = (UserService) ctx.getAttribute("UserService");
 		try {
-			userService.Login(username, password);
-			return 1;
+			User temp = userService.Login(username, password);
+			return temp;
 		} catch (Exception e) {
-			return -1;
+			return null;
 		}
     }
 }
