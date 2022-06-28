@@ -2,7 +2,7 @@ package services;
 
 import java.util.List;
 import Model.Facilities.SportFacility;
-import Repository.Interfaces.ICrud;
+import services.Interfaces.ICrud;
 import Service.Facilities.SportFacilityService;
 
 import javax.annotation.PostConstruct;
@@ -95,7 +95,7 @@ public class SportFacilityController implements ICrud<SportFacility> {
     }
 
     @Override
-    public void DeletePhysically(int id) throws Exception {
+    public void DeletePhysically(@PathParam("id") int id) throws Exception {
         try {
             SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
             service.DeletePhysically(id);
@@ -105,9 +105,9 @@ public class SportFacilityController implements ICrud<SportFacility> {
     }
 
     @Override
-    public List<SportFacility> GetAllWithLogicalyDeleted() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<SportFacility> GetAllWithLogicalyDeleted() throws Exception {
+        SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
+        return service.GetAllWithLogicalyDeleted();
     }
     
 }

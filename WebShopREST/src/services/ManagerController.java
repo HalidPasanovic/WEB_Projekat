@@ -14,7 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import Model.Users.Manager;
-import Service.Interfaces.ICrud;
+import services.Interfaces.ICrud;
 import Service.Users.ManagerService;
 
 @Path("/managers")
@@ -73,16 +73,22 @@ public class ManagerController implements ICrud<Manager> {
     	return repo.GetAll();
     }
 
-	@Override
-	public void DeletePhysically(int id) throws Exception {
+	@DELETE
+	@Path("/physically/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
+	public void DeletePhysically(@PathParam("id") int id) throws Exception {
 		ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
     	repo.DeletePhysically(id);
 	}
 
-	@Override
-	public List<Manager> GetAllWithLogicalyDeleted() {
-		// TODO Auto-generated method stub
-		return null;
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
+	public List<Manager> GetAllWithLogicalyDeleted() throws Exception {
+		ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
+		return repo.GetAllWithLogicalyDeleted();
 	}
 
 }

@@ -3,7 +3,7 @@ package services;
 import java.util.List;
 
 import Model.Facilities.RecreationType;
-import Repository.Interfaces.ICrud;
+import services.Interfaces.ICrud;
 import Service.Facilities.RecreationTypeService;
 
 import javax.annotation.PostConstruct;
@@ -55,7 +55,7 @@ public class RecreationTypeController implements ICrud<RecreationType> {
     }
 
     @PUT
-	@Path("/{id}")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(RecreationType element) throws Exception {
     	RecreationTypeService repo = (RecreationTypeService) ctx.getAttribute("RecreationTypeService");
@@ -79,15 +79,15 @@ public class RecreationTypeController implements ICrud<RecreationType> {
     }
 
 	@Override
-	public void DeletePhysically(int id) throws Exception {
+	public void DeletePhysically(@PathParam("id") int id) throws Exception {
 		RecreationTypeService repo = (RecreationTypeService) ctx.getAttribute("RecreationTypeService");
     	repo.DeletePhysically(id);
 	}
 
 	@Override
-	public List<RecreationType> GetAllWithLogicalyDeleted() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RecreationType> GetAllWithLogicalyDeleted() throws Exception {
+		RecreationTypeService repo = (RecreationTypeService) ctx.getAttribute("RecreationTypeService");
+		return repo.GetAllWithLogicalyDeleted();
 	}
 
     

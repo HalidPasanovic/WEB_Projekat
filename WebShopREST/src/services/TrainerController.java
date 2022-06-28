@@ -14,7 +14,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import Model.Users.Trainer;
-import Service.Interfaces.ICrud;
+import services.Interfaces.ICrud;
 import Service.Users.TrainerService;
 
 @Path("/trainers")
@@ -48,7 +48,7 @@ public class TrainerController implements ICrud<Trainer> {
     }
 
     @PUT
-	@Path("/{id}")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Trainer element) throws Exception {
     	TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
@@ -78,9 +78,9 @@ public class TrainerController implements ICrud<Trainer> {
 	}
 
 	@Override
-	public List<Trainer> GetAllWithLogicalyDeleted() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Trainer> GetAllWithLogicalyDeleted() throws Exception {
+		TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
+		return repo.GetAll();
 	}
 
     

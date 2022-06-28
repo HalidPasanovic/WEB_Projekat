@@ -16,7 +16,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import Model.Users.Customer;
-import Service.Interfaces.ICrud;
+import services.Interfaces.ICrud;
 import Service.Users.CustomerService;
 
 @Path("/customers")
@@ -79,16 +79,22 @@ public class CustomerController implements ICrud<Customer> {
     	
     }
 
-	@Override
+	@DELETE
+	@Path("/physically/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
 	public void DeletePhysically(int id) throws Exception {
 		CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
     	repo.DeletePhysically(id);
 	}
 
-	@Override
-	public List<Customer> GetAllWithLogicalyDeleted() {
-		// TODO Auto-generated method stub
-		return null;
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
+	public List<Customer> GetAllWithLogicalyDeleted() throws Exception {
+		CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
+		return repo.GetAllWithLogicalyDeleted();
 	}
  
 }

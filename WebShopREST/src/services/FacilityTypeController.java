@@ -3,7 +3,7 @@ package services;
 import java.util.List;
 
 import Model.Facilities.FacilityType;
-import Repository.Interfaces.ICrud;
+import services.Interfaces.ICrud;
 import Service.Facilities.FacilityTypeService;
 
 import javax.annotation.PostConstruct;
@@ -76,16 +76,22 @@ public class FacilityTypeController implements ICrud<FacilityType> {
     	return repo.GetAll();
     }
 
+	@DELETE
+	@Path("/physically/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Override
 	public void DeletePhysically(int id) throws Exception {
 		FacilityTypeService repo = (FacilityTypeService) ctx.getAttribute("FacilityTypeService");
     	repo.DeletePhysically(id);
 	}
 
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public List<FacilityType> GetAllWithLogicalyDeleted() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<FacilityType> GetAllWithLogicalyDeleted() throws Exception {
+		FacilityTypeService repo = (FacilityTypeService) ctx.getAttribute("FacilityTypeService");
+		return repo.GetAllWithLogicalyDeleted();
 	}
 
     
