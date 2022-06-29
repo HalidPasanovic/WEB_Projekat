@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public void CheckIfUsernameExists(String username) throws Exception {
-        if(!users.containsKey(username)){
+        if(users.containsKey(username)){
             throw new Exception("Username already exists");
         }
     }

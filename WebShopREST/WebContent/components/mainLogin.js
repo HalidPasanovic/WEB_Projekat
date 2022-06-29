@@ -56,6 +56,7 @@ Vue.component("mainLogin", {
                                 <th scope="col">Name</th>
                                 <th scope="col">Type</th>
                                 <th scope="col">Location</th>
+                                <th scope="col">Score</th>
                                 <th scope="col">Working hours</th>
                             </tr>
                         </thead>

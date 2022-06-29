@@ -15,10 +15,20 @@ public class Trainer extends User {
 	public Trainer() {
 	}
 
+	public Trainer(int id) {
+		this.id = id;
+	}
+
 	/**
 	 * 
 	 */
-	private Set<Training> trainings;
+	private Set<Training> trainings = new HashSet<>();
+
+	public Trainer(String username, String password, String name, String surname, Gender gender,
+			UserRole role, Set<Training> trainings) {
+		super(username, password, name, surname, gender, role);
+		this.trainings = trainings;
+	}
 
 	public Set<Training> getTrainings() {
 		return trainings;
@@ -44,7 +54,7 @@ public class Trainer extends User {
 	public int FromCSV(List<String> values) {
 		int i = super.FromCSV(values);
 
-		int count = i + Integer.parseInt(values.get(i++));
+		int count = i + Integer.parseInt(values.get(i++)) + 1;
 		while (i < count) {
 			Training facility = new Training();
 			facility.setId(Integer.parseInt(values.get(i++)));

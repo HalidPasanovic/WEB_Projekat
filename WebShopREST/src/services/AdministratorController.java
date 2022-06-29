@@ -2,9 +2,8 @@ package services;
 
 import java.util.List;
 import Model.Users.Administrator;
-import Service.Interfaces.ICrud;
 import Service.Users.AdministratorService;
-
+import services.Interfaces.ICrud;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.DELETE;
@@ -35,7 +34,9 @@ public class AdministratorController implements ICrud<Administrator> {
 	}
 
     
-    
+    @POST
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
     public void Create(Administrator element) throws Exception {
     	AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
         repo.Create(element);
@@ -73,16 +74,22 @@ public class AdministratorController implements ICrud<Administrator> {
     	return repo.GetAll();
     }
 
-	@Override
+	@DELETE
+	@Path("/physically/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
 	public void DeletePhysically(int id) throws Exception {
 		AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
     	repo.DeletePhysically(id);
 	}
 
-	@Override
-	public List<Administrator> GetAllWithLogicalyDeleted() {
-		// TODO Auto-generated method stub
-		return null;
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
+	public List<Administrator> GetAllWithLogicalyDeleted() throws Exception{
+		AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
+		return repo.GetAllWithLogicalyDeleted();
 	}
 
     

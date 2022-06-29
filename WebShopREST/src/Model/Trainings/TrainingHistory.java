@@ -19,6 +19,14 @@ public class TrainingHistory extends IDClass {
 
 	}
 
+	public TrainingHistory(LocalDateTime applicationDateTime, Training training, Customer customer,
+			Trainer trainer) {
+		this.applicationDateTime = applicationDateTime;
+		this.training = training;
+		this.customer = customer;
+		this.trainer = trainer;
+	}
+
 	/**
 	 * 
 	 */

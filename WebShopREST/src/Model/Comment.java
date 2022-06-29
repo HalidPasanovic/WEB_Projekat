@@ -16,6 +16,13 @@ public class Comment extends IDClass {
 	public Comment() {
 	}
 
+	public Comment(Customer customer, SportFacility facility, String content, float rating) {
+		this.customer = customer;
+		this.facility = facility;
+		this.content = content;
+		this.rating = rating;
+	}
+
 	/**
 	 * 
 	 */

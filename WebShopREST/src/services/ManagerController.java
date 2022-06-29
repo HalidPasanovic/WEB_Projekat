@@ -1,20 +1,24 @@
 package services;
 
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
+import Model.Facilities.SportFacility;
+import Model.Users.Gender;
 import Model.Users.Manager;
-import Service.Interfaces.ICrud;
+import Model.Users.UserRole;
+import services.Interfaces.ICrud;
 import Service.Users.ManagerService;
 
 @Path("/managers")
@@ -36,6 +40,10 @@ public class ManagerController implements ICrud<Manager> {
 		}
 	}
     
+	@POST
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
     public void Create(Manager element) throws Exception {
     	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
         repo.Create(element);
@@ -73,16 +81,22 @@ public class ManagerController implements ICrud<Manager> {
     	return repo.GetAll();
     }
 
-	@Override
-	public void DeletePhysically(int id) throws Exception {
+	@DELETE
+	@Path("/physically/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
+	public void DeletePhysically(@PathParam("id") int id) throws Exception {
 		ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
     	repo.DeletePhysically(id);
 	}
 
-	@Override
-	public List<Manager> GetAllWithLogicalyDeleted() {
-		// TODO Auto-generated method stub
-		return null;
+	@GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Override
+	public List<Manager> GetAllWithLogicalyDeleted() throws Exception {
+		ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
+		return repo.GetAllWithLogicalyDeleted();
 	}
 
 }

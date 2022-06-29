@@ -19,6 +19,21 @@ public class Training extends IDClass {
 
 	}
 
+	public Training(int id) {
+		this.id = id;
+	}
+
+	public Training(String name, TrainingType type, SportFacility facility, LocalTime duration,
+			Trainer trainer, String description, String pictureLocation) {
+		this.name = name;
+		this.type = type;
+		this.facility = facility;
+		this.duration = duration;
+		this.trainer = trainer;
+		this.description = description;
+		this.pictureLocation = pictureLocation;
+	}
+
 	/**
 	 * 
 	 */

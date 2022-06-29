@@ -15,6 +15,16 @@ public class CustomerType extends IDClass {
 	public CustomerType() {
 	}
 
+	public CustomerType(int id) {
+		this.id = id;
+	}
+
+	public CustomerType(String name, double discount, float pointsRequired) {
+		this.name = name;
+		this.discount = (float) discount;
+		this.pointsRequired = pointsRequired;
+	}
+
 	/**
 	 * 
 	 */
@@ -29,6 +39,7 @@ public class CustomerType extends IDClass {
 	 * 
 	 */
 	private float pointsRequired;
+
 
 	public String getName() {
 		return name;

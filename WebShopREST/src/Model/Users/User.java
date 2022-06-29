@@ -15,6 +15,16 @@ public abstract class User extends IDClass {
 	public User() {
 	}
 
+	public User(String username, String password, String name, String surname, Gender gender,
+			UserRole role) {
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.gender = gender;
+		this.role = role;
+	}
+
 	/**
 	 * 
 	 */
