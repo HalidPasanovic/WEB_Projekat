@@ -18,7 +18,7 @@ public class Manager extends User {
 	/**
 	 * 
 	 */
-	private Set<SportFacility> facilities;
+	private Set<SportFacility> facilities = new HashSet<>();
 
 	public Manager(String username, String password, String name, String surname, Gender gender,
 			UserRole role, Set<SportFacility> facilities) {
@@ -50,7 +50,7 @@ public class Manager extends User {
 	public int FromCSV(List<String> values) {
 		int i = super.FromCSV(values);
 
-		int count = i + Integer.parseInt(values.get(i++));
+		int count = i + Integer.parseInt(values.get(i++)) + 1;
 		while (i < count) {
 			SportFacility facility = new SportFacility();
 			facility.setId(Integer.parseInt(values.get(i++)));

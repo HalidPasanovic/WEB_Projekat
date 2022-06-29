@@ -16,6 +16,10 @@ public class TrainingType extends IDClass {
 
 	}
 
+	public TrainingType(int id) {
+		this.id = id;
+	}
+
 	public TrainingType(String name) {
 		this.name = name;
 	}

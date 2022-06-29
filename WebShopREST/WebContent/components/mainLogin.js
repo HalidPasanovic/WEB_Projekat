@@ -79,8 +79,6 @@ Vue.component("mainLogin", {
         axios
           .get('rest/facility/')
           .then(response => (this.facilities = response.data))
-        // axios
-        //     .post('rest/customers/add')
     },
     methods: {
     	addProduct : function() {

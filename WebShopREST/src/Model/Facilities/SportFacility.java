@@ -44,7 +44,7 @@ public class SportFacility extends IDClass {
 	/**
 	 * 
 	 */
-	private List<RecreationType> recreationTypes;
+	private List<RecreationType> recreationTypes = new ArrayList<>();
 
 	/**
 	 * 
@@ -60,6 +60,7 @@ public class SportFacility extends IDClass {
 	 * 
 	 */
 	private String workRange;
+
 
 	public String getName() {
 		return name;
@@ -130,7 +131,7 @@ public class SportFacility extends IDClass {
 		name = values.get(i++);
 		type = new FacilityType(Integer.parseInt(values.get(i++)));
 
-		int count = Integer.parseInt(values.get(i++)) + i;
+		int count = i + Integer.parseInt(values.get(i++)) + 1;
 		recreationTypes = new ArrayList<RecreationType>();
 		while(i < count) {
 			recreationTypes.add(new RecreationType(Integer.parseInt(values.get(i++))));

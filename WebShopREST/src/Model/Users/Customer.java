@@ -16,6 +16,10 @@ public class Customer extends User {
 	public Customer() {
 	}
 
+	public Customer(int id) {
+		this.id = id;
+	}
+
 	public Customer(String username, String password, String name, String surname, Gender gender,
 			UserRole role, Membership membership, Set<SportFacility> visitedFacilities,
 			float points, CustomerType type) {
@@ -34,7 +38,7 @@ public class Customer extends User {
 	/**
 	 * 
 	 */
-	private Set<SportFacility> visitedFacilities;
+	private Set<SportFacility> visitedFacilities = new HashSet<>();
 
 	/**
 	 * 
@@ -101,13 +105,13 @@ public class Customer extends User {
 		membership = new Membership();
 		membership.setId(Integer.parseInt(values.get(i++)));
 
-		int count = i + Integer.parseInt(values.get(i++));
+		int count = i + Integer.parseInt(values.get(i++)) + 1;
 		while (i < count) {
 			SportFacility facility = new SportFacility();
 			facility.setId(Integer.parseInt(values.get(i++)));
 			visitedFacilities.add(facility);
 		}
-
+		
 		points = Float.parseFloat(values.get(i++));
 
 		type = new CustomerType();

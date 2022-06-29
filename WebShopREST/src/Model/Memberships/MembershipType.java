@@ -16,6 +16,10 @@ public class MembershipType extends IDClass {
 
 	}
 
+	public MembershipType(int id) {
+		this.id = id;
+	}
+
 	public MembershipType(String name) {
 		this.name = name;
 	}
