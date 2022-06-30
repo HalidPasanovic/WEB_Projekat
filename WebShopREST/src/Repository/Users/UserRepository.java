@@ -64,8 +64,8 @@ public abstract class UserRepository<T extends User> extends Repository<T> imple
     }
 
     @Override
-    public void Update(T element) throws Exception {
-        CheckIfUsernameExists(element.getUsername());
+    public void Update(T element, String usernameBefore) throws Exception {
+        CheckIfUsernameExists(element.getUsername(), usernameBefore);
         super.Update(element);
     }
 
@@ -75,8 +75,18 @@ public abstract class UserRepository<T extends User> extends Repository<T> imple
         }
     }
 
+    protected void CheckIfUsernameExists(String username, String usernameBefore) throws Exception {
+        if(username.equals(usernameBefore)){
+            return;
+        }
+        if(userDictionary.containsKey(username)){
+            throw new Exception("Username already exists");
+        }
+    }
+
     @Override
     public HashMap<String, User> GetUsers() {
+        InstantiteUserDictionary(GetAll());
         return userDictionary;
     }
 

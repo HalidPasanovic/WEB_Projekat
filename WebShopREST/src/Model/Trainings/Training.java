@@ -23,7 +23,7 @@ public class Training extends IDClass {
 		this.id = id;
 	}
 
-	public Training(String name, TrainingType type, SportFacility facility, LocalTime duration,
+	public Training(String name, TrainingType type, SportFacility facility, String duration,
 			Trainer trainer, String description, String pictureLocation) {
 		this.name = name;
 		this.type = type;
@@ -52,7 +52,7 @@ public class Training extends IDClass {
 	/**
 	 * 
 	 */
-	private LocalTime duration;
+	private String duration;
 
 	/**
 	 * 
@@ -93,11 +93,11 @@ public class Training extends IDClass {
 		this.facility = facility;
 	}
 
-	public LocalTime getDuration() {
+	public String getDuration() {
 		return duration;
 	}
 
-	public void setDuration(LocalTime duration) {
+	public void setDuration(String duration) {
 		this.duration = duration;
 	}
 
@@ -131,7 +131,7 @@ public class Training extends IDClass {
 		result.add(name);
 		result.add(String.valueOf(type.getId()));
 		result.add(String.valueOf(facility.getId()));
-		result.add(String.valueOf(duration));
+		result.add(duration);
 		result.add(String.valueOf(trainer.getId()));
 		result.add(description);
 		result.add(pictureLocation);
@@ -149,7 +149,7 @@ public class Training extends IDClass {
 		facility = new SportFacility();
 		facility.setId(Integer.parseInt(values.get(i++)));
 
-		duration = LocalTime.parse(values.get(i++));
+		duration = values.get(i++);
 
 		trainer = new Trainer();
 		trainer.setId(Integer.parseInt(values.get(i++)));

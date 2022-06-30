@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -34,6 +35,9 @@ public class LoginController {
 	@Context
 	ServletContext ctx;
 	
+	@Context
+	HttpServletRequest request;
+	
 	public LoginController() {
 	}
 	
@@ -49,12 +53,74 @@ public class LoginController {
 	@Path("/{username}&{password}")
 	@Produces(MediaType.APPLICATION_JSON)
     public User Read(@PathParam("username") String username,@PathParam("password") String password) throws Exception {
+		
+		HttpSession session = request.getSession();
+		
 		UserService userService = (UserService) ctx.getAttribute("UserService");
 		try {
 			User temp = userService.Login(username, password);
+			session.setAttribute("user", temp);
 			return temp;
 		} catch (Exception e) {
 			return null;
 		}
     }
+	
+	@GET
+	@Path("/loginstat")
+	@Produces(MediaType.APPLICATION_JSON)
+	public User loginStat() {
+
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+
+		if (user != null) {
+			return user;
+		} else {
+			return null;
+		}
+	}
+	
+	@GET
+	@Path("/logout")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response logout() {
+		
+		HttpSession session = request.getSession();
+		User user = (User) session.getAttribute("user");
+		
+		if(user != null) {
+			session.invalidate();
+			return Response.status(200).build();
+		}
+		else {
+			return Response.status(400).entity("User is already loged out!").build();
+		}
+	}
+
+	@POST
+	@Path("/changeUser/{usernameBefore}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response ChangeCustomer(Customer element,@PathParam("usernameBefore") String usernameBefore) {
+		
+		HttpSession session = request.getSession();
+		UserService userService = (UserService) ctx.getAttribute("UserService");
+
+		
+
+		try {
+			userService.CheckIfUsernameExists(element.getUsername(), usernameBefore);
+		} catch (Exception e) {
+			return Response.status(400).entity(e.getMessage()).build();
+		}
+		
+		if(userService.ChangeCustomer(element, usernameBefore)){
+			session.setAttribute("user", element);
+			return Response.status(200).build();
+		}
+		else{
+			return Response.status(400).entity("Something went wrong!").build();
+		}
+		
+	}
 }

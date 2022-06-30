@@ -1,5 +1,6 @@
 package Model.Users;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import Model.Facilities.SportFacility;
@@ -21,8 +22,8 @@ public class Manager extends User {
 	private Set<SportFacility> facilities = new HashSet<>();
 
 	public Manager(String username, String password, String name, String surname, Gender gender,
-			UserRole role, Set<SportFacility> facilities) {
-		super(username, password, name, surname, gender, role);
+			UserRole role, String dateOfBirth, Set<SportFacility> facilities) {
+		super(username, password, name, surname, gender, role, dateOfBirth);
 		this.facilities = facilities;
 	}
 

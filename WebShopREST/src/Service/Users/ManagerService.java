@@ -21,7 +21,7 @@ public class ManagerService implements IManagerService {
     @Override
     public void Create(Manager element) throws Exception {
         UserService usernameService = new UserService(contexString);
-        usernameService.CheckIfUsernameExists(element.getUsername());
+        usernameService.CheckIfUsernameExists(element.getUsername(), "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
         repository.Create(element);
     }
 
@@ -31,10 +31,10 @@ public class ManagerService implements IManagerService {
     }
 
     @Override
-    public void Update(Manager element) throws Exception {
+    public void Update(Manager element, String usernameBefore) throws Exception {
         UserService usernameService = new UserService(contexString);
-        usernameService.CheckIfUsernameExists(element.getUsername());
-        repository.Update(element);
+        usernameService.CheckIfUsernameExists(element.getUsername(), usernameBefore);
+        repository.Update(element, usernameBefore);
     }
 
     @Override

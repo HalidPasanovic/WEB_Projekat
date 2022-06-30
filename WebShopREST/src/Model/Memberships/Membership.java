@@ -19,8 +19,8 @@ public class Membership extends IDClass {
 
 	}
 
-	public Membership(String identifier, MembershipType type, LocalDate paymentDate,
-			LocalDateTime validUntil, float price, Customer buyer, boolean status,
+	public Membership(String identifier, MembershipType type, String paymentDate,
+	String validUntil, float price, Customer buyer, boolean status,
 			int dailyVisitationCount) {
 		this.identifier = identifier;
 		this.type = type;
@@ -46,12 +46,12 @@ public class Membership extends IDClass {
 	/**
 	 * 
 	 */
-	private LocalDate paymentDate;
+	private String paymentDate;
 
 	/**
 	 * 
 	 */
-	private LocalDateTime validUntil;
+	private String validUntil;
 
 	/**
 	 * 
@@ -90,19 +90,19 @@ public class Membership extends IDClass {
 		this.type = type;
 	}
 
-	public LocalDate getPaymentDate() {
+	public String getPaymentDate() {
 		return paymentDate;
 	}
 
-	public void setPaymentDate(LocalDate paymentDate) {
+	public void setPaymentDate(String paymentDate) {
 		this.paymentDate = paymentDate;
 	}
 
-	public LocalDateTime getValidUntil() {
+	public String getValidUntil() {
 		return validUntil;
 	}
 
-	public void setValidUntil(LocalDateTime validUntil) {
+	public void setValidUntil(String validUntil) {
 		this.validUntil = validUntil;
 	}
 
@@ -143,8 +143,8 @@ public class Membership extends IDClass {
 		List<String> result = super.ToCSV();
 		result.add(identifier);
 		result.add(String.valueOf(type.getId()));
-		result.add(String.valueOf(paymentDate));
-		result.add(String.valueOf(validUntil));
+		result.add(paymentDate);
+		result.add(validUntil);
 		result.add(String.valueOf(price));
 		result.add(String.valueOf(buyer.getId()));
 		result.add(String.valueOf(status));
@@ -159,8 +159,8 @@ public class Membership extends IDClass {
 		type = new MembershipType();
 		type.setId(Integer.parseInt(values.get(i++)));
 
-		paymentDate = LocalDate.parse(values.get(i++));
-		validUntil = LocalDateTime.parse(values.get(i++));
+		paymentDate = values.get(i++);
+		validUntil = values.get(i++);
 		price = Float.parseFloat(values.get(i++));
 
 		buyer = new Customer();

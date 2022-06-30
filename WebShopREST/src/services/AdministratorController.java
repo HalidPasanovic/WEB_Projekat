@@ -55,7 +55,7 @@ public class AdministratorController implements ICrud<Administrator> {
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Administrator element) throws Exception {
     	AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
-    	repo.Update(element);
+    	repo.Update(element, "");
     }
 
     @DELETE

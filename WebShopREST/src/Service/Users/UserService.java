@@ -1,6 +1,10 @@
 package Service.Users;
 
 import java.util.HashMap;
+import Model.Users.Administrator;
+import Model.Users.Customer;
+import Model.Users.Manager;
+import Model.Users.Trainer;
 import Model.Users.User;
 import Service.Interfaces.Users.IAdministratorService;
 import Service.Interfaces.Users.ICustomerService;
@@ -20,19 +24,52 @@ public class UserService {
         customerService = new CustomerService(contextPath);
         trainerService = new TrainerService(contextPath);
         managerService = new ManagerService(contextPath);
+        Instantite();
+    }
+
+    private void Instantite(){
         users = administratorService.GetUsers();
         users.putAll(customerService.GetUsers());
         users.putAll(trainerService.GetUsers());
         users.putAll(managerService.GetUsers());
     }
 
-    public void CheckIfUsernameExists(String username) throws Exception {
+    public void CheckIfUsernameExists(String username, String usernameBefore) throws Exception {
+        if(username.equals(usernameBefore)){
+            return;
+        }
         if(users.containsKey(username)){
             throw new Exception("Username already exists");
         }
     }
 
+    public boolean CheckIfAdmin(String username){
+        return administratorService.GetUsers().containsKey(username);
+    }
+
+    public boolean CheckIfCustomer(String username){
+        return customerService.GetUsers().containsKey(username);
+    }
+
+    public boolean CheckIfTrainer(String username){
+        return trainerService.GetUsers().containsKey(username);
+    }
+
+    public boolean CheckIfManager(String username){
+        return managerService.GetUsers().containsKey(username);
+    }
+
+    public boolean ChangeCustomer(User user, String usernameBefore){
+        try {
+            customerService.Update((Customer) user, usernameBefore);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public User Login(String username, String password) throws Exception {
+        Instantite();
         if(users.containsKey(username)){
             User user = users.get(username);
             if(user.getPassword().equals(password)){

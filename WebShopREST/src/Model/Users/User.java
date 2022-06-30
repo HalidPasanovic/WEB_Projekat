@@ -1,5 +1,6 @@
 package Model.Users;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import Model.IDClass;
@@ -7,7 +8,7 @@ import Model.IDClass;
 /**
  * 
  */
-public abstract class User extends IDClass {
+public class User extends IDClass {
 
 	/**
 	 * Default constructor
@@ -16,14 +17,16 @@ public abstract class User extends IDClass {
 	}
 
 	public User(String username, String password, String name, String surname, Gender gender,
-			UserRole role) {
+			UserRole role, String dateOfBirth) {
 		this.username = username;
 		this.password = password;
 		this.name = name;
 		this.surname = surname;
 		this.gender = gender;
 		this.role = role;
+		this.dateOfBirth = dateOfBirth;
 	}
+
 
 	/**
 	 * 
@@ -54,6 +57,21 @@ public abstract class User extends IDClass {
 	 * 
 	 */
 	protected UserRole role;
+
+
+	/**
+	 * 
+	 */
+	protected String dateOfBirth;
+
+
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
 
 	public String getUsername() {
 		return username;
@@ -112,6 +130,7 @@ public abstract class User extends IDClass {
 		this.surname = values.get(i++);
 		this.gender = Gender.valueOf(values.get(i++));
 		this.role = UserRole.valueOf(values.get(i++));
+		this.dateOfBirth = values.get(i++);
 		return i;
 	}
 
@@ -124,6 +143,7 @@ public abstract class User extends IDClass {
 		result.add(surname);
 		result.add(gender.toString());
 		result.add(role.toString());
+		result.add(dateOfBirth);
 		return result;
 	}
 }

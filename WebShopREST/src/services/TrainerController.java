@@ -41,6 +41,7 @@ public class TrainerController implements ICrud<Trainer> {
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
     public void Create(Trainer element) throws Exception {
+		TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
         repo.Create(element);
     }
 
@@ -57,7 +58,7 @@ public class TrainerController implements ICrud<Trainer> {
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Trainer element) throws Exception {
     	TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
-    	repo.Update(element);
+    	repo.Update(element, "");
     }
 
     @DELETE

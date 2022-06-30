@@ -21,7 +21,7 @@ public class CustomerService implements ICustomerService {
     @Override
     public void Create(Customer element) throws Exception {
         UserService usernameService = new UserService(contexString);
-        usernameService.CheckIfUsernameExists(element.getUsername());
+        usernameService.CheckIfUsernameExists(element.getUsername(), "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
         repository.Create(element);
     }
 
@@ -31,10 +31,10 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public void Update(Customer element) throws Exception {
+    public void Update(Customer element, String usernameBefore) throws Exception {
         UserService usernameService = new UserService(contexString);
-        usernameService.CheckIfUsernameExists(element.getUsername());
-        repository.Update(element);
+        usernameService.CheckIfUsernameExists(element.getUsername(), usernameBefore);
+        repository.Update(element, usernameBefore);
     }
 
     @Override

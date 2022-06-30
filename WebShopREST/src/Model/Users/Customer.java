@@ -1,5 +1,6 @@
 package Model.Users;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import Model.Facilities.SportFacility;
@@ -21,9 +22,9 @@ public class Customer extends User {
 	}
 
 	public Customer(String username, String password, String name, String surname, Gender gender,
-			UserRole role, Membership membership, Set<SportFacility> visitedFacilities,
+			UserRole role, String dateOfBirth, Membership membership, Set<SportFacility> visitedFacilities,
 			float points, CustomerType type) {
-		super(username, password, name, surname, gender, role);
+		super(username, password, name, surname, gender, role, dateOfBirth);
 		this.membership = membership;
 		this.visitedFacilities = visitedFacilities;
 		this.points = points;

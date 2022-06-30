@@ -1,5 +1,6 @@
 package Model.Users;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import Model.Trainings.Training;
@@ -25,8 +26,8 @@ public class Trainer extends User {
 	private Set<Training> trainings = new HashSet<>();
 
 	public Trainer(String username, String password, String name, String surname, Gender gender,
-			UserRole role, Set<Training> trainings) {
-		super(username, password, name, surname, gender, role);
+			UserRole role, String dateOfBirth, Set<Training> trainings) {
+		super(username, password, name, surname, gender, role, dateOfBirth);
 		this.trainings = trainings;
 	}
 

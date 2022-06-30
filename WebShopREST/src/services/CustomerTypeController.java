@@ -25,7 +25,7 @@ public class CustomerTypeController implements ICrud<CustomerType> {
     @Context
 	ServletContext ctx;
 	
-	public CustomerController() {}
+	public CustomerTypeController() {}
 	
 	@PostConstruct
 	public void init() {

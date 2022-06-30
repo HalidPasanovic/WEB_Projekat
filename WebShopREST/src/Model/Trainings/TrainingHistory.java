@@ -19,7 +19,7 @@ public class TrainingHistory extends IDClass {
 
 	}
 
-	public TrainingHistory(LocalDateTime applicationDateTime, Training training, Customer customer,
+	public TrainingHistory(String applicationDateTime, Training training, Customer customer,
 			Trainer trainer) {
 		this.applicationDateTime = applicationDateTime;
 		this.training = training;
@@ -30,7 +30,7 @@ public class TrainingHistory extends IDClass {
 	/**
 	 * 
 	 */
-	private LocalDateTime applicationDateTime;
+	private String applicationDateTime;
 
 	/**
 	 * 
@@ -47,11 +47,11 @@ public class TrainingHistory extends IDClass {
 	 */
 	private Trainer trainer;
 
-	public LocalDateTime getApplicationDateTime() {
+	public String getApplicationDateTime() {
 		return applicationDateTime;
 	}
 
-	public void setApplicationDateTime(LocalDateTime applicationDateTime) {
+	public void setApplicationDateTime(String applicationDateTime) {
 		this.applicationDateTime = applicationDateTime;
 	}
 
@@ -82,7 +82,7 @@ public class TrainingHistory extends IDClass {
 	@Override
 	public List<String> ToCSV() {
 		List<String> result = super.ToCSV();
-		result.add(String.valueOf(applicationDateTime));
+		result.add(applicationDateTime);
 		result.add(String.valueOf(training.getId()));
 		result.add(String.valueOf(customer.getId()));
 		result.add(String.valueOf(trainer.getId()));
@@ -92,7 +92,7 @@ public class TrainingHistory extends IDClass {
 	@Override
 	public int FromCSV(List<String> values) {
 		int i = super.FromCSV(values);
-		applicationDateTime = LocalDateTime.parse(values.get(i++));
+		applicationDateTime = values.get(i++);
 
 		training = new Training();
 		training.setId(Integer.parseInt(values.get(i++)));

@@ -62,7 +62,7 @@ public class ManagerController implements ICrud<Manager> {
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Manager element) throws Exception {
     	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
-    	repo.Update(element);
+    	repo.Update(element, "");
     }
 
     @DELETE

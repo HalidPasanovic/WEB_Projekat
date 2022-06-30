@@ -65,7 +65,7 @@ public class CustomerController implements ICrud<Customer> {
 	@Produces(MediaType.APPLICATION_JSON)
     public void Update(Customer element) throws Exception {
     	CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
-    	repo.Update(element);
+    	repo.Update(element, "");
     }
 
     @DELETE
