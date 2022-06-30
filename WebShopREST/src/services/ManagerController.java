@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -41,8 +42,9 @@ public class ManagerController implements ICrud<Manager> {
 	}
     
 	@POST
-	@Path("/")
+	@Path("/add")
 	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
     @Override
     public void Create(Manager element) throws Exception {
     	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
