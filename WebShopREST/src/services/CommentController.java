@@ -90,6 +90,25 @@ public class CommentController implements ICrud<Comment>{
     }
 
     @GET
+	@Path("/rating/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public float GetRating(@PathParam("id") int id) throws Exception {
+        ICommentService service = (ICommentService) ctx.getAttribute("CommentService");
+        float result = 0;
+        int count = 0;
+        for (Comment it : service.GetAll()) {
+            if(it.getFacility().getId() == id){
+                count++;
+                result += it.getRating();
+            }
+        }
+        if(count == 0){
+            return 0;
+        }
+        return result/count;
+    }
+
+    @GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override

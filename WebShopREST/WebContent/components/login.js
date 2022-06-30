@@ -6,7 +6,8 @@ Vue.component("login", {
 			mode: "IDLE",
 			facilities: null,
 			temp: null,
-			searchQuery: null
+			searchQuery: null,
+			user: null
 		}
 	},
 	template: `
@@ -50,7 +51,18 @@ Vue.component("login", {
 			}
 			else
 			{
-				router.push('/products/' + this.user.username)
+				if(this.user.role === "Administrator"){
+					window.location.href = 'admininstrator.html';
+				}
+				else if(this.user.role === "Manager"){
+					window.location.href = 'manager.html';
+				}
+				else if(this.user.role === "Trainer"){
+					window.location.href = 'trainer.html';
+				}
+				else if(this.user.role === "Customer"){
+					window.location.href = 'customer.html';
+				}
 			}
 		  })
 		}

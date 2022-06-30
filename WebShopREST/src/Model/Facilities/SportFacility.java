@@ -22,13 +22,14 @@ public class SportFacility extends IDClass {
 	}
 
 	public SportFacility(String name, FacilityType type, List<RecreationType> recreationTypes,
-			boolean status, String workRange, Location location) {
+			boolean status, String workRange, Location location, String logoLocation) {
 		this.name = name;
 		this.type = type;
 		this.recreationTypes = recreationTypes;
 		this.status = status;
 		this.location = location;
 		this.workRange = workRange;
+		this.logoLocation = logoLocation;
 	}
 
 	/**
@@ -61,6 +62,19 @@ public class SportFacility extends IDClass {
 	 */
 	private String workRange;
 
+	/**
+	 * 
+	 */
+	private String logoLocation;
+
+
+	public String getLogoLocation() {
+		return logoLocation;
+	}
+
+	public void setLogoLocation(String logoLocation) {
+		this.logoLocation = logoLocation;
+	}
 
 	public String getName() {
 		return name;
@@ -121,6 +135,7 @@ public class SportFacility extends IDClass {
 		}
 		result.add(String.valueOf(status));
 		result.add(workRange);
+		result.add(logoLocation);
 		result.addAll(location.ToCSV());
 		return result;
 	}
@@ -139,6 +154,7 @@ public class SportFacility extends IDClass {
 
 		status = Boolean.getBoolean(values.get(i++));
 		workRange = values.get(i++);
+		logoLocation = values.get(i++);
 
 		values = RemoveNElements(i, values);
 		location = new Location();

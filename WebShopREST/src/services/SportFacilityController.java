@@ -3,10 +3,12 @@ package services;
 import java.util.ArrayList;
 import java.util.List;
 import Model.Adress;
+import Model.Comment;
 import Model.Location;
 import Model.Facilities.FacilityType;
 import Model.Facilities.RecreationType;
 import Model.Facilities.SportFacility;
+import Model.Trainings.Training;
 import services.Interfaces.ICrud;
 import Service.Facilities.SportFacilityService;
 
@@ -94,6 +96,30 @@ public class SportFacilityController implements ICrud<SportFacility> {
         try {
             SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
             return service.GetAll();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @GET
+	@Path("/trainings/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<Training> GetAllTrainingsForFacility(@PathParam("id") int id) throws Exception {
+        try {
+            SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
+            return service.GetAllTrainingsForFacility(id);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @GET
+	@Path("/comments/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<Comment> GetAllCommentsForFacility(@PathParam("id") int id) throws Exception {
+        try {
+            SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
+            return service.GetAllCommentsForFacility(id);
         } catch (Exception e) {
             return null;
         }

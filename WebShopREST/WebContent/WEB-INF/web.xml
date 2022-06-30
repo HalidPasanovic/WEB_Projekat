@@ -8,6 +8,7 @@
     <welcome-file>default.html</welcome-file>
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
+    <welcome-file>homepage.html</welcome-file>
   </welcome-file-list>
   <!-- Obavezan Jersey REST Service servlet -->
   <servlet>
