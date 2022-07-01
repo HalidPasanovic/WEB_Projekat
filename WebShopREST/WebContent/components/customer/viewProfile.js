@@ -1,8 +1,8 @@
 Vue.component("viewProfile", { 
 	data: function () {
 	    return {
-	      user: {},
-          usernameBefore: null
+	        user: {},
+            membership: {}
 	    }
 	},
 	    template: ` 
@@ -50,7 +50,6 @@ Vue.component("viewProfile", {
           .then(response => 
             {
                 this.user = response.data;
-                this.usernameBefore = response.data.username;
             })
     },
     methods: {

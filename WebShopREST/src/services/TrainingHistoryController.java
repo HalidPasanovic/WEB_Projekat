@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.List;
 import Model.Trainings.TrainingHistory;
 import Service.Interfaces.Trainings.ITrainingHistoryService;
@@ -87,6 +88,21 @@ public class TrainingHistoryController implements ICrud<TrainingHistory> {
     public List<TrainingHistory> GetAll() throws Exception {
         ITrainingHistoryService service = (ITrainingHistoryService) ctx.getAttribute("TrainingHistoryService");
         return service.GetAll();
+    }
+
+    @GET
+	@Path("/specific/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<TrainingHistory> GetAllForUser(@PathParam("id") int id) throws Exception {
+        ITrainingHistoryService service = (ITrainingHistoryService) ctx.getAttribute("TrainingHistoryService");
+        List<TrainingHistory> histories = service.GetAll();
+        List<TrainingHistory> result = new ArrayList<>();
+        for (TrainingHistory trainingHistory : histories) {
+            if(trainingHistory.getCustomer().getId() == id){
+                result.add(trainingHistory);
+            }
+        }
+        return result;
     }
 
     @GET
