@@ -4,7 +4,8 @@ Vue.component("facillity", {
 	      facilities: null,
 	      searchQuery: null,
 	      pomocna: null,
-	      trainings: null	
+	      trainings: null,
+	      comments : null	
 	    }
 	},
 	    template: `
@@ -36,7 +37,7 @@ Vue.component("facillity", {
 	    </tr>
 	    </table>
 	    <img src="pictures/picture.png" alt="Logo of the Sport Facillity" width="150" height="150">
-	    <br>
+	    <p>Trainings in this facility:</p>
 	    <table>
 	    <tr>
 	    <th>Name</th>
@@ -53,6 +54,19 @@ Vue.component("facillity", {
 					<td>{{t.trainer.name}}</td>
 		</tr>
 		</table>
+		<p>Comments for this facility:</p>
+	    <table>
+	    <tr>
+	    <th>Customer name</th>
+	    <th>Content</th>
+	    <th>Rating</th>
+	    </tr>
+	    <tr v-for="(c, index) in comments">
+					<td>{{c.customer.name}}</td>
+					<td>{{c.content}}</td>
+					<td>{{c.rating}}</td>
+		</tr>
+		</table>
 		</div>
     	`,
     mounted () {
@@ -65,6 +79,11 @@ Vue.component("facillity", {
 		axios
 			.get('rest/facility/trainings/' + this.pomocna)
 				.then(response => (this.trainings = response.data))
+				.catch((e) => { alert("Exception")})
+		
+		axios
+			.get('rest/facility/comments/' + this.pomocna)
+				.then(response => (this.comments = response.data))
 				.catch((e) => { alert("Exception")})
     },
     methods: {
