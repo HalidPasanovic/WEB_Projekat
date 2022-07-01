@@ -3,6 +3,7 @@ package Service;
 import java.util.HashMap;
 import java.util.List;
 import Model.Comment;
+import Model.CommentStatus;
 import Model.Facilities.SportFacility;
 import Model.Users.Customer;
 import Repository.CommentRepository;
@@ -44,6 +45,18 @@ public class CommentService implements ICommentService {
     @Override
     public void Delete(int id) throws Exception {
         repository.Delete(id);
+    }
+    
+    public void Reject(int id) throws Exception {
+    	Comment temp = repository.Read(id);
+    	temp.setStatus(CommentStatus.Rejected);
+    	repository.Update(temp);
+    }
+    
+    public void Accept(int id) throws Exception {
+    	Comment temp = repository.Read(id);
+    	temp.setStatus(CommentStatus.Accepted);
+    	repository.Update(temp);
     }
 
     @Override
