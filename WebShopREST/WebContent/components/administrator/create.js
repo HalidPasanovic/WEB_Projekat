@@ -16,7 +16,8 @@ Vue.component("create", {
 	      temp: null,
 	      createView:false,
 	      createType: null,
-	      pomocna: null	
+	      pomocna: null,
+	      birthday : null	
 	    }
 	},
 	    template: `
@@ -26,6 +27,7 @@ Vue.component("create", {
 			<tr><td>Password</td><td><input type="password" name="password" v-model="password"></td></tr>
 			<tr><td>Name</td><td><input type="text" name="username" v-model="name"></td></tr>
 			<tr><td>Surname</td><td><input type="text" name="username" v-model="surname"></td></tr>
+			<tr><td>Birthday Date:</td><td><input type="date" v-model="birthday" name="birthday"></td></tr>
 			<tr><td>Gender</td><td>
 			<select v-model="gender">
   				<option disabled value="">Please select one</option>
@@ -47,6 +49,7 @@ Vue.component("create", {
          
         this.createType = this.$route.params.id;
     },
+    updated(){this.createType = this.$route.params.id;},
     methods: {
     	addProduct : function() {
     		router.push(`/createFacility/`);
@@ -76,14 +79,14 @@ Vue.component("create", {
 			if(this.createType == "manager")
 			{
 				axios
-			.post('rest/managers/add', {"username":''+this.username2,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Manager'})
+			.post('rest/managers/', {"username":''+this.username2,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Manager',"dateOfBirth":''+this.birthday})
 				.then(response => (this.mode2 = "ACCEPTED"))
 				.catch((e) => { this.mode = "REJECT";this.temp = this.username2; this.username2="";})
 			}
 			else
 			{
 				axios
-			.post('rest/trainers/addtrainer', {"username":''+this.username2,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Manager'})
+			.post('rest/trainers/', {"username":''+this.username2,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Trainer',"dateOfBirth":''+this.birthday})
 				.then(response => (this.mode3 = "ACCEPTED"))
 				.catch((e) => { this.mode = "REJECT";this.temp = this.username2; this.username2="";})
 			}

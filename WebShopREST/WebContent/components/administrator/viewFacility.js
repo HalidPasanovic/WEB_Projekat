@@ -55,7 +55,7 @@ Vue.component("view-facility", {
 						Radno vreme
 					</th>
 				</tr>
-				<tr v-for="(f, index) in resultQuery">
+				<tr v-for="(f, index) in resultQuery" v-on:click="Proba(f)">
 					<td>{{f.name}}</td>
 					<td>{{f.type.name}}</td>
 					<td>{{f.location.adress.street + " " + f.location.adress.number + " " + f.location.adress.place}}</td>
@@ -127,6 +127,9 @@ Vue.component("view-facility", {
 	      	this.name = "";
 	      	this.surname = "";
 	      	this.gender = "";
+		},
+		Proba : function(f) {
+			router.push(`/facility/` + f.id);
 		}
     },
     computed: {
