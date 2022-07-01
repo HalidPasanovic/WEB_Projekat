@@ -2,7 +2,7 @@ Vue.component("comments", {
 	data: function () {
 	    return {
 	      comments : null,
-	      id: null	
+	      id: null,
 	    }
 	},
 	    template: `
@@ -17,7 +17,7 @@ Vue.component("comments", {
 	    </tr>
 	    <tr v-for="(c, index) in comments" v-on:click="Oznaceno(c.id)">
 					<td>{{c.customer.name}}</td>
-					<td>{{c.facility.name}}
+					<td>{{c.facility.name}}</td>
 					<td>{{c.content}}</td>
 					<td>{{c.rating}}</td>
 					<td>{{c.status}}</td>
@@ -43,22 +43,23 @@ Vue.component("comments", {
 			{
 				axios
 			.put('rest/comment/accept/' + this.id)
-			.then(alert("Accepted successfully"))
-				.catch((e) => { alert("Exception")})
+			.then(response => (alert("Accepted successfully")))
+				.catch((e) => { alert("Exception")});
 			}
 			else
 			{
 				axios
 			.put('rest/comment/reject/' + this.id)
-			.then(alert("Rejected successfully"))
-				.catch((e) => { alert("Exception")})
+			.then(response => (alert("Accepted successfully")))
+				.catch((e) => { alert("Exception")});
 			}
-				this.getComments();
+			this.$router.go(0);
 			}
 			else
 			{
 				alert("You must pick comment from table")
 			}
+			
 		},
 		Oznaceno: function(id) {
 			this.id = id
