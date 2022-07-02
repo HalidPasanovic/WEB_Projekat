@@ -1,6 +1,9 @@
 package Repository.Users;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import Model.Users.CustomerType;
 import Repository.Repository;
@@ -63,4 +66,19 @@ public class CustomerTypeRepository extends Repository<CustomerType> implements 
 
     @Override
     protected void DeleteDependanciesInOtherRepositoriesPhysically(CustomerType element) throws Exception {}
+
+    @Override
+    public List<CustomerType> GetAllSortedAscending() {
+        List<CustomerType> customerTypes = GetAll();
+        for (int i = 0; i < customerTypes.size(); i++) {
+            for (int j = i + 1; j < customerTypes.size(); j++) {
+                if(customerTypes.get(i).getPointsRequired() > customerTypes.get(j).getPointsRequired()){
+                    CustomerType temp = customerTypes.get(i);
+                    customerTypes.set(i, customerTypes.get(j));
+                    customerTypes.set(j, temp);
+                }
+            }
+        }
+        return customerTypes;
+    }
 }

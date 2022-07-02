@@ -46,6 +46,8 @@ Vue.component("homepage", {
         axios
           .get('rest/facility/')
           .then(response => (this.facilities = response.data))
+        axios
+          .get('rest/membership/')
     },
     methods: {
     	addProduct : function() {

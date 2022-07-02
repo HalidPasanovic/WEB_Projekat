@@ -83,6 +83,8 @@ Vue.component("viewFacility", {
 			</table>
 		</div>
 	</div>
+	<div v-if="comments?.length">
+	</div>
 </div>		  
 `
 	,
@@ -122,6 +124,10 @@ Vue.component("viewFacility", {
 				return false
 			}
 			return true;
+		},
+
+		checkIfCanLeaveComment : function(id) {
+			
 		}
 	},
 	mounted() {

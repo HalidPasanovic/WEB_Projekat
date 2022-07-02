@@ -60,12 +60,12 @@ public class Membership extends IDClass {
 	/**
 	 * 
 	 */
-	private boolean status;
+	private boolean status = true;
 
 	/**
 	 * 
 	 */
-	private int usedVisits;
+	private int usedVisits = 0;
 
 
 	public String getIdentifier() {

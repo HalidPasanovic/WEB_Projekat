@@ -76,6 +76,13 @@ public class Customer extends User {
 		this.points = points;
 	}
 
+	public void addPoints(float points){
+		this.points += points;
+		if(this.points < 0){
+			this.points = 0;
+		}
+	}
+
 	public CustomerType getType() {
 		return type;
 	}
@@ -83,6 +90,7 @@ public class Customer extends User {
 	public void setType(CustomerType type) {
 		this.type = type;
 	}
+
 
 	@Override
 	public List<String> ToCSV() {

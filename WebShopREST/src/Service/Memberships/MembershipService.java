@@ -28,6 +28,7 @@ public class MembershipService implements IMembershipService {
     @Override
     public void Create(Membership element) throws Exception {
         repository.Create(element);
+        customerService.AddMembershipToCustomer(element);
     }
 
     @Override

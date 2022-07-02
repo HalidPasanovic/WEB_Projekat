@@ -41,6 +41,22 @@ public class MembershipType extends IDClass {
 
 	
 
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+	public int getVisitationCount() {
+		return visitationCount;
+	}
+
+	public void setVisitationCount(int visitationCount) {
+		this.visitationCount = visitationCount;
+	}
+
 	public MembershipTypeEnum gettype() {
 		return type;
 	}

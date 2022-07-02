@@ -1,6 +1,7 @@
 package Repository.Users;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import Model.Facilities.SportFacility;
 import Model.Memberships.Membership;
@@ -13,6 +14,7 @@ import Repository.Interfaces.Trainings.ITrainingHistoryRepository;
 import Repository.Interfaces.Users.ICustomerRepository;
 import Repository.Memberships.MembershipRepository;
 import Repository.Trainings.TrainingHistoryRepository;
+import Utilities.DataStructureConverter;
 
 public class CustomerRepository extends UserRepository<Customer> implements ICustomerRepository {
 
@@ -44,6 +46,7 @@ public class CustomerRepository extends UserRepository<Customer> implements ICus
                 result.add(element);
             }
         }
+        result = InstantiateCustomerTypeForCustomers(result);
         return result;
     }
 
@@ -56,6 +59,7 @@ public class CustomerRepository extends UserRepository<Customer> implements ICus
             element.FromCSV(object);
             result.add(element);
         }
+        result = InstantiateCustomerTypeForCustomers(result);
         return result;
     }
 
@@ -111,5 +115,17 @@ public class CustomerRepository extends UserRepository<Customer> implements ICus
             }
         }
         serializer.ToCSV(fileName, customers);
+    }
+
+    private List<Customer> InstantiateCustomerTypeForCustomers(List<Customer> customers){
+        CustomerTypeRepository typeRepository = CustomerTypeRepository.getInstance(contextString);
+        DataStructureConverter<CustomerType> converter = new DataStructureConverter<CustomerType>();
+        HashMap<Integer, CustomerType> types = converter.ConvertListToMap(typeRepository.GetAll());
+        for (Customer customer : customers) {
+            if(types.containsKey(customer.getType().getId())){
+                customer.setType(types.get(customer.getType().getId()));
+            }
+        }
+        return customers;
     }
 }

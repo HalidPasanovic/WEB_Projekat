@@ -2,9 +2,11 @@ package Service.Users;
 
 import java.util.HashMap;
 import java.util.List;
+import Model.Memberships.Membership;
 import Model.Users.Customer;
 import Model.Users.User;
 import Repository.Interfaces.Users.ICustomerRepository;
+import Repository.Memberships.MembershipRepository;
 import Repository.Users.CustomerRepository;
 import Service.Interfaces.Users.ICustomerService;
 
@@ -56,6 +58,18 @@ public class CustomerService implements ICustomerService {
     @Override
     public List<Customer> GetAllWithLogicalyDeleted() {
         return repository.GetAllWithLogicalyDeleted();
+    }
+
+    @Override
+    public void AddMembershipToCustomer(Membership membership) throws Exception{
+        Customer customer = Read(membership.getBuyer().getId());
+        try {
+            MembershipRepository.getInstance(contexString).DeletePhysically(customer.getMembership().getId());
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+        customer.setMembership(membership);
+        Update(customer);
     }
     
 }
