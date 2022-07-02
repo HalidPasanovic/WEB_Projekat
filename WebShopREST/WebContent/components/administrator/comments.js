@@ -2,11 +2,12 @@ Vue.component("comments", {
 	data: function () {
 	    return {
 	      comments : null,
-	      id: null,
+	      id: null
 	    }
 	},
 	    template: `
 	    <div>
+	    <h1>{{this.temp}}</h1>
 	    <table>
 	    <tr>
 	    <th>Customer name</th>
@@ -15,7 +16,7 @@ Vue.component("comments", {
 	    <th>Rating</th>
 	    <th>Status</th>
 	    </tr>
-	    <tr v-for="(c, index) in comments" v-on:click="Oznaceno(c.id)">
+	    <tr v-for="(c, index) in comments" v-on:click="Oznaceno(c)">
 					<td>{{c.customer.name}}</td>
 					<td>{{c.facility.name}}</td>
 					<td>{{c.content}}</td>
@@ -42,18 +43,17 @@ Vue.component("comments", {
 				if(type == 'accept')
 			{
 				axios
-			.put('rest/comment/accept/' + this.id)
-			.then(response => (alert("Accepted successfully")))
+			.put('rest/comment/accept/' + this.id.id)
+			.then(response => {alert("Accepted successfully"); this.id.status = "Accepted"})
 				.catch((e) => { alert("Exception")});
 			}
 			else
 			{
 				axios
-			.put('rest/comment/reject/' + this.id)
-			.then(response => (alert("Accepted successfully")))
-				.catch((e) => { alert("Exception")});
+			.put('rest/comment/reject/' + this.id.id)
+			.then(response => {alert("Rejected successfully"); this.id.status = "Rejected"})
+				.catch((e) => { alert("Exception")});		
 			}
-			this.$router.go(0);
 			}
 			else
 			{
