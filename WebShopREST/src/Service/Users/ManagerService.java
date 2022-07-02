@@ -1,7 +1,10 @@
 package Service.Users;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import Model.Facilities.SportFacility;
 import Model.Users.Manager;
 import Model.Users.User;
 import Repository.Interfaces.Users.IManagerRepository;
@@ -24,6 +27,10 @@ public class ManagerService implements IManagerService {
         usernameService.CheckIfUsernameExists(element.getUsername(), "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
         repository.Create(element);
     }
+    
+    public int CreateAndReturn(Manager element) throws Exception {
+        return repository.CreateAndReturn(element);
+    }
 
     @Override
     public Manager Read(int id) throws Exception {
@@ -45,6 +52,19 @@ public class ManagerService implements IManagerService {
     @Override
     public List<Manager> GetAll() {
         return repository.GetAll();
+    }
+    
+    public List<Manager> GetAllEmpty() {
+    	List<Manager> temp =  repository.GetAll();
+    	List<Manager> f = new ArrayList<Manager>();
+    	for(Manager m : temp)
+    	{
+    		if(m.getFacilities().size() == 0)
+    		{
+    			f.add(m);
+    		}
+    	}
+    	return f;
     }
 
     @Override
