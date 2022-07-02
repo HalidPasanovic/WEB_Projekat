@@ -107,14 +107,7 @@ public class LoginController {
 		UserService userService = (UserService) ctx.getAttribute("UserService");
 
 		
-
-		try {
-			userService.CheckIfUsernameExists(element.getUsername(), usernameBefore);
-		} catch (Exception e) {
-			return Response.status(400).entity(e.getMessage()).build();
-		}
-		
-		if(userService.ChangeCustomer(element, usernameBefore)){
+		if(userService.ChangeCustomer(element)){
 			session.setAttribute("user", element);
 			return Response.status(200).build();
 		}

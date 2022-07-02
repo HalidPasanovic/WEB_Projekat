@@ -99,14 +99,14 @@ Vue.component("viewFacility", {
 			<table class="table table-striped table-hover table-dark">
 				<thead>
 					<tr>
-						<th scope="col">Logo</th>
+						<th scope="col">Trainer</th>
 						<th scope="col">Description</th>
 						<th scope="col">Name of trainer</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr v-for="(f, index) in training">
-						<td><img :src="'pictures/' + f.pictureLocation" alt="" width="40" height="40"
+						<td><img :src="'pictures/' + f?.trainer?.pictureLocation" alt="" width="40" height="40"
 						class="rounded-circle me-2" style="margin-bottom: 25px;"></td>
 						<td>{{f?.description}}</td>
 						<td>{{f?.trainer?.name}}</td>

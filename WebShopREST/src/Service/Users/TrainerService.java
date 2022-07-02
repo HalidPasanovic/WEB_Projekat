@@ -20,8 +20,6 @@ public class TrainerService implements ITrainerService {
 
     @Override
     public void Create(Trainer element) throws Exception {
-        UserService usernameService = new UserService(contexString);
-        usernameService.CheckIfUsernameExists(element.getUsername(), "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
         repository.Create(element);
     }
 
@@ -31,10 +29,8 @@ public class TrainerService implements ITrainerService {
     }
 
     @Override
-    public void Update(Trainer element, String usernameBefore) throws Exception {
-        UserService usernameService = new UserService(contexString);
-        usernameService.CheckIfUsernameExists(element.getUsername(), usernameBefore);
-        repository.Update(element, usernameBefore);
+    public void Update(Trainer element) throws Exception {
+        repository.Update(element);
     }
 
     @Override

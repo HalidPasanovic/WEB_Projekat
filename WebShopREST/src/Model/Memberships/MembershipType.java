@@ -20,36 +20,50 @@ public class MembershipType extends IDClass {
 		this.id = id;
 	}
 
-	public MembershipType(String name) {
-		this.name = name;
+	public MembershipType(MembershipTypeEnum type) {
+		this.type = type;
 	}
 
 	/**
 	 * 
 	 */
-	private String name;
+	private MembershipTypeEnum type;
+
+	/**
+	 * 
+	 */
+	private float price;
+
+	/**
+	 * 
+	 */
+	private int visitationCount;
 
 	
 
-	public String getName() {
-		return name;
+	public MembershipTypeEnum gettype() {
+		return type;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void settype(MembershipTypeEnum type) {
+		this.type = type;
 	}
 
 	@Override
 	public List<String> ToCSV() {
 		List<String> result = super.ToCSV();
-		result.add(name);
+		result.add(String.valueOf(type));
+		result.add(String.valueOf(price));
+		result.add(String.valueOf(visitationCount));
 		return result;
 	}
 
 	@Override
 	public int FromCSV(List<String> values) {
 		int i = super.FromCSV(values);
-		name = values.get(i++);
+		type = MembershipTypeEnum.valueOf(values.get(i++));
+		price = Float.parseFloat(values.get(i++));
+		visitationCount = Integer.parseInt(values.get(i++));
 		return i;
 	}
 }

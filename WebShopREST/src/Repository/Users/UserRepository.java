@@ -64,9 +64,23 @@ public abstract class UserRepository<T extends User> extends Repository<T> imple
     }
 
     @Override
-    public void Update(T element, String usernameBefore) throws Exception {
-        CheckIfUsernameExists(element.getUsername(), usernameBefore);
-        super.Update(element);
+    public void Update(T element) throws Exception {
+        T temp = Read(element.getId());
+        if(!temp.getUsername().equals(element.getUsername())){
+            CheckIfUsernameExists(element.getUsername());
+        }
+        CheckIfIdExists(element.getId());
+		List<T> elements = GetAll();
+		for (int i = 0; i < elements.size(); i++) {
+			if(elements.get(i).getId() == element.getId()) {
+				elements.set(i, element);
+				serializer.ToCSV(fileName, elements);
+                userDictionary.remove(temp.getUsername());
+                userDictionary.put(element.getUsername(), element);
+				return;
+			}
+		}
+		throw new Exception("Element not found");
     }
 
     protected void CheckIfUsernameExists(String username) throws Exception {

@@ -24,14 +24,13 @@ public class Training extends IDClass {
 	}
 
 	public Training(String name, TrainingType type, SportFacility facility, String duration,
-			Trainer trainer, String description, String pictureLocation) {
+			Trainer trainer, String description) {
 		this.name = name;
 		this.type = type;
 		this.facility = facility;
 		this.duration = duration;
 		this.trainer = trainer;
 		this.description = description;
-		this.pictureLocation = pictureLocation;
 	}
 
 	/**
@@ -67,7 +66,15 @@ public class Training extends IDClass {
 	/**
 	 * 
 	 */
-	private String pictureLocation;
+	private float aditionalCost;
+
+	public float getAditionalCost() {
+		return aditionalCost;
+	}
+
+	public void setAditionalCost(float aditionalCost) {
+		this.aditionalCost = aditionalCost;
+	}
 
 	public String getName() {
 		return name;
@@ -117,13 +124,6 @@ public class Training extends IDClass {
 		this.description = description;
 	}
 
-	public String getPictureLocation() {
-		return pictureLocation;
-	}
-
-	public void setPictureLocation(String pictureLocation) {
-		this.pictureLocation = pictureLocation;
-	}
 
 	@Override
 	public List<String> ToCSV() {
@@ -134,7 +134,7 @@ public class Training extends IDClass {
 		result.add(duration);
 		result.add(String.valueOf(trainer.getId()));
 		result.add(description);
-		result.add(pictureLocation);
+		result.add(String.valueOf(aditionalCost));
 		return result;
 	}
 
@@ -155,7 +155,8 @@ public class Training extends IDClass {
 		trainer.setId(Integer.parseInt(values.get(i++)));
 
 		description = values.get(i++);
-		pictureLocation = values.get(i++);
+
+		aditionalCost = Float.parseFloat(values.get(i++));
 
 		return i;
 	}

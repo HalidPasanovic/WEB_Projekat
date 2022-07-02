@@ -20,16 +20,15 @@ public class Membership extends IDClass {
 	}
 
 	public Membership(String identifier, MembershipType type, String paymentDate,
-	String validUntil, float price, Customer buyer, boolean status,
-			int dailyVisitationCount) {
+	String validUntil, Customer buyer, boolean status,
+			int usedVisits) {
 		this.identifier = identifier;
 		this.type = type;
 		this.paymentDate = paymentDate;
 		this.validUntil = validUntil;
-		this.price = price;
 		this.buyer = buyer;
 		this.status = status;
-		this.dailyVisitationCount = dailyVisitationCount;
+		this.usedVisits = usedVisits;
 	}
 
 	/**
@@ -56,11 +55,6 @@ public class Membership extends IDClass {
 	/**
 	 * 
 	 */
-	private float price;
-
-	/**
-	 * 
-	 */
 	private Customer buyer;
 
 	/**
@@ -71,7 +65,7 @@ public class Membership extends IDClass {
 	/**
 	 * 
 	 */
-	private int dailyVisitationCount;
+	private int usedVisits;
 
 
 	public String getIdentifier() {
@@ -106,14 +100,6 @@ public class Membership extends IDClass {
 		this.validUntil = validUntil;
 	}
 
-	public float getPrice() {
-		return price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
-	}
-
 	public Customer getBuyer() {
 		return buyer;
 	}
@@ -130,12 +116,12 @@ public class Membership extends IDClass {
 		this.status = status;
 	}
 
-	public int getDailyVisitationCount() {
-		return dailyVisitationCount;
+	public int getUsedVisits() {
+		return usedVisits;
 	}
 
-	public void setDailyVisitationCount(int dailyVisitationCount) {
-		this.dailyVisitationCount = dailyVisitationCount;
+	public void setUsedVisits(int usedVisits) {
+		this.usedVisits = usedVisits;
 	}
 
 	@Override
@@ -145,9 +131,9 @@ public class Membership extends IDClass {
 		result.add(String.valueOf(type.getId()));
 		result.add(paymentDate);
 		result.add(validUntil);
-		result.add(String.valueOf(price));
 		result.add(String.valueOf(buyer.getId()));
 		result.add(String.valueOf(status));
+		result.add(String.valueOf(usedVisits));
 		return result;
 	}
 
@@ -161,12 +147,12 @@ public class Membership extends IDClass {
 
 		paymentDate = values.get(i++);
 		validUntil = values.get(i++);
-		price = Float.parseFloat(values.get(i++));
 
 		buyer = new Customer();
 		buyer.setId(Integer.parseInt(values.get(i++)));
 
 		status = Boolean.parseBoolean(values.get(i++));
+		usedVisits = Integer.parseInt(values.get(i++));
 		return i;
 	}
 

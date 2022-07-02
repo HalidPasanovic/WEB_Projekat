@@ -20,8 +20,6 @@ public class AdministratorService implements IAdministratorService {
 
     @Override
     public void Create(Administrator element) throws Exception {
-        UserService usernameService = new UserService(contexString);
-        usernameService.CheckIfUsernameExists(element.getUsername(), "zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
         repository.Create(element);
     }
 
@@ -31,10 +29,8 @@ public class AdministratorService implements IAdministratorService {
     }
 
     @Override
-    public void Update(Administrator element, String usernameBefore) throws Exception {
-        UserService usernameService = new UserService(contexString);
-        usernameService.CheckIfUsernameExists(element.getUsername(), usernameBefore);
-        repository.Update(element, usernameBefore);
+    public void Update(Administrator element) throws Exception {
+        repository.Update(element);
     }
 
     @Override

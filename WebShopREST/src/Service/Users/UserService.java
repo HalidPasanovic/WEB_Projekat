@@ -34,15 +34,6 @@ public class UserService {
         users.putAll(managerService.GetUsers());
     }
 
-    public void CheckIfUsernameExists(String username, String usernameBefore) throws Exception {
-        if(username.equals(usernameBefore)){
-            return;
-        }
-        if(users.containsKey(username)){
-            throw new Exception("Username already exists");
-        }
-    }
-
     public boolean CheckIfAdmin(String username){
         return administratorService.GetUsers().containsKey(username);
     }
@@ -59,9 +50,9 @@ public class UserService {
         return managerService.GetUsers().containsKey(username);
     }
 
-    public boolean ChangeCustomer(User user, String usernameBefore){
+    public boolean ChangeCustomer(User user){
         try {
-            customerService.Update((Customer) user, usernameBefore);
+            customerService.Update((Customer) user);
             return true;
         } catch (Exception e) {
             return false;

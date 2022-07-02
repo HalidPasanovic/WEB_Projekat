@@ -25,10 +25,24 @@ public class Trainer extends User {
 	 */
 	private Set<Training> trainings = new HashSet<>();
 
+	/**
+	 * 
+	 */
+	private String pictureLocation;
+
+	public String getPictureLocation() {
+		return pictureLocation;
+	}
+
+	public void setPictureLocation(String pictureLocation) {
+		this.pictureLocation = pictureLocation;
+	}
+
 	public Trainer(String username, String password, String name, String surname, Gender gender,
-			UserRole role, String dateOfBirth, Set<Training> trainings) {
+			UserRole role, String dateOfBirth, Set<Training> trainings, String pictureLocation) {
 		super(username, password, name, surname, gender, role, dateOfBirth);
 		this.trainings = trainings;
+		this.pictureLocation = pictureLocation;
 	}
 
 	public Set<Training> getTrainings() {
@@ -47,6 +61,7 @@ public class Trainer extends User {
 		for (Training training : trainings) {
 			result.add(String.valueOf(training.getId()));
 		}
+		result.add(pictureLocation);
 
 		return result;
 	}
@@ -61,6 +76,7 @@ public class Trainer extends User {
 			facility.setId(Integer.parseInt(values.get(i++)));
 			trainings.add(facility);
 		}
+		pictureLocation = values.get(i++);
 		
 		return i;
 	}
