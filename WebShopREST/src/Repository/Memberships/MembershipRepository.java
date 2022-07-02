@@ -82,15 +82,18 @@ public class MembershipRepository extends Repository<Membership> implements IMem
         CustomerRepository customerRepository = CustomerRepository.getInstance(contextString);
         LocalDate now = LocalDate.now();
         for (Membership membership : memberships) {
+            if(!membership.isStatus()){
+                continue;
+            }
             LocalDate expiration = LocalDate.parse(membership.getValidUntil());
             if(expiration.isBefore(now)){
                 membership.setStatus(false);
                 Customer customer = customerRepository.Read(membership.getBuyer().getId());
                 if(membership.getType().getVisitationCount()/3 > membership.getUsedVisits()){
-                    customer.addPoints((membership.getType().getPrice()/1000) * membership.getUsedVisits());
+                    customer.addPoints(-((membership.getType().getPrice()/1000) * 133 * 4));
                     ChangeCustomerTypeIfRequired(customer);
                 } else {
-                    customer.addPoints(-((membership.getType().getPrice()/1000) * 133 * 4));
+                    customer.addPoints((membership.getType().getPrice()/1000) * membership.getUsedVisits());
                     ChangeCustomerTypeIfRequired(customer);
                 }
                 customerRepository.Update(customer);
