@@ -56,4 +56,10 @@ public class AdministratorRepository extends UserRepository<Administrator> imple
 
     @Override
     protected void DeleteDependanciesInOtherRepositoriesPhysically(Administrator element) throws Exception {}
+
+    @Override
+    public int CreateAndReturn(Administrator element) throws Exception {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 }
