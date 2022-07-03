@@ -2,6 +2,7 @@ package services;
 
 import java.util.List;
 import Model.Comment;
+import Model.Users.Customer;
 import Service.CommentService;
 import Service.Interfaces.ICommentService;
 import services.Interfaces.ICrud;
@@ -106,6 +107,14 @@ public class CommentController implements ICrud<Comment>{
             return 0;
         }
         return result/count;
+    }
+
+    @POST
+	@Path("/canComment/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public boolean GetIfCanComment(@PathParam("id") int id, Customer customer) throws Exception {
+        ICommentService service = (ICommentService) ctx.getAttribute("CommentService");
+        return service.CheckIfCanLeaveComment(customer, id);
     }
 
     @GET

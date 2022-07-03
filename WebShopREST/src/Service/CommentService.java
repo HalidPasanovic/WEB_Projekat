@@ -1,5 +1,6 @@
 package Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import Model.Comment;
@@ -92,6 +93,22 @@ public class CommentService implements ICommentService {
     @Override
     public List<Comment> GetAllWithLogicalyDeleted() {
         return repository.GetAllWithLogicalyDeleted();
+    }
+
+    @Override
+    public boolean CheckIfCanLeaveComment(Customer customer, int idOfFacility){
+        List<Comment> comments = GetAll();
+        for (SportFacility visited : customer.getVisitedFacilities()) {
+            if(visited.getId() == idOfFacility){
+                for (Comment it : comments) {
+                    if(it.getCustomer().getId() == customer.getId()){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
     
 }

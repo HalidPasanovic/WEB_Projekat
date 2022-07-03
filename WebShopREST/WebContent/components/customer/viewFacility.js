@@ -2,9 +2,11 @@ Vue.component("viewFacility", {
 	data: function () {
 		return {
 			id: -1,
+			user: null,
 			facility: null,
 			comments: null,
-			training: null
+			training: null,
+			canComment: false
 		}
 	},
 	template: ` 
@@ -83,7 +85,13 @@ Vue.component("viewFacility", {
 			</table>
 		</div>
 	</div>
-	<div v-if="comments?.length">
+	<div class="d-flex flex-nowrap" style="width: 100%; margin-top: 2%;">
+		<div>
+			<button class="w-100 btn btn-lg btn-dark" style="margin-top: 50px;">Visit facility</button>
+		</div>
+		<div v-if="canComment">
+			<button class="w-100 btn btn-lg btn-dark" style="margin-top: 50px; margin-left: 25px;" v-on:click = "CreateComment">Leave a comment</button>
+		</div>
 	</div>
 </div>		  
 `
@@ -126,8 +134,12 @@ Vue.component("viewFacility", {
 			return true;
 		},
 
-		checkIfCanLeaveComment : function(id) {
-			
+		CreateComment: function(){
+			router.push(`/`)
+		},
+
+		CheckIfCanLeaveComment : function() {
+			return true;
 		}
 	},
 	mounted() {
@@ -146,6 +158,18 @@ Vue.component("viewFacility", {
 				.get('rest/facility/trainings/' + this.id)
 				.then(response => (
 					this.training = response.data))
+			axios
+          		.get('rest/login/loginstat')
+          		.then(response => 
+				{
+					user = response.data;
+					axios
+						.post('rest/comment/canComment/'+ this.id, user)
+						.then(response => 
+						{
+							this.canComment = response.data;
+						})
+				})
 		}
 	}
 });
