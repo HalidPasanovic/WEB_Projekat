@@ -140,7 +140,7 @@ public class ManagerController implements ICrud<Manager> {
         SportFacility s = repo2.Read(fid);
         
         m.addFacility(s);
-        repo.Update(m, m.getUsername());
+        repo.Update(m);
         
     }
 

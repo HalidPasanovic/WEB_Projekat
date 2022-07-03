@@ -62,4 +62,5 @@ public class AdministratorRepository extends UserRepository<Administrator> imple
         // TODO Auto-generated method stub
         return 0;
     }
+
 }

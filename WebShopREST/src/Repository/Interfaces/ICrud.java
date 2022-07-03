@@ -13,8 +13,6 @@ public interface ICrud<T> {
 	 */
 	public void Create(T element) throws Exception;
 	
-	public int CreateAndReturn(T element) throws Exception;
-
 	/**
 	 * @param id
 	 * @throws Exception
