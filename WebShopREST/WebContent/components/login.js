@@ -31,6 +31,9 @@ Vue.component("login", {
 				</div>
 				<p v-bind:hidden="mode == 'IDLE'" style="color:red">Incorrect password or username</p>
 				<button class="w-100 btn btn-lg btn-dark" v-on:click = "Log">Sign in</button>
+				<br><p>
+				<a href="#/create">Create account</a>
+				</p>
 				<p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p>
 		</main>	  
     	`,
@@ -38,6 +41,12 @@ Vue.component("login", {
 	},
 	methods: {
 		Log : function(){
+			if(this.username=="" || this.password=="")
+			{
+				this.mode = "REJECT";
+			}
+			else
+			{
 			axios
           .post('rest/login/' + this.username + '&' + this.password)
           .then(response =>
@@ -52,7 +61,8 @@ Vue.component("login", {
 			else
 			{
 				if(this.user.role === "Administrator"){
-					window.location.href = 'admininstrator.html';
+					router.push('/administrator/' + this.user.username)
+					//window.location.href = 'admininstrator.html';
 				}
 				else if(this.user.role === "Manager"){
 					window.location.href = 'manager.html';
@@ -65,6 +75,7 @@ Vue.component("login", {
 				}
 			}
 		  })
+		}
 		}
 	},
 	computed: {

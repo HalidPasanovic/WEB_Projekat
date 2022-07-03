@@ -3,6 +3,7 @@ const Product = { template: '<edit-product></edit-product>' }
 const Products = { template: '<products></products>' }
 const Login = { template: '<login></login>'}
 const Create = { template: '<create></create>'}
+const AdministratorPage = {template: '<administrator></administrator>'}
 
 const router = new VueRouter({
 	mode: 'hash',
@@ -11,7 +12,8 @@ const router = new VueRouter({
 	    { path: '/products/:id', component: Product},
 	    { path: '/products', component: Products},
 	    { path: '/createFacility' ,component: CreateFacility},
-	    { path: '/create', component: Create}
+	    { path: '/create', component: Create},
+	    { path: '/administrator/:username', component: AdministratorPage}
 	  ]
 });
 
