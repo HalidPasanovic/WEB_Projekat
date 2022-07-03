@@ -36,6 +36,26 @@ public class ManagerRepository extends UserRepository<Manager> implements IManag
         }
         return result;
     }
+    
+    @Override
+    public int CreateAndReturn(Manager element)
+    {
+    	try {
+			super.Create(element);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	List<Manager> f = GetAll();
+    	for(Manager s : f)
+    	{
+    		if(s.getName().equals(element.getName()))
+    		{
+    			return s.getId();
+    		}
+    	}
+    	return -1;
+    }
 
     @Override
     public List<Manager> GetAllWithLogicalyDeleted() {

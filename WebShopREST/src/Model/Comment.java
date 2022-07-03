@@ -21,6 +21,7 @@ public class Comment extends IDClass {
 		this.facility = facility;
 		this.content = content;
 		this.rating = rating;
+		this.status = CommentStatus.Pending;
 	}
 
 	/**
@@ -42,6 +43,16 @@ public class Comment extends IDClass {
 	 * 
 	 */
 	private float rating;
+	
+	private CommentStatus status;
+
+	public CommentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(CommentStatus status) {
+		this.status = status;
+	}
 
 	public Customer getCustomer() {
 		return customer;
@@ -82,6 +93,7 @@ public class Comment extends IDClass {
 		result.add(String.valueOf(facility.getId()));
 		result.add(content);
 		result.add(String.valueOf(rating));
+		result.add(String.valueOf(status));
 		return result;
 	}
 
@@ -97,6 +109,18 @@ public class Comment extends IDClass {
 		
 		content = values.get(i++);
 		rating = Float.parseFloat(values.get(i++));
+		if(values.get(i).equals(CommentStatus.Accepted.toString()))
+		{
+			status = CommentStatus.Accepted;
+		}
+		else if (values.get(i).equals(CommentStatus.Rejected.toString()))
+		{
+			status = CommentStatus.Rejected;
+		}
+		else
+		{
+			status = CommentStatus.Pending;
+		}
 		return i;
 	}
 

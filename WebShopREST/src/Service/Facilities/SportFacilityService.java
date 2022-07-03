@@ -47,6 +47,11 @@ public class SportFacilityService implements ISportFacilityService {
     public void Create(SportFacility element) throws Exception {
         repository.Create(element);
     }
+    
+    
+    public int CreateAndReturn(SportFacility element) throws Exception {
+        return repository.CreateAndReturn(element);
+    }
 
     @Override
     public SportFacility Read(int id) throws Exception {

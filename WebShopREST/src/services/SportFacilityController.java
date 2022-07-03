@@ -14,6 +14,7 @@ import Service.Facilities.SportFacilityService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -44,6 +45,7 @@ public class SportFacilityController implements ICrud<SportFacility> {
     @POST
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public void Create(SportFacility element) throws Exception {
         try {
             SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
@@ -51,6 +53,20 @@ public class SportFacilityController implements ICrud<SportFacility> {
         } catch (Exception e) {
             //TODO: handle exception
         }
+    }
+    
+    @POST
+	@Path("/createandreturn")
+	@Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int Create2(SportFacility element) throws Exception {
+        try {
+            SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
+            return service.CreateAndReturn(element);
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+		return 0;
     }
 
     @GET

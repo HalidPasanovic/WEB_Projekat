@@ -34,6 +34,26 @@ public class SportFacilityRepository extends Repository<SportFacility> implement
         this.fileName = contextPath + "/data/sportFacilities.csv";
         InstantiateRepository();
     }
+    
+    @Override
+    public int CreateAndReturn(SportFacility element)
+    {
+    	try {
+			super.Create(element);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	List<SportFacility> f = GetAll();
+    	for(SportFacility s : f)
+    	{
+    		if(s.getName().equals(element.getName()))
+    		{
+    			return s.getId();
+    		}
+    	}
+    	return -1;
+    }
 
     @Override
     public List<SportFacility> GetAll() {
