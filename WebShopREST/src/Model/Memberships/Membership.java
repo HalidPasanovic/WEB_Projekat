@@ -120,6 +120,10 @@ public class Membership extends IDClass {
 		return usedVisits;
 	}
 
+	public void incrementUsedVisits() {
+		usedVisits++;
+	}
+
 	public void setUsedVisits(int usedVisits) {
 		this.usedVisits = usedVisits;
 	}

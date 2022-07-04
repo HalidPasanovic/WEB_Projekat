@@ -33,7 +33,7 @@ Vue.component("homepage", {
                             <td>{{f.name}}</td>
                             <td>{{f.type.name}}</td>
                             <td>{{f.location.adress.street + " " + f.location.adress.number + " " + f.location.adress.place}}</td>
-                            <td>{{getRating(f?.id)}}</td>
+                            <td>{{getRate(f?.rating)}}</td>
                             <td>{{f.workRange}}</td>
                         </tr>
                         </tbody>
@@ -44,8 +44,10 @@ Vue.component("homepage", {
     	`,
     mounted () {
         axios
-          .get('rest/facility/')
-          .then(response => (this.facilities = response.data))
+          .get('rest/facility/dto')
+          .then(response => {
+                this.facilities = response.data
+          })
     },
     methods: {
     	addProduct : function() {
@@ -56,17 +58,12 @@ Vue.component("homepage", {
             
         },
 
-        getRating: function(id) {
-			var rating = 0;
-			axios
-				.get('rest/comment/rating/' + id)
-				.then(response => (
-					rating = response.data))
-            if(rating === 0){
+        getRate: function(rating) {
+			if(rating === 0){
                 return "No ratings"
             }
-			return rating
-		},
+            return rating
+        },
 
     	editProduct : function(id) {
     		router.push(`/products/${id}`);
@@ -93,6 +90,19 @@ Vue.component("homepage", {
       }else{
         return this.facilities;
       }
-    }
+    },
+
+    getRating() {
+        var rating = 0;
+        axios
+            .get('rest/comment/rating/' + id)
+            .then(response => {
+                rating = response.data
+            })
+        if(rating === 0){
+            return "No ratings"
+        }
+        return rating
+    },
   }
 });

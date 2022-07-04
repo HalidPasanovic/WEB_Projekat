@@ -45,7 +45,7 @@ public class TrainingHistory extends IDClass {
 	/**
 	 * 
 	 */
-	private Trainer trainer;
+	private Trainer trainer = new Trainer();
 
 	public String getApplicationDateTime() {
 		return applicationDateTime;

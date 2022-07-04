@@ -6,4 +6,6 @@ import Model.Users.Customer;
 public interface ICustomerService extends IUserService<Customer> {
     
     public void AddMembershipToCustomer(Membership membership) throws Exception;
+
+    public void CheckIfVisitedFacilityAndUpdateMembership(int id, Customer customer) throws Exception;
 }

@@ -2,8 +2,11 @@ package services;
 
 import java.util.ArrayList;
 import java.util.List;
+import Model.Memberships.Membership;
 import Model.Trainings.TrainingHistory;
+import Service.Interfaces.Memberships.IMembershipService;
 import Service.Interfaces.Trainings.ITrainingHistoryService;
+import Service.Memberships.MembershipService;
 import Service.Trainings.TrainingHistoryService;
 import services.Interfaces.ICrud;
 
@@ -34,6 +37,10 @@ public class TrainingHistoryController implements ICrud<TrainingHistory> {
 	    	String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("TrainingHistoryService", new TrainingHistoryService(contextPath));
 		}
+		if (ctx.getAttribute("MembershipService") == null) {
+	    	String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("MembershipService", new MembershipService(contextPath));
+		}
 	}
 
     @POST
@@ -42,6 +49,30 @@ public class TrainingHistoryController implements ICrud<TrainingHistory> {
     @Override
     public void Create(TrainingHistory element) throws Exception {
         ITrainingHistoryService service = (ITrainingHistoryService) ctx.getAttribute("TrainingHistoryService");
+        service.Create(element);
+    }
+    
+    @POST
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public void CreateForUser(@PathParam("id") int id, TrainingHistory element) throws Exception {
+        ITrainingHistoryService service = (ITrainingHistoryService) ctx.getAttribute("TrainingHistoryService");
+        IMembershipService membershipService = (IMembershipService) ctx.getAttribute("MembershipService");
+        boolean found = false;
+        for (Membership it: membershipService.GetAll()) {
+            if(it.getBuyer().getId() == id){
+                found = true;
+                if(!it.isStatus()){
+                    throw new Exception("Membership isn't active");
+                }
+                if(it.getUsedVisits() >= it.getType().getVisitationCount()){
+                    throw new Exception("All visitations are used up already");
+                }
+            }
+        }
+        if(!found){
+            throw new Exception("User doesn't have a membership");
+        }
         service.Create(element);
     }
 

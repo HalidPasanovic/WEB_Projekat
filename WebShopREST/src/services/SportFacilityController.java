@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import Model.Adress;
 import Model.Comment;
+import Model.CommentStatus;
 import Model.Location;
 import Model.Facilities.FacilityType;
 import Model.Facilities.RecreationType;
@@ -11,6 +12,8 @@ import Model.Facilities.SportFacility;
 import Model.Trainings.Training;
 import services.Interfaces.ICrud;
 import Service.Facilities.SportFacilityService;
+import Service.CommentService;
+import Service.Interfaces.ICommentService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -24,6 +27,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import DTO.SportFacilityDTO;
 
 @Path("/facility")
 public class SportFacilityController implements ICrud<SportFacility> {
@@ -38,7 +42,10 @@ public class SportFacilityController implements ICrud<SportFacility> {
 		if (ctx.getAttribute("SportFacilityService") == null) {
 	    	String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("SportFacilityService", new SportFacilityService(contextPath));
-			System.out.println(contextPath);
+		}
+        if (ctx.getAttribute("CommentService") == null) {
+	    	String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("CommentService", new CommentService(contextPath));
 		}
 	}
 
@@ -81,6 +88,20 @@ public class SportFacilityController implements ICrud<SportFacility> {
         }
     }
 
+    @GET
+	@Path("/dto/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public SportFacilityDTO ReadDTO(@PathParam("id") int id) throws Exception {
+        try {
+            SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
+            SportFacilityDTO temp = new SportFacilityDTO(service.Read(id));
+            temp.rating = GetRating(temp.id);
+            return temp;
+        } catch (Exception e) {
+        	return null;
+        }
+    }
+
     @PUT
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -115,6 +136,42 @@ public class SportFacilityController implements ICrud<SportFacility> {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @GET
+	@Path("/dto")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<SportFacilityDTO> GetAllDTO() {
+        try {
+            SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
+            List<SportFacilityDTO> dtos = new ArrayList<>();
+            for (SportFacility it : service.GetAll()) {
+                SportFacilityDTO temp = new SportFacilityDTO(it);
+                temp.rating = GetRating(temp.id);
+                dtos.add(temp);
+            }
+            return dtos;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    private float GetRating(int id) throws Exception {
+        ICommentService service = (ICommentService) ctx.getAttribute("CommentService");
+        float result = 0;
+        int count = 0;
+        for (Comment it : service.GetAll()) {
+            if(it.getStatus() == CommentStatus.Accepted){
+                if(it.getFacility().getId() == id){
+                    count++;
+                    result += it.getRating();
+                }
+            }
+        }
+        if(count == 0){
+            return 0;
+        }
+        return result/count;
     }
 
     @GET

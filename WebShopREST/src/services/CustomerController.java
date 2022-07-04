@@ -23,6 +23,7 @@ import Model.Users.CustomerType;
 import Model.Users.Gender;
 import Model.Users.UserRole;
 import services.Interfaces.ICrud;
+import Service.Memberships.MembershipService;
 import Service.Users.CustomerService;
 
 @Path("/customers")
@@ -38,7 +39,6 @@ public class CustomerController implements ICrud<Customer> {
 		if (ctx.getAttribute("customerService") == null) {
 	    	String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("customerService", new CustomerService(contextPath));
-			System.out.println(contextPath);
 		}
 	}
 	
@@ -85,6 +85,14 @@ public class CustomerController implements ICrud<Customer> {
     	
     }
 
+	@POST
+	@Path("/facility/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public void CheckIfVisitedFacility(@PathParam("id") int id, Customer customer) throws Exception {
+    	CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
+		repo.CheckIfVisitedFacilityAndUpdateMembership(id, customer);
+    }
+
 	@DELETE
 	@Path("/physically/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -102,5 +110,5 @@ public class CustomerController implements ICrud<Customer> {
 		CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
 		return repo.GetAllWithLogicalyDeleted();
 	}
- 
+
 }

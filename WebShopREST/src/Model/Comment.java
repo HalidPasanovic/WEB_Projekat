@@ -44,7 +44,7 @@ public class Comment extends IDClass {
 	 */
 	private float rating;
 	
-	private CommentStatus status;
+	private CommentStatus status = CommentStatus.Pending;
 
 	public CommentStatus getStatus() {
 		return status;

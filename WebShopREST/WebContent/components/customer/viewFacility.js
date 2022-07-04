@@ -27,9 +27,9 @@ Vue.component("viewFacility", {
 				<input type="checkbox" class="form-check-input" id="same-address" :value="facility?.status" disabled>
 				<label class="form-check-label" for="same-address">Renovating currently</label>
 			</div>
-			<div v-if="checkIfRatingExists(facility?.id)">
+			<div v-if="checkIfRatingExists(facility?.rating)">
 				<label for="Type" class="form-label">Rating</label>
-				<input type="number" class="form-control" id="Type" placeholder="" :value="getRating(facility?.id)" disabled>
+				<input type="number" class="form-control" id="Type" placeholder="" :value="facility?.rating" disabled>
 			</div>
 		</div>
 		<div style="margin-left: 50px;">
@@ -40,7 +40,7 @@ Vue.component("viewFacility", {
 			</div>
 		</div>
 	</div>
-	<div class="d-flex flex-nowrap" style="width: 100%; margin-top: 2%;">
+	<div class="d-flex flex-nowrap" style="width: 100%; margin-top: 20px;">
 		<div v-if="comments?.length">
 			<div style="display: flex; justify-content: center; margin-top: 40px;">
 				<h3>Comments</h3>
@@ -56,7 +56,7 @@ Vue.component("viewFacility", {
 				<tbody>
 					<tr v-for="(f, index) in comments">
 						<td>{{f?.customer?.name}}</td>
-						<td>{{f?.comment}}</td>
+						<td>{{f?.content}}</td>
 						<td>{{f?.rating}}</td>
 					</tr>
 				</tbody>
@@ -72,43 +72,30 @@ Vue.component("viewFacility", {
 						<th scope="col">Trainer</th>
 						<th scope="col">Description</th>
 						<th scope="col">Name of trainer</th>
+						<th scope="col">Aditional Cost</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="(f, index) in training">
-						<td><img :src="'pictures/' + f?.trainer?.pictureLocation" alt="" width="40" height="40"
+					<tr v-for="(f, index) in training" @dblclick="CreateAppointment(f.id)">
+						<td><img v-if="f?.trainer?.pictureLocation" :src="'pictures/' + f?.trainer?.pictureLocation" alt="" width="40" height="40"
 						class="rounded-circle me-2" style="margin-bottom: 25px;"></td>
 						<td>{{f?.description}}</td>
 						<td>{{f?.trainer?.name}}</td>
+						<td>{{f?.aditionalCost}}</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
-	<div class="d-flex flex-nowrap" style="width: 100%; margin-top: 2%;">
-		<div>
-			<button class="w-100 btn btn-lg btn-dark" style="margin-top: 50px;">Visit facility</button>
-		</div>
+	<div class="d-flex flex-nowrap" style="width: 100%; margin-top: 20px;">
 		<div v-if="canComment">
-			<button class="w-100 btn btn-lg btn-dark" style="margin-top: 50px; margin-left: 25px;" v-on:click = "CreateComment">Leave a comment</button>
+			<button class="w-100 btn btn-lg btn-dark" style="margin-top: 50px;" v-on:click = "CreateComment">Leave a comment</button>
 		</div>
 	</div>
 </div>		  
 `
 	,
 	methods: {
-		editProduct: function () {
-			event.preventDefault();
-			if (this.id != -1) {
-				axios.put('rest/products/' + this.product.id, this.product).
-					then(response => (router.push(`/`)));
-			}
-			else {
-				axios.post('rest/products', this.product).
-					then(response => (router.push(`/`)));
-			}
-		},
-
 		isEmpty : function(obj) {
 			var result = obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype
 			if(result === false){
@@ -117,17 +104,8 @@ Vue.component("viewFacility", {
 			return result
 		},
 
-		getRating: function(id) {
-			var rating = 0;
-			axios
-				.get('rest/comment/rating/' + id)
-				.then(response => (
-					rating = response.data))
-			return rating
-		},
 
-		checkIfRatingExists: function(id){
-			var rating = this.getRating(id)
+		checkIfRatingExists: function(rating){
 			if(rating === 0){
 				return false
 			}
@@ -135,23 +113,27 @@ Vue.component("viewFacility", {
 		},
 
 		CreateComment: function(){
-			router.push(`/`)
+			router.push(`/createComment/${this.id}`)
 		},
 
 		CheckIfCanLeaveComment : function() {
 			return true;
+		},
+
+		CreateAppointment: function(id){
+			router.push(`/createAppointment/${id}`)
 		}
 	},
 	mounted() {
 		this.id = this.$route.params.id;
 		if (this.id != -1) {
 			axios
-				.get('rest/facility/' + this.id)
+				.get('rest/facility/dto/' + this.id)
 				.then(response => (
 					this.facility = response.data,
 					instantiateMap(response.data)))
 			axios
-				.get('rest/facility/comments/' + this.id)
+				.get('rest/facility/comments/accepted/' + this.id)
 				.then(response => (
 					this.comments = response.data))
 			axios

@@ -9,6 +9,7 @@ import Model.Facilities.SportFacility;
 import Model.Users.Customer;
 import Repository.CommentRepository;
 import Repository.Interfaces.ICommentRepository;
+import Repository.Users.CustomerRepository;
 import Service.Facilities.SportFacilityService;
 import Service.Interfaces.ICommentService;
 import Service.Interfaces.Facilities.ISportFacilityService;
@@ -110,18 +111,49 @@ public class CommentService implements ICommentService {
 
     @Override
     public boolean CheckIfCanLeaveComment(Customer customer, int idOfFacility){
-        List<Comment> comments = GetAll();
-        for (SportFacility visited : customer.getVisitedFacilities()) {
-            if(visited.getId() == idOfFacility){
-                for (Comment it : comments) {
-                    if(it.getCustomer().getId() == customer.getId()){
-                        return false;
+        try {
+            Customer customer1 = customerService.Read(customer.getId());
+            List<Comment> comments = GetAll();
+            for (SportFacility visited : customer1.getVisitedFacilities()) {
+                if(visited.getId() == idOfFacility){
+                    for (Comment it : comments) {
+                        if(it.getCustomer().getId() == customer1.getId()){
+                            if(it.getFacility().getId() == visited.getId()) {
+                                return false;
+                            }
+                        }
                     }
+                    return true;
                 }
-                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public List<Comment> GetAllApprovedComments() {
+        List<Comment> comments = GetAll();
+        List<Comment> result = new ArrayList<>();
+        for (Comment comment : comments) {
+            if(comment.getStatus() == CommentStatus.Accepted){
+                result.add(comment);
             }
         }
-        return false;
+        return result;
+    }
+
+    @Override
+    public List<Comment> GetAllApprovedCommentsForFacility(int idOfFacility) {
+        List<Comment> comments = GetAllApprovedComments();
+        List<Comment> result = new ArrayList<>();
+        for (Comment comment : comments) {
+            if(comment.getFacility().getId() == idOfFacility){
+                result.add(comment);
+            }
+        }
+        return result;
     }
     
 }
