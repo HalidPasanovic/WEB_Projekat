@@ -11,5 +11,7 @@ public interface ICommentService extends ICrud<Comment> {
     public List<Comment> GetAllApprovedComments();
 
     public List<Comment> GetAllApprovedCommentsForFacility(int idOfFacility);
+
+    public List<Comment> GetAllApprovedCommentsForFacilityWithUserComments(int idOfFacility, int idUser);
     
 }

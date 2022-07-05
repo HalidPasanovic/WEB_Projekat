@@ -151,5 +151,13 @@ public class CommentController implements ICrud<Comment>{
         ICommentService service = (ICommentService) ctx.getAttribute("CommentService");
         return service.GetAllApprovedCommentsForFacility(id);
     }
+
+    @POST
+	@Path("/accepted/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<Comment> GetAllApprovedCommentsForFacilityWithUserComment(@PathParam("id") int id, Customer customer) throws Exception {
+        ICommentService service = (ICommentService) ctx.getAttribute("CommentService");
+        return service.GetAllApprovedCommentsForFacilityWithUserComments(id, customer.getId());
+    }
     
 }

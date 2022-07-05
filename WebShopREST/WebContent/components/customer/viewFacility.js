@@ -2,7 +2,7 @@ Vue.component("viewFacility", {
 	data: function () {
 		return {
 			id: -1,
-			user: null,
+			user: {},
 			facility: null,
 			comments: null,
 			training: null,
@@ -51,6 +51,7 @@ Vue.component("viewFacility", {
 						<th scope="col">Customer</th>
 						<th scope="col">Comment</th>
 						<th scope="col">Rating</th>
+						<th scope="col"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -58,6 +59,7 @@ Vue.component("viewFacility", {
 						<td>{{f?.customer?.name}}</td>
 						<td>{{f?.content}}</td>
 						<td>{{f?.rating}}</td>
+						<td><button v-if="CheckIfCanDeleteComment(f?.customer?.id)" class="btn btn-dark" v-on:click = "DeleteComment(f?.id, index)">Delete</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -116,8 +118,17 @@ Vue.component("viewFacility", {
 			router.push(`/createComment/${this.id}`)
 		},
 
-		CheckIfCanLeaveComment : function() {
-			return true;
+		DeleteComment: function(id, index){
+			r = confirm("Are you sure?")
+    		if (r){
+	    		axios
+	            .delete('rest/comment/' + id)
+	            .then(response => (this.comments.splice(index, 1)))
+    		}
+		},
+
+		CheckIfCanDeleteComment : function(id) {
+			return id == this.user.id
 		},
 
 		CreateAppointment: function(id){
@@ -128,29 +139,29 @@ Vue.component("viewFacility", {
 		this.id = this.$route.params.id;
 		if (this.id != -1) {
 			axios
-				.get('rest/facility/dto/' + this.id)
-				.then(response => (
-					this.facility = response.data,
-					instantiateMap(response.data)))
-			axios
-				.get('rest/facility/comments/accepted/' + this.id)
-				.then(response => (
-					this.comments = response.data))
-			axios
-				.get('rest/facility/trainings/' + this.id)
-				.then(response => (
-					this.training = response.data))
-			axios
           		.get('rest/login/loginstat')
           		.then(response => 
 				{
-					user = response.data;
+					this.user = response.data;
 					axios
-						.post('rest/comment/canComment/'+ this.id, user)
+						.post('rest/comment/canComment/'+ this.id, this.user)
 						.then(response => 
 						{
 							this.canComment = response.data;
 						})
+					axios
+						.post('rest/comment/accepted/' + this.id, this.user)
+						.then(response => (
+							this.comments = response.data))
+					axios
+						.get('rest/facility/dto/' + this.id)
+						.then(response => (
+							this.facility = response.data,
+							instantiateMap(response.data)))
+					axios
+						.get('rest/facility/trainings/' + this.id)
+						.then(response => (
+							this.training = response.data))
 				})
 		}
 	}

@@ -155,5 +155,24 @@ public class CommentService implements ICommentService {
         }
         return result;
     }
+
+    @Override
+    public List<Comment> GetAllApprovedCommentsForFacilityWithUserComments(int idOfFacility, int idUser) {
+        List<Comment> comments = GetAll();
+        List<Comment> result = new ArrayList<>();
+        for (Comment comment : comments) {
+            if(comment.getFacility().getId() == idOfFacility){
+                if(comment.getCustomer().getId() == idUser){
+                    result.add(comment);
+                    continue;
+                }
+                if(comment.getStatus() == CommentStatus.Accepted){
+                    result.add(comment);
+                    continue;
+                }
+            }
+        }
+        return result;
+    }
     
 }

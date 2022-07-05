@@ -8,6 +8,7 @@ import Service.Interfaces.Memberships.IMembershipService;
 import Service.Interfaces.Trainings.ITrainingHistoryService;
 import Service.Memberships.MembershipService;
 import Service.Trainings.TrainingHistoryService;
+import Service.Users.CustomerService;
 import services.Interfaces.ICrud;
 
 import javax.annotation.PostConstruct;
@@ -100,6 +101,8 @@ public class TrainingHistoryController implements ICrud<TrainingHistory> {
     @Override
     public void Delete(@PathParam("id") int id) throws Exception {
         ITrainingHistoryService service = (ITrainingHistoryService) ctx.getAttribute("TrainingHistoryService");
+        CustomerService customerService = new CustomerService(ctx.getRealPath(""));
+        customerService.CheckIfAnotherVisitExistsAndUpdateMembership(id, service.Read(id));
         service.Delete(id);
     }
 

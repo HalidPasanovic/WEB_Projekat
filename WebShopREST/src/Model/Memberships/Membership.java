@@ -124,6 +124,10 @@ public class Membership extends IDClass {
 		usedVisits++;
 	}
 
+	public void reduceUsedVisits() {
+		usedVisits--;
+	}
+
 	public void setUsedVisits(int usedVisits) {
 		this.usedVisits = usedVisits;
 	}

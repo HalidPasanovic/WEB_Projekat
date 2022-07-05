@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import Model.Facilities.SportFacility;
 import Model.Memberships.Membership;
+import Model.Trainings.TrainingHistory;
 import Model.Users.Customer;
 import Model.Users.User;
 import Repository.Interfaces.Memberships.IMembershipRepository;
@@ -11,6 +12,7 @@ import Repository.Interfaces.Users.ICustomerRepository;
 import Repository.Memberships.MembershipRepository;
 import Repository.Users.CustomerRepository;
 import Service.Interfaces.Users.ICustomerService;
+import Service.Trainings.TrainingHistoryService;
 
 public class CustomerService implements ICustomerService {
 
@@ -94,6 +96,40 @@ public class CustomerService implements ICustomerService {
         }
         if(!found){
             customer1.getVisitedFacilities().add(new SportFacility(id));
+            Update(customer1);
+        }
+    }
+
+    @Override
+    public void CheckIfAnotherVisitExistsAndUpdateMembership(int id, TrainingHistory history)throws Exception {
+        Customer customer1 = Read(history.getCustomer().getId());
+        Membership membership = membershipRepository.Read(customer1.getMembership().getId());
+        membership.reduceUsedVisits();
+        if(membership.getUsedVisits() < membership.getType().getVisitationCount()){
+            membership.setStatus(true);
+        }
+        membershipRepository.Update(membership);
+
+        boolean found = false;
+        TrainingHistoryService trainingHistoryService = new TrainingHistoryService(contexString);
+        List<TrainingHistory> list = trainingHistoryService.GetAll();
+        for (TrainingHistory trainingHistory : list) {
+            if(trainingHistory.getCustomer().getId() == customer1.getId()){
+                if(trainingHistory.getId() != history.getId()){
+                    if(trainingHistory.getTraining().getFacility().getId() == history.getTraining().getFacility().getId()){
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(!found){
+            for (SportFacility sportFacility : customer1.getVisitedFacilities()) {
+                if(sportFacility.getId() == history.getTraining().getFacility().getId()){
+                    customer1.getVisitedFacilities().remove(sportFacility);
+                    break;
+                }
+            }
             Update(customer1);
         }
     }

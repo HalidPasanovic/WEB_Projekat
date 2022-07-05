@@ -19,6 +19,7 @@ Vue.component("trainings", {
                                 <th scope="col">Name</th>
                                 <th scope="col">Sport facility</th>
                                 <th scope="col">Date</th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -26,6 +27,7 @@ Vue.component("trainings", {
                             <td>{{f?.training?.name}}</td>
                             <td>{{f?.training?.facility?.name}}</td>
                             <td>{{f?.applicationDateTime}}</td>
+                            <td><button v-if="CheckIfCanDelete(f?.applicationDateTime)" class="btn btn-dark" v-on:click = "DeleteHistory(f?.id, index)">Delete</button></td>
                         </tr>
                         </tbody>
                     </table>
@@ -51,7 +53,23 @@ Vue.component("trainings", {
     	
         CreateMembership : function(){
             router.push(`/membership/`)
-        }
+        },
+
+        DeleteHistory: function(id, index){
+			r = confirm("Are you sure?")
+    		if (r){
+	    		axios
+	            .delete('rest/trainingHistory/' + id)
+	            .then(response => (this.trainings.splice(index, 1)))
+    		}
+		},
+
+        CheckIfCanDelete : function(time) {
+            var selectedTime = Date.parse(time)
+            var today = new Date()
+            today.setDate(today.getDate() + 2)
+			return selectedTime > today
+		}
     },
     computed: {
     resultQuery(){
