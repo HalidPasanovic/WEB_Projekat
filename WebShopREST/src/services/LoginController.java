@@ -116,4 +116,23 @@ public class LoginController {
 		}
 		
 	}
+
+	@POST
+	@Path("/changeUser/trainer")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response ChangeTrainer(Trainer element) {
+		
+		HttpSession session = request.getSession();
+		UserService userService = (UserService) ctx.getAttribute("UserService");
+
+		
+		if(userService.ChangeTrainer(element)){
+			session.setAttribute("user", element);
+			return Response.status(200).build();
+		}
+		else{
+			return Response.status(400).entity("Something went wrong!").build();
+		}
+		
+	}
 }

@@ -140,6 +140,57 @@ public class TrainingHistoryController implements ICrud<TrainingHistory> {
     }
 
     @GET
+	@Path("/specific/trainer/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<TrainingHistory> GetAllForTrainer(@PathParam("id") int id) throws Exception {
+        ITrainingHistoryService service = (ITrainingHistoryService) ctx.getAttribute("TrainingHistoryService");
+        List<TrainingHistory> histories = service.GetAll();
+        List<TrainingHistory> result = new ArrayList<>();
+        for (TrainingHistory trainingHistory : histories) {
+            if(trainingHistory.getTrainer().getId() == id){
+                result.add(trainingHistory);
+            }
+        }
+        return result;
+    }
+
+    @GET
+	@Path("/specific/trainer/personal/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<TrainingHistory> GetAllForTrainerPersonal(@PathParam("id") int id) throws Exception {
+        ITrainingHistoryService service = (ITrainingHistoryService) ctx.getAttribute("TrainingHistoryService");
+        List<TrainingHistory> histories = service.GetAll();
+        List<TrainingHistory> result = new ArrayList<>();
+        for (TrainingHistory trainingHistory : histories) {
+            if(trainingHistory.getTrainer().getId() == id){
+                //Check if training is group -1220821779 is id of group training
+                if(trainingHistory.getTraining().getType().getId() == -1220821779){
+                    result.add(trainingHistory);
+                }
+            }
+        }
+        return result;
+    }
+
+    @GET
+	@Path("/specific/trainer/group/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<TrainingHistory> GetAllForTrainerGroup(@PathParam("id") int id) throws Exception {
+        ITrainingHistoryService service = (ITrainingHistoryService) ctx.getAttribute("TrainingHistoryService");
+        List<TrainingHistory> histories = service.GetAll();
+        List<TrainingHistory> result = new ArrayList<>();
+        for (TrainingHistory trainingHistory : histories) {
+            if(trainingHistory.getTrainer().getId() == id){
+                //Check if training is group 294930004 is id of group training
+                if(trainingHistory.getTraining().getType().getId() == 294930004){
+                    result.add(trainingHistory);
+                }
+            }
+        }
+        return result;
+    }
+
+    @GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
     @Override

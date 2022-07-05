@@ -59,6 +59,15 @@ public class UserService {
         }
     }
 
+    public boolean ChangeTrainer(User user){
+        try {
+            trainerService.Update((Trainer) user);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public User Login(String username, String password) throws Exception {
         Instantite();
         if(users.containsKey(username)){
