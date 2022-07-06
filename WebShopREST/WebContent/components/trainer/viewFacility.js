@@ -51,7 +51,6 @@ Vue.component("viewFacility", {
 						<th scope="col">Customer</th>
 						<th scope="col">Comment</th>
 						<th scope="col">Rating</th>
-						<th scope="col"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -59,7 +58,6 @@ Vue.component("viewFacility", {
 						<td>{{f?.customer?.name}}</td>
 						<td>{{f?.content}}</td>
 						<td>{{f?.rating}}</td>
-						<td><button v-if="CheckIfCanDeleteComment(f?.customer?.id)" class="btn btn-dark" v-on:click = "DeleteComment(f?.id, index)">Delete</button></td>
 					</tr>
 				</tbody>
 			</table>
@@ -89,11 +87,6 @@ Vue.component("viewFacility", {
 			</table>
 		</div>
 	</div>
-	<div class="d-flex flex-nowrap" style="width: 100%; margin-top: 20px;">
-		<div v-if="canComment">
-			<button class="w-100 btn btn-lg btn-dark" style="margin-top: 50px;" v-on:click = "CreateComment">Leave a comment</button>
-		</div>
-	</div>
 </div>		  
 `
 	,
@@ -113,27 +106,6 @@ Vue.component("viewFacility", {
 			}
 			return true;
 		},
-
-		CreateComment: function(){
-			router.push(`/createComment/${this.id}`)
-		},
-
-		DeleteComment: function(id, index){
-			r = confirm("Are you sure?")
-    		if (r){
-	    		axios
-	            .delete('rest/comment/' + id)
-	            .then(response => (this.comments.splice(index, 1)))
-    		}
-		},
-
-		CheckIfCanDeleteComment : function(id) {
-			return id == this.user.id
-		},
-
-		CreateAppointment: function(id){
-			router.push(`/createAppointment/${id}`)
-		}
 	},
 	mounted() {
 		this.id = this.$route.params.id;
@@ -144,13 +116,7 @@ Vue.component("viewFacility", {
 				{
 					this.user = response.data;
 					axios
-						.post('rest/comment/canComment/'+ this.id, this.user)
-						.then(response => 
-						{
-							this.canComment = response.data;
-						})
-					axios
-						.post('rest/comment/accepted/' + this.id, this.user)
+						.get('rest/comment/accepted/' + this.id)
 						.then(response => (
 							this.comments = response.data))
 					axios

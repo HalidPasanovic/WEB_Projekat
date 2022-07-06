@@ -33,7 +33,8 @@ Vue.component("trainings", {
                     </table>
                 </div>
                 <div style="margin-top: 20px; margin-bottom: 20px;">
-                    <button class="w-100 btn btn-lg btn-dark" v-on:click = "CreateMembership">Create membership</button>
+                    <button class="w-100 btn btn-lg btn-dark" v-on:click = "Personal">Group trainings</button>
+                    <button class="w-100 btn btn-lg btn-dark" v-on:click = "Group">Personal trainings</button>
                 </div>
             </div>
         </div>
@@ -45,15 +46,11 @@ Vue.component("trainings", {
             {
                 this.user = response.data;
                 axios
-                    .get('rest/trainingHistory/specific/' + this.user.id)
+                    .get('rest/trainingHistory/specific/trainer/' + this.user.id)
                     .then(response => (this.trainings = response.data))
             })
     },
     methods: {
-    	
-        CreateMembership : function(){
-            router.push(`/membership/`)
-        },
 
         DeleteHistory: function(id, index){
 			r = confirm("Are you sure?")
@@ -69,7 +66,15 @@ Vue.component("trainings", {
             var today = new Date()
             today.setDate(today.getDate() + 2)
 			return selectedTime > today
-		}
+		},
+
+        Personal : function(){
+            router.push(`/personalTrainings`)
+        },
+
+        Group : function(){
+            router.push(`/groupTrainings`)
+        },
     },
     computed: {
     resultQuery(){

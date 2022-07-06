@@ -126,4 +126,38 @@ public class CommentController implements ICrud<Comment>{
         return service.GetAllWithLogicalyDeleted();
     }
     
+    @PUT
+	@Path("/reject/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public Comment Reject(@PathParam("id") int id) throws Exception {
+        CommentService service = (CommentService) ctx.getAttribute("CommentService");
+        service.Reject(id);
+        return service.Read(id);
+    }
+    
+    @PUT
+	@Path("/accept/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public Comment Accept(@PathParam("id") int id) throws Exception {
+        CommentService service = (CommentService) ctx.getAttribute("CommentService");
+        service.Accept(id);
+        return service.Read(id);
+    }
+
+    @GET
+	@Path("/accepted/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<Comment> GetAllApprovedCommentsForFacility(@PathParam("id") int id) throws Exception {
+        ICommentService service = (ICommentService) ctx.getAttribute("CommentService");
+        return service.GetAllApprovedCommentsForFacility(id);
+    }
+
+    @POST
+	@Path("/accepted/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<Comment> GetAllApprovedCommentsForFacilityWithUserComment(@PathParam("id") int id, Customer customer) throws Exception {
+        ICommentService service = (ICommentService) ctx.getAttribute("CommentService");
+        return service.GetAllApprovedCommentsForFacilityWithUserComments(id, customer.getId());
+    }
+    
 }

@@ -34,6 +34,11 @@ public class Manager extends User {
 	public void setFacilities(Set<SportFacility> facilities) {
 		this.facilities = facilities;
 	}
+	
+	public void addFacility(SportFacility f)
+	{
+		this.facilities.add(f);
+	}
 
 	@Override
 	public List<String> ToCSV() {

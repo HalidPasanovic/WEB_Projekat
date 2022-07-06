@@ -10,5 +10,7 @@ public interface ISportFacilityRepository extends ICrud<SportFacility> {
     public void CheckIfFacilityTypeIsUsed(FacilityType type) throws Exception;
 
     public void CheckIfRecreationTypeIsUsed(RecreationType type) throws Exception;
+
+    public int CreateAndReturn(SportFacility element) throws Exception;
     
 }

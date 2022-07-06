@@ -12,7 +12,7 @@ public interface ICrud<T> {
 	 * @throws Exception
 	 */
 	public void Create(T element) throws Exception;
-
+	
 	/**
 	 * @param id
 	 * @throws Exception

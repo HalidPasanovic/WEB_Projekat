@@ -35,8 +35,8 @@ Vue.component("membership", {
 
                     <div>
                         <label for="Type" class="form-label">PromoCode</label>
-                        <input type="text" class="form-control" :value = "promoCodeString" id="Type" placeholder="" disabled>
-                        <button class="w-100 btn btn-lg btn-dark">Check promocode</button>
+                        <input type="text" class="form-control" :value = "promoCodeString" id="Type" placeholder="">
+                        <button class="w-100 btn btn-lg btn-dark" v-on:click = "CheckPromo">Check promocode</button>
                     </div>
                     <button class="w-100 btn btn-lg btn-dark" style="margin-top: 50px;" v-on:click = "CreateMembership">Create</button>
                 </div>
@@ -57,10 +57,6 @@ Vue.component("membership", {
     },
     methods: {
     	
-        CreateMembership : function(){
-            router.push(`/membership/`)
-        },
-
         GetValidDate : function(){
             var today = new Date()
             var selected = this.GetSelection()
@@ -79,6 +75,10 @@ Vue.component("membership", {
 
         GetSelection : function(){
             return this.membershipTypes.find(item => item.id === this.selectedMembershipType)
+        },
+
+        CheckPromo: function(){
+            this.promoCodePercentage = 0.3
         },
 
         CreateMembership : function(){

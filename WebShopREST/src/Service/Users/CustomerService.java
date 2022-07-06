@@ -2,22 +2,28 @@ package Service.Users;
 
 import java.util.HashMap;
 import java.util.List;
+import Model.Facilities.SportFacility;
 import Model.Memberships.Membership;
+import Model.Trainings.TrainingHistory;
 import Model.Users.Customer;
 import Model.Users.User;
+import Repository.Interfaces.Memberships.IMembershipRepository;
 import Repository.Interfaces.Users.ICustomerRepository;
 import Repository.Memberships.MembershipRepository;
 import Repository.Users.CustomerRepository;
 import Service.Interfaces.Users.ICustomerService;
+import Service.Trainings.TrainingHistoryService;
 
 public class CustomerService implements ICustomerService {
 
     private ICustomerRepository repository;
+    private IMembershipRepository membershipRepository;
     private String contexString;
 
     public CustomerService(String contextPath) {
         contexString = contextPath;
         repository = CustomerRepository.getInstance(contextPath);
+        membershipRepository = MembershipRepository.getInstance(contextPath);
     }
 
     @Override
@@ -70,6 +76,62 @@ public class CustomerService implements ICustomerService {
         }
         customer.setMembership(membership);
         Update(customer);
+    }
+
+    @Override
+    public void CheckIfVisitedFacilityAndUpdateMembership(int id, Customer customer) throws Exception {
+    	Customer customer1 = Read(customer.getId());
+        Membership membership = membershipRepository.Read(customer1.getMembership().getId());
+        membership.incrementUsedVisits();
+        if(membership.getUsedVisits() >= membership.getType().getVisitationCount()){
+            membership.setStatus(false);
+        }
+        membershipRepository.Update(membership);
+        boolean found = false;
+        for (SportFacility it : customer1.getVisitedFacilities()) {
+            if(it.getId() == id){
+                found = true;
+                break;
+            }
+        }
+        if(!found){
+            customer1.getVisitedFacilities().add(new SportFacility(id));
+            Update(customer1);
+        }
+    }
+
+    @Override
+    public void CheckIfAnotherVisitExistsAndUpdateMembership(int id, TrainingHistory history)throws Exception {
+        Customer customer1 = Read(history.getCustomer().getId());
+        Membership membership = membershipRepository.Read(customer1.getMembership().getId());
+        membership.reduceUsedVisits();
+        if(membership.getUsedVisits() < membership.getType().getVisitationCount()){
+            membership.setStatus(true);
+        }
+        membershipRepository.Update(membership);
+
+        boolean found = false;
+        TrainingHistoryService trainingHistoryService = new TrainingHistoryService(contexString);
+        List<TrainingHistory> list = trainingHistoryService.GetAll();
+        for (TrainingHistory trainingHistory : list) {
+            if(trainingHistory.getCustomer().getId() == customer1.getId()){
+                if(trainingHistory.getId() != history.getId()){
+                    if(trainingHistory.getTraining().getFacility().getId() == history.getTraining().getFacility().getId()){
+                        found = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if(!found){
+            for (SportFacility sportFacility : customer1.getVisitedFacilities()) {
+                if(sportFacility.getId() == history.getTraining().getFacility().getId()){
+                    customer1.getVisitedFacilities().remove(sportFacility);
+                    break;
+                }
+            }
+            Update(customer1);
+        }
     }
     
 }

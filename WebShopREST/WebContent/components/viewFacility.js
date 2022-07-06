@@ -57,9 +57,9 @@ Vue.component("viewFacility", {
 				<input type="checkbox" class="form-check-input" id="same-address" :value="facility?.status" disabled>
 				<label class="form-check-label" for="same-address">Renovating currently</label>
 			</div>
-			<div v-if="checkIfRatingExists(facility?.id)">
+			<div v-if="checkIfRatingExists(facility?.rating)">
 				<label for="Type" class="form-label">Rating</label>
-				<input type="number" class="form-control" id="Type" placeholder="" :value="getRating(facility?.id)" disabled>
+				<input type="number" class="form-control" id="Type" placeholder="" :value="facility?.rating" disabled>
 			</div>
 		</div>
 		<div style="margin-left: 50px;">
@@ -86,7 +86,7 @@ Vue.component("viewFacility", {
 				<tbody>
 					<tr v-for="(f, index) in comments">
 						<td>{{f?.customer?.name}}</td>
-						<td>{{f?.comment}}</td>
+						<td>{{f?.content}}</td>
 						<td>{{f?.rating}}</td>
 					</tr>
 				</tbody>
@@ -120,18 +120,6 @@ Vue.component("viewFacility", {
 `
 	,
 	methods: {
-		editProduct: function () {
-			event.preventDefault();
-			if (this.id != -1) {
-				axios.put('rest/products/' + this.product.id, this.product).
-					then(response => (router.push(`/`)));
-			}
-			else {
-				axios.post('rest/products', this.product).
-					then(response => (router.push(`/`)));
-			}
-		},
-
 		isEmpty : function(obj) {
 			var result = obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype
 			if(result === false){
@@ -140,17 +128,7 @@ Vue.component("viewFacility", {
 			return result
 		},
 
-		getRating: function(id) {
-			var rating = 0;
-			axios
-				.get('rest/comment/rating/' + id)
-				.then(response => (
-					rating = response.data))
-			return rating
-		},
-
-		checkIfRatingExists: function(id){
-			var rating = this.getRating(id)
+		checkIfRatingExists: function(rating){
 			if(rating === 0){
 				return false
 			}
@@ -161,12 +139,12 @@ Vue.component("viewFacility", {
 		this.id = this.$route.params.id;
 		if (this.id != -1) {
 			axios
-				.get('rest/facility/' + this.id)
+				.get('rest/facility/dto/' + this.id)
 				.then(response => (
 					this.facility = response.data,
 					instantiateMap(response.data)))
 			axios
-				.get('rest/facility/comments/' + this.id)
+				.get('rest/facility/comments/accepted/' + this.id)
 				.then(response => (
 					this.comments = response.data))
 			axios

@@ -17,7 +17,9 @@ import Repository.Interfaces.Facilities.IFacilityTypeRepository;
 import Repository.Interfaces.Facilities.IRecreationTypeRepository;
 import Repository.Interfaces.Facilities.ISportFacilityRepository;
 import Repository.Interfaces.Trainings.ITrainingRepository;
+import Repository.Interfaces.Users.ICustomerRepository;
 import Repository.Trainings.TrainingRepository;
+import Repository.Users.CustomerRepository;
 import Service.Interfaces.Facilities.IFacilityTypeService;
 import Service.Interfaces.Facilities.IRecreationTypeService;
 import Service.Interfaces.Facilities.ISportFacilityService;
@@ -46,6 +48,11 @@ public class SportFacilityService implements ISportFacilityService {
     @Override
     public void Create(SportFacility element) throws Exception {
         repository.Create(element);
+    }
+    
+    
+    public int CreateAndReturn(SportFacility element) throws Exception {
+        return repository.CreateAndReturn(element);
     }
 
     @Override
@@ -124,9 +131,11 @@ public class SportFacilityService implements ISportFacilityService {
 
     @Override
     public List<Comment> GetAllCommentsForFacility(int id) throws Exception {
+        ICustomerRepository customerRepository = CustomerRepository.getInstance(contextString);
         List<Comment> result = new ArrayList<>();
         for (Comment comment : commentRepository.GetAll()) {
             if(comment.getFacility().getId() == id){
+                comment.setCustomer(customerRepository.Read(comment.getCustomer().getId()));
                 result.add(comment);
             }
         }

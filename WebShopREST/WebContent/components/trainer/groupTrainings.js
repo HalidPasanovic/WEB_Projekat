@@ -1,4 +1,4 @@
-Vue.component("trainings", { 
+Vue.component("groupTrainings", { 
 	data: function () {
 	    return {
             user: null,
@@ -10,7 +10,7 @@ Vue.component("trainings", {
 		<div class="d-flex flex-nowrap">
             <div style="width: 100%;">
                 <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
-                    <h3>All trainings</h3>
+                    <h3>Group trainings</h3>
                 </div>
                 <div>
                     <table class="table table-striped table-hover table-dark">
@@ -19,7 +19,6 @@ Vue.component("trainings", {
                                 <th scope="col">Name</th>
                                 <th scope="col">Sport facility</th>
                                 <th scope="col">Date</th>
-                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,13 +26,9 @@ Vue.component("trainings", {
                             <td>{{f?.training?.name}}</td>
                             <td>{{f?.training?.facility?.name}}</td>
                             <td>{{f?.applicationDateTime}}</td>
-                            <td><button v-if="CheckIfCanDelete(f?.applicationDateTime)" class="btn btn-dark" v-on:click = "DeleteHistory(f?.id, index)">Delete</button></td>
                         </tr>
                         </tbody>
                     </table>
-                </div>
-                <div style="margin-top: 20px; margin-bottom: 20px;">
-                    <button class="w-100 btn btn-lg btn-dark" v-on:click = "CreateMembership">Create membership</button>
                 </div>
             </div>
         </div>
@@ -45,15 +40,11 @@ Vue.component("trainings", {
             {
                 this.user = response.data;
                 axios
-                    .get('rest/trainingHistory/specific/' + this.user.id)
+                    .get('rest/trainingHistory/specific/trainer/group/' + this.user.id)
                     .then(response => (this.trainings = response.data))
             })
     },
     methods: {
-    	
-        CreateMembership : function(){
-            router.push(`/membership/`)
-        },
 
         DeleteHistory: function(id, index){
 			r = confirm("Are you sure?")

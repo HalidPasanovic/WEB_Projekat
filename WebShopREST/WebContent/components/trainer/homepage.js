@@ -1,4 +1,4 @@
-Vue.component("mainLogin", { 
+Vue.component("homepage", { 
 	data: function () {
 	    return {
 	      facilities: null,
@@ -6,41 +6,7 @@ Vue.component("mainLogin", {
 	    }
 	},
 	    template: ` 
-		<main class="d-flex flex-nowrap">
-
-            <!-- Sidebar -->
-
-            <div class="b-example-vr d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <svg class="bi pe-none me-2" width="40" height="32">
-                        <use xlink:href="#bootstrap" />
-                    </svg>
-                    <span class="fs-4">FitPass</span>
-                </a>
-                <hr>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="#/" class="nav-link active" aria-current="page">
-                            <svg class="bi pe-none me-2" width="16" height="16">
-                                <use xlink:href="#home" />
-                            </svg>
-                            Facilities
-                        </a>
-                    </li>
-                </ul>
-                <hr>
-                <div>
-                    <a href="#/login" class="d-flex align-items-center text-white text-decoration-none" id="dropdownUser1"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="pictures/ProfilePlaceholderSuit.svg" alt="" width="32" height="32"
-                            class="rounded-circle me-2">
-                        <strong style="margin-left: 5px;">Login</strong>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Content -->
-
+		<div class="d-flex flex-nowrap">
             <div style="width: 100%;">
                 <div style="display: flex; justify-content: center;">
                     <h1>Welcome</h1>
@@ -67,14 +33,14 @@ Vue.component("mainLogin", {
                             <td>{{f.name}}</td>
                             <td>{{f.type.name}}</td>
                             <td>{{f.location.adress.street + " " + f.location.adress.number + " " + f.location.adress.place}}</td>
-                            <td>{{getRating(f?.rating)}}</td>
+                            <td>{{getRate(f?.rating)}}</td>
                             <td>{{f.workRange}}</td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </main>
+        </div>
     	`,
     mounted () {
         axios
@@ -92,12 +58,12 @@ Vue.component("mainLogin", {
             
         },
 
-        getRating: function(rating) {
+        getRate: function(rating) {
 			if(rating === 0){
                 return "No ratings"
             }
             return rating
-		},
+        },
 
     	editProduct : function(id) {
     		router.push(`/products/${id}`);
@@ -124,6 +90,19 @@ Vue.component("mainLogin", {
       }else{
         return this.facilities;
       }
-    }
+    },
+
+    getRating() {
+        var rating = 0;
+        axios
+            .get('rest/comment/rating/' + id)
+            .then(response => {
+                rating = response.data
+            })
+        if(rating === 0){
+            return "No ratings"
+        }
+        return rating
+    },
   }
 });
