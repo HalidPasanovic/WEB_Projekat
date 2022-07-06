@@ -1,11 +1,17 @@
-Vue.component("homepage", { 
-	data: function () {
-	    return {
-	      facilities: null,
-	      searchQuery: null
-	    }
-	},
-	    template: ` 
+Vue.component("homepage", {
+    data: function () {
+        return {
+            facilities: null,
+            searchQuery: null,
+            currentSort: 'status',
+            currentSortDir: 'desc',
+            selectedType: '',
+            selectedSearch: '',
+            facilityTypes: null,
+            showOnlyOpened: false
+        }
+    },
+    template: ` 
 		<div class="d-flex flex-nowrap">
             <div style="width: 100%;">
                 <div style="display: flex; justify-content: center;">
@@ -14,6 +20,30 @@ Vue.component("homepage", {
                 <div style="display: flex; justify-content: center; margin-top: 40px;">
                     <h3>Sport Facilities</h3>
                 </div>
+                <div style="float: right;" class="d-flex flex-nowrap">
+                    <div class="form-check" style="margin-right: 10px;">
+                        <label class="form-check-label" for="same-address">Open only</label>
+                        <input type="checkbox" class="form-check-input" id="same-address" v-model="showOnlyOpened">
+                    </div>
+                    <div style="width: 150px;">
+                        <select v-model = "selectedType" class="form-control">
+                            <option value = "" disabled selected>Facility type</option>
+                            <option value = "All" >All</option>
+                            <option v-for="(f, index) in facilityTypes" :value = "f.name">{{f.name}}</option>
+                        </select>
+                    </div>
+                    <div style="width: 150px;">
+                        <select v-model = "selectedSearch" class="form-control">
+                            <option value = "" disabled selected>Search by</option>
+                            <option value = "name" >Name</option>
+                            <option value = "location" >Location</option>
+                            <option value = "rating">Rating</option>
+                        </select>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" class="form-control btn-dark" v-model="searchQuery" placeholder="Search.." name="search">
+                    </div>
+			    </div>
                 <div>
                     <table class="table table-striped table-hover table-dark">
                         <thead>
@@ -27,7 +57,7 @@ Vue.component("homepage", {
                             </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(f, index) in facilities" @dblclick="viewFacility(f.id)">
+                        <tr v-for="(f, index) in resultQuery" @dblclick="viewFacility(f.id)">
                             <td><img :src="'pictures/' + f.logoLocation" alt="" width="100" height="100"
                             class="rounded-circle me-2" style="margin-bottom: 25px;"></td>
                             <td>{{f.name}}</td>
@@ -42,67 +72,122 @@ Vue.component("homepage", {
             </div>
         </div>
     	`,
-    mounted () {
+    mounted() {
         axios
-          .get('rest/facility/dto')
-          .then(response => {
+            .get('rest/facility/dto')
+            .then(response => {
                 this.facilities = response.data
-          })
+            })
+        axios
+            .get('rest/facilitytypes/')
+            .then(response => {
+                this.facilityTypes = response.data
+            })
     },
     methods: {
-    	addProduct : function() {
-    		router.push(`/createFacility/`);
-    	},
-        viewFacility : function(id) {
+        addProduct: function () {
+            router.push(`/createFacility/`);
+        },
+        viewFacility: function (id) {
             router.push(`/viewFacility/${id}`);
-            
+
         },
 
-        getRate: function(rating) {
-			if(rating === 0){
+        getRate: function (rating) {
+            if (rating === 0) {
                 return "No ratings"
             }
             return rating
         },
 
-    	editProduct : function(id) {
-    		router.push(`/products/${id}`);
-    	},
-    	deleteProduct : function(id, index) {
-    		r = confirm("Are you sure?")
-    		if (r){
-	    		axios
-	            .delete('rest/products/' + id)
-	            .then(response => (this.facilities.splice(index, 1)))
-    		}
-    	}
+        editProduct: function (id) {
+            router.push(`/products/${id}`);
+        },
+        deleteProduct: function (id, index) {
+            r = confirm("Are you sure?")
+            if (r) {
+                axios
+                    .delete('rest/products/' + id)
+                    .then(response => (this.facilities.splice(index, 1)))
+            }
+        },
+
+        sort: function (s) {
+            //if s == current sort, reverse
+            if (s === this.currentSort) {
+                this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+            }
+            this.currentSort = s;
+        },
+
+        findProp: function (obj, prop, defval) {
+            if (typeof defval == 'undefined') defval = null;
+            prop = prop.split('.');
+            for (var i = 0; i < prop.length; i++) {
+                if (typeof obj[prop[i]] == 'undefined')
+                    return defval;
+                obj = obj[prop[i]];
+            }
+            return obj;
+        },
+
+        filter: function (item, v) {
+            if (this.selectedSearch == '') {
+                return true
+            }
+            if (this.selectedSearch == 'location') {
+                var street = this.findProp(item, 'location.adress.street')
+                var number = this.findProp(item, 'location.adress.number')
+                var place = this.findProp(item, 'location.adress.place')
+                return street.toLowerCase().includes(v)
+                    || number.toString().toLowerCase().includes(v)
+                    || place.toLowerCase().includes(v)
+            }
+            if (this.selectedSearch == 'rating') {
+                var rating = this.getRate(item.rating)
+                return rating.toLowerCase().includes(v)
+            }
+            var value = this.findProp(item, this.selectedSearch)
+            return value.toLowerCase().includes(v)
+        },
+
+        getLocation: function (element) {
+            return element.location.adress.street + " " + element.location.adress.number + " " + element.location.adress.place
+        }
     },
     computed: {
-    resultQuery(){
-      if(this.searchQuery){
-      return this.facilities.filter((item)=>{
-        return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
-        	|| item.type.name.toLowerCase().includes(v) 
-        	|| item.location.adress.street.toLowerCase().includes(v) 
-        	|| item.location.adress.number.toString().toLowerCase().includes(v)
-        	|| item.location.adress.place.toLowerCase().includes(v))
-      })
-      }else{
-        return this.facilities;
-      }
-    },
-
-    getRating() {
-        var rating = 0;
-        axios
-            .get('rest/comment/rating/' + id)
-            .then(response => {
-                rating = response.data
-            })
-        if(rating === 0){
-            return "No ratings"
+        resultQuery() {
+            if (this.facilities) {
+                this.facilities = this.facilities.sort((a, b) => {
+                    let modifier = 1;
+                    if (this.currentSortDir === 'desc') modifier = -1;
+                    if (this.currentSort == 'location') {
+                        if (this.getLocation(a) < this.getLocation(b)) return -1 * modifier;
+                        if (this.getLocation(a) > this.getLocation(b)) return 1 * modifier;
+                    } else {
+                        if (this.findProp(a, this.currentSort) < this.findProp(b, this.currentSort)) return -1 * modifier;
+                        if (this.findProp(a, this.currentSort) > this.findProp(b, this.currentSort)) return 1 * modifier;
+                    }
+                    return 0;
+                })
+            }
+            var result = this.facilities
+            if (this.showOnlyOpened) {
+                result = result.filter((item) => {
+                    return item.status
+                })
+            }
+            if (this.selectedType != 'All' && this.selectedType != '') {
+                result = result.filter((item) => {
+                    return item.type.name == this.selectedType
+                })
+            }
+            if (this.searchQuery) {
+                result = result.filter((item) => {
+                    return this.searchQuery.toLowerCase().split(' ').every(v => this.filter(item, v))
+                })
+            }
+            return result
         }
-        return rating
-    },
-  }
+    }
 });

@@ -152,7 +152,7 @@ public class SportFacility extends IDClass {
 			recreationTypes.add(new RecreationType(Integer.parseInt(values.get(i++))));
 		}
 
-		status = Boolean.getBoolean(values.get(i++));
+		status = Boolean.parseBoolean(values.get(i++));
 		workRange = values.get(i++);
 		logoLocation = values.get(i++);
 
