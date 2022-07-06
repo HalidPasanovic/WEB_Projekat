@@ -2,7 +2,9 @@ Vue.component("mainLogin", {
     data: function () {
         return {
             facilities: null,
-            searchQuery: null,
+            nameQuery: null,
+            locationQuery: null,
+            ratingQuery: null,
             currentSort: 'status',
             currentSortDir: 'desc',
             selectedType: '',
@@ -66,17 +68,9 @@ Vue.component("mainLogin", {
                             <option v-for="(f, index) in facilityTypes" :value = "f.name">{{f.name}}</option>
                         </select>
                     </div>
-                    <div style="width: 150px;">
-                        <select v-model = "selectedSearch" class="form-control">
-                            <option value = "" disabled selected>Search by</option>
-                            <option value = "name" >Name</option>
-                            <option value = "location" >Location</option>
-                            <option value = "rating">Rating</option>
-                        </select>
-                    </div>
-                    <div class="search-container">
-                        <input type="text" class="form-control btn-dark" v-model="searchQuery" placeholder="Search.." name="search">
-                    </div>
+                    <input style="width: 150px;" type="text" class="form-control btn-dark" v-model="nameQuery" placeholder="Name" name="search">
+                    <input style="width: 150px;" type="text" class="form-control btn-dark" v-model="locationQuery" placeholder="Location" name="search">
+                    <input style="width: 150px;" type="number" class="form-control btn-dark" v-model="ratingQuery" placeholder="Rating" name="search">
 			    </div>
                 <div>
                     <table class="table table-striped table-hover table-dark">
@@ -165,24 +159,23 @@ Vue.component("mainLogin", {
             return obj;
         },
 
-        filter: function (item, v) {
-            if (this.selectedSearch == '') {
-                return true
-            }
-            if (this.selectedSearch == 'location') {
-                var street = this.findProp(item, 'location.adress.street')
-                var number = this.findProp(item, 'location.adress.number')
-                var place = this.findProp(item, 'location.adress.place')
-                return street.toLowerCase().includes(v)
-                    || number.toString().toLowerCase().includes(v)
-                    || place.toLowerCase().includes(v)
-            }
-            if (this.selectedSearch == 'rating') {
-                var rating = this.getRate(item.rating)
-                return rating.toLowerCase().includes(v)
-            }
-            var value = this.findProp(item, this.selectedSearch)
+        filterName: function (item, v) {
+            var value = this.findProp(item, 'name')
             return value.toLowerCase().includes(v)
+        },
+
+        filterLocation: function (item, v) {
+            var street = this.findProp(item, 'location.adress.street')
+            var number = this.findProp(item, 'location.adress.number')
+            var place = this.findProp(item, 'location.adress.place')
+            return street.toLowerCase().includes(v)
+                || number.toString().toLowerCase().includes(v)
+                || place.toLowerCase().includes(v)
+        },
+
+        filterRating: function (item, v) {
+            var rating = this.getRate(item.rating)
+            return rating.toLowerCase().includes(v)
         },
 
         getRate: function (rating) {
@@ -223,11 +216,23 @@ Vue.component("mainLogin", {
                     return item.type.name == this.selectedType
                 })
             }
-            if (this.searchQuery) {
+            if (this.nameQuery) {
                 result = result.filter((item) => {
-                    return this.searchQuery.toLowerCase().split(' ').every(v => this.filter(item, v))
+                    return this.nameQuery.toLowerCase().split(' ').every(v => this.filterName(item, v))
                 })
             }
+            if (this.locationQuery) {
+                result = result.filter((item) => {
+                    return this.locationQuery.toLowerCase().split(' ').every(v => this.filterLocation(item, v))
+                })
+            }
+            if (this.ratingQuery) {
+                var query = this.ratingQuery.toString()
+                result = result.filter((item) => {
+                    return query.toLowerCase().split(' ').every(v => this.filterRating(item, v))
+                })
+            }
+            
             return result
         }
     }
