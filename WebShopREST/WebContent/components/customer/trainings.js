@@ -7,7 +7,7 @@ Vue.component("trainings", {
             price1: null,
             price2: null,
             date1: null,
-            date2: '9999-12-31',
+            date2: null,
             currentSort: 'status',
             currentSortDir: 'desc',
             selectedType: '',
@@ -23,7 +23,7 @@ Vue.component("trainings", {
                 <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
                     <h3>All trainings</h3>
                 </div>
-                 <div style="float: right;" class="d-flex flex-nowrap">
+                <div style="float: right;" class="d-flex flex-nowrap">
                     <div style="width: 150px;">
                         <select v-model = "selectedType" class="form-control">
                             <option value = "" disabled selected>Facility type</option>
@@ -33,7 +33,7 @@ Vue.component("trainings", {
                     </div>
                     <div style="width: 150px;">
                         <select v-model = "selectedTrainingType" class="form-control">
-                            <option value = "" disabled selected>Facility type</option>
+                            <option value = "" disabled selected>Training type</option>
                             <option value = "All" >All</option>
                             <option v-for="(f, index) in trainingTypes" :value = "f.name">{{f.name}}</option>
                         </select>
@@ -137,46 +137,58 @@ Vue.component("trainings", {
             return obj;
         },
 
-        filter: function (item, v) {
-            if (this.selectedSearch == '') {
+        filterDate: function (item) {
+            if ((this.date1 === null || this.date1 === '') || (this.date2 === null || this.date2 === '')) {
                 return true
-            } else if (this.selectedSearch == 'date') {
-                var value = this.findProp(item, 'applicationDateTime')
-                return value > this.date1 && value < this.date2
-            } else if (this.selectedSearch == 'price') {
-                var value = this.findProp(item, 'training.aditionalCost')
-                return value > this.price1 && value < this.price2
-            } else {
-                var value = this.findProp(item, this.selectedSearch)
-                return value.toLowerCase().includes(v)
             }
+            var value = this.findProp(item, 'applicationDateTime')
+            return value >= this.date1 && value <= this.date2
+        },
+
+        filterPrice: function (item) {
+            if ((this.price1 === null || this.price1 === '') || (this.price2 === null || this.price2 === '') ) {
+                return true
+            }
+            var value = this.findProp(item, 'training.aditionalCost')
+            return value >= this.price1 && value <= this.price2
+        },
+
+        filterName: function (item, v) {
+            var value = this.findProp(item, 'training.name')
+            return value.toLowerCase().includes(v)
         }
     },
     computed: {
         resultQuery() {
-            if (this.trainings) {
-                this.trainings = this.trainings.sort((a, b) => {
+            var result = this.trainings
+            if (result) {
+                result = result.sort((a, b) => {
                     let modifier = 1;
                     if (this.currentSortDir === 'desc') modifier = -1;
                     if (this.findProp(a, this.currentSort) < this.findProp(b, this.currentSort)) return -1 * modifier;
                     if (this.findProp(a, this.currentSort) > this.findProp(b, this.currentSort)) return 1 * modifier;
                     return 0;
                 })
-            }
-            var result = this.trainings
-            if (this.selectedType != 'All' && this.selectedType != '') {
+                if (this.selectedType != 'All' && this.selectedType != '') {
+                    result = result.filter((item) => {
+                        return item.training.facility.type.name == this.selectedType
+                    })
+                }
+                if (this.selectedTrainingType != 'All' && this.selectedTrainingType != '') {
+                    result = result.filter((item) => {
+                        return item.training.type.name == this.selectedTrainingType
+                    })
+                }
+                if(this.searchQuery){
+                    result = result.filter((item) => {
+                        return this.searchQuery.toLowerCase().split(' ').every(v => this.filterName(item, v))
+                    })
+                }
                 result = result.filter((item) => {
-                    return item.training.facility.type.name == this.selectedType
+                    return this.filterPrice(item)
                 })
-            }
-            if (this.selectedTrainingType != 'All' && this.selectedTrainingType != '') {
                 result = result.filter((item) => {
-                    return item.training.type.name == this.selectedTrainingType
-                })
-            }
-            if (this.searchQuery) {
-                result = result.filter((item) => {
-                    return this.searchQuery.toLowerCase().split(' ').every(v => this.filter(item, v))
+                    return this.filterDate(item)
                 })
             }
             return result
