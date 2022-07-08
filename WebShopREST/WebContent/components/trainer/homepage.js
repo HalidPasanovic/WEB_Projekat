@@ -94,18 +94,6 @@ Vue.component("homepage", {
             return rating
         },
 
-        editProduct: function (id) {
-            router.push(`/products/${id}`);
-        },
-        deleteProduct: function (id, index) {
-            r = confirm("Are you sure?")
-            if (r) {
-                axios
-                    .delete('rest/products/' + id)
-                    .then(response => (this.facilities.splice(index, 1)))
-            }
-        },
-
         sort: function (s) {
             //if s == current sort, reverse
             if (s === this.currentSort) {

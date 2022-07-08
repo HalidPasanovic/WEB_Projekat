@@ -92,23 +92,6 @@ Vue.component("groupTrainings", {
             })
     },
     methods: {
-
-        DeleteHistory: function (id, index) {
-            r = confirm("Are you sure?")
-            if (r) {
-                axios
-                    .delete('rest/trainingHistory/' + id)
-                    .then(response => (this.trainings.splice(index, 1)))
-            }
-        },
-
-        CheckIfCanDelete: function (time) {
-            var selectedTime = Date.parse(time)
-            var today = new Date()
-            today.setDate(today.getDate() + 2)
-            return selectedTime > today
-        },
-
         sort: function (s) {
             //if s == current sort, reverse
             if (s === this.currentSort) {

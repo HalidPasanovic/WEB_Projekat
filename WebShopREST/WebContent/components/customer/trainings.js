@@ -103,12 +103,18 @@ Vue.component("trainings", {
         },
 
         DeleteHistory: function (id, index) {
-            r = confirm("Are you sure?")
-            if (r) {
-                axios
-                    .delete('rest/trainingHistory/' + id)
-                    .then(response => (this.trainings.splice(index, 1)))
+            try {
+                r = confirm("Are you sure?")
+                if (r) {
+                    axios
+                        .delete('rest/trainingHistory/' + id)
+                        .then(response => (this.trainings.splice(index, 1)))
+                        .catch((e) => {alert(e?.response?.data)})
+                }
+            } catch (error) {
+                alert(error)
             }
+
         },
 
         CheckIfCanDelete: function (time) {
@@ -146,7 +152,7 @@ Vue.component("trainings", {
         },
 
         filterPrice: function (item) {
-            if ((this.price1 === null || this.price1 === '') || (this.price2 === null || this.price2 === '') ) {
+            if ((this.price1 === null || this.price1 === '') || (this.price2 === null || this.price2 === '')) {
                 return true
             }
             var value = this.findProp(item, 'training.aditionalCost')
@@ -179,7 +185,7 @@ Vue.component("trainings", {
                         return item.training.type.name == this.selectedTrainingType
                     })
                 }
-                if(this.searchQuery){
+                if (this.searchQuery) {
                     result = result.filter((item) => {
                         return this.searchQuery.toLowerCase().split(' ').every(v => this.filterName(item, v))
                     })

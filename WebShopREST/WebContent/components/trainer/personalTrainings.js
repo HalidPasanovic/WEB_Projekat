@@ -1,8 +1,8 @@
-Vue.component("personalTrainings", { 
-	data: function () {
-	    return {
+Vue.component("personalTrainings", {
+    data: function () {
+        return {
             user: null,
-	        trainings: null,
+            trainings: null,
             searchQuery: null,
             price1: null,
             price2: null,
@@ -15,9 +15,9 @@ Vue.component("personalTrainings", {
             selectedSearch: '',
             facilityTypes: null,
             trainingTypes: null,
-	    }
-	},
-	    template: ` 
+        }
+    },
+    template: ` 
 		<div class="d-flex flex-nowrap">
             <div style="width: 100%;">
                 <div style="display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px;">
@@ -73,11 +73,10 @@ Vue.component("personalTrainings", {
             </div>
         </div>
     	`,
-    mounted () {
+    mounted() {
         axios
-          .get('rest/login/loginstat')
-          .then(response => 
-            {
+            .get('rest/login/loginstat')
+            .then(response => {
                 this.user = response.data;
                 axios
                     .get('rest/trainingHistory/specific/trainer/personal/' + this.user.id)
@@ -96,21 +95,27 @@ Vue.component("personalTrainings", {
     },
     methods: {
 
-        DeleteHistory: function(id, index){
-			r = confirm("Are you sure?")
-    		if (r){
-	    		axios
-	            .delete('rest/trainingHistory/' + id)
-	            .then(response => (this.trainings.splice(index, 1)))
-    		}
-		},
+        DeleteHistory: function (id, index) {
+            try {
+                r = confirm("Are you sure?")
+                if (r) {
+                    axios
+                        .delete('rest/trainingHistory/' + id)
+                        .then(response => (this.trainings.splice(index, 1)))
+                        .catch((e) => {alert(e?.response?.data)})
+                }
+            } catch (error) {
+                alert(error)
+            }
 
-        CheckIfCanDelete : function(time) {
+        },
+
+        CheckIfCanDelete: function (time) {
             var selectedTime = Date.parse(time.applicationDateTime)
             var today = new Date()
             today.setDate(today.getDate() + 2)
-            return selectedTime > today && time.training.type.id == -1220821779
-		},
+            return selectedTime > today && time.training.type.id == -1220821779 // id of personal training
+        },
 
         sort: function (s) {
             //if s == current sort, reverse
@@ -140,7 +145,7 @@ Vue.component("personalTrainings", {
         },
 
         filterPrice: function (item) {
-            if ((this.price1 === null || this.price1 === '') || (this.price2 === null || this.price2 === '') ) {
+            if ((this.price1 === null || this.price1 === '') || (this.price2 === null || this.price2 === '')) {
                 return true
             }
             var value = this.findProp(item, 'training.aditionalCost')
@@ -173,7 +178,7 @@ Vue.component("personalTrainings", {
                         return item.training.type.name == this.selectedTrainingType
                     })
                 }
-                if(this.searchQuery){
+                if (this.searchQuery) {
                     result = result.filter((item) => {
                         return this.searchQuery.toLowerCase().split(' ').every(v => this.filterName(item, v))
                     })
@@ -187,5 +192,5 @@ Vue.component("personalTrainings", {
             }
             return result
         }
-  }
+    }
 });

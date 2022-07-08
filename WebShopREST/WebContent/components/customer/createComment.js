@@ -44,11 +44,17 @@ Vue.component("createComment", {
     },
     methods: {
     	CreateComment : function() {
-            if(this.comment?.rating >= 1 && this.comment?.rating <= 5){
-                axios
-                    .post('rest/comment/', this.comment)
-                router.push(`/`)
+            try {
+                if(this.comment?.rating >= 1 && this.comment?.rating <= 5){
+                    axios
+                        .post('rest/comment/', this.comment)
+                        .catch((e) => {alert(e?.response?.data)})
+                    router.push(`/`)
+                }
+            } catch (error) {
+                alert(error)
             }
+            
     	},
     },
     computed: {
