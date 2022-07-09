@@ -52,7 +52,7 @@ public class MembershipController implements ICrud<Membership>{
             date = date.plusYears(1);
         } else if(element.getType().gettype().equals(MembershipTypeEnum.Monthly)){
             date = date.plusMonths(1);
-        } else if(element.getType().gettype().equals(MembershipTypeEnum.Weeklong){
+        } else if(element.getType().gettype().equals(MembershipTypeEnum.Weeklong)){
             date = date.plusWeeks(1);
         }
         element.setValidUntil(String.valueOf(date));
