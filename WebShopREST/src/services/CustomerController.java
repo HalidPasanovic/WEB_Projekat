@@ -84,6 +84,15 @@ public class CustomerController implements ICrud<Customer> {
     	return repo.GetAll();
     	
     }
+    
+    @GET
+	@Path("/getfacility/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<Customer> GetAll2(@PathParam("id") int id) {
+    	CustomerService repo = (CustomerService) ctx.getAttribute("customerService");
+    	return repo.GetAllForFacility(id);
+    	
+    }
 
 	@POST
 	@Path("/facility/{id}")

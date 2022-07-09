@@ -49,4 +49,10 @@ public class RecreationTypeService implements IRecreationTypeService  {
         return repository.GetAllWithLogicalyDeleted();
     }
 
+	@Override
+	public int CreateAndReturn(RecreationType el) throws Exception {
+		return repository.CreateAndReturn(el);
+	}
+    
+
 }

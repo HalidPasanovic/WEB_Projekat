@@ -71,6 +71,14 @@ public class SportFacility extends IDClass {
 	public String getLogoLocation() {
 		return logoLocation;
 	}
+	
+	public void AddRecreationTypes(RecreationType tt)
+	{
+		if(!recreationTypes.contains(tt))
+		{
+			recreationTypes.add(tt);
+		}
+	}
 
 	public void setLogoLocation(String logoLocation) {
 		this.logoLocation = logoLocation;

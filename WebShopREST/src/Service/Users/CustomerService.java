@@ -1,5 +1,6 @@
 package Service.Users;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import Model.Facilities.SportFacility;
@@ -132,6 +133,24 @@ public class CustomerService implements ICustomerService {
             }
             Update(customer1);
         }
+    }
+    
+    public List<Customer> GetAllForFacility(int id) {
+    	List<Customer> all = repository.GetAll();
+    	List<Customer> list = new ArrayList<Customer>();
+    	for(Customer c : all)
+    	{
+    		for(SportFacility s : c.getVisitedFacilities())
+    		{
+    			if ( s.getId() == id)
+    			{
+    				list.add(c);
+    				break;
+    			}
+    		}
+    	}
+    	
+    	return list;
     }
     
 }

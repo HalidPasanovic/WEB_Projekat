@@ -9,6 +9,7 @@ import Repository.Interfaces.IPromoCodeRepository;
 public class PromoCodeRepository extends Repository<PromoCode> implements IPromoCodeRepository{
 
     private static PromoCodeRepository instance;
+    private int codeLenght = 10;
 
     public static PromoCodeRepository getInstance(String contextPath) {
         if (instance == null) {
@@ -71,6 +72,7 @@ public class PromoCodeRepository extends Repository<PromoCode> implements IPromo
     @Override
     public void Create(PromoCode element) throws Exception {
         element.setId(GenerateId());
+        element.setCode(GenerateCode());
 		ArrayList<PromoCode> result = new ArrayList<>();
 		result.add(element);
 		serializer.ToCSVAppend(fileName, result);
@@ -152,6 +154,32 @@ public class PromoCodeRepository extends Repository<PromoCode> implements IPromo
         if(codeMap.contains(code)){
             throw new Exception("Element not found in idMap");
         }
+    }
+    
+    private String GenerateCode() {
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                    + "0123456789"
+                                    + "abcdefghijklmnopqrstuvxyz";
+
+        StringBuilder sb = new StringBuilder(codeLenght);
+
+        do {
+            // create StringBuffer size of AlphaNumericString
+            sb = new StringBuilder(codeLenght);
+            for (int i = 0; i < codeLenght; i++) {
+                
+                // generate a random number between
+                // 0 to AlphaNumericString variable length
+                int index
+                    = (int)(AlphaNumericString.length()
+                            * Math.random());
+      
+                // add Character one by one in end of sb
+                sb.append(AlphaNumericString
+                              .charAt(index));
+            }
+        } while (codeMap.contains(sb.toString()));
+        return sb.toString();
     }
 
 }

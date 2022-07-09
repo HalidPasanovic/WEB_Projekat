@@ -8,6 +8,7 @@ import Model.Trainings.TrainingType;
 import Model.Users.Trainer;
 import Service.Interfaces.Trainings.ITrainingService;
 import Service.Trainings.TrainingService;
+import Service.Users.TrainerService;
 import services.Interfaces.ICrud;
 
 import javax.annotation.PostConstruct;
@@ -51,10 +52,27 @@ public class TrainingController implements ICrud<Training> {
     @GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Override
     public Training Read(@PathParam("id") int id) throws Exception {
         ITrainingService service = (ITrainingService) ctx.getAttribute("TrainingService");
         return service.Read(id);
+    }
+    
+    @GET
+	@Path("/facility/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<Trainer> Read2(@PathParam("id") int id) throws Exception {
+    	ITrainingService service = (ITrainingService) ctx.getAttribute("TrainingService");
+        return service.getTrainersFromFacility(id);
+    }
+    
+    @GET
+	@Path("/getfacility/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public List<Training> Read3(@PathParam("id") int id) throws Exception {
+    	ITrainingService service = (ITrainingService) ctx.getAttribute("TrainingService");
+    	return service.getTrainingsForFacility(id);
     }
 
     @PUT

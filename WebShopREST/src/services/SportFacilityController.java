@@ -11,6 +11,7 @@ import Model.Facilities.RecreationType;
 import Model.Facilities.SportFacility;
 import Model.Trainings.Training;
 import services.Interfaces.ICrud;
+import Service.Facilities.RecreationTypeService;
 import Service.Facilities.SportFacilityService;
 import Service.CommentService;
 import Service.Interfaces.ICommentService;
@@ -46,6 +47,10 @@ public class SportFacilityController implements ICrud<SportFacility> {
         if (ctx.getAttribute("CommentService") == null) {
 	    	String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("CommentService", new CommentService(contextPath));
+		}
+        if (ctx.getAttribute("RecreationTypeService") == null) {
+	    	String contextPath = ctx.getRealPath("");
+			ctx.setAttribute("RecreationTypeService", new RecreationTypeService(contextPath));
 		}
 	}
 
@@ -109,6 +114,22 @@ public class SportFacilityController implements ICrud<SportFacility> {
         try {
             SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
             service.Update(element);
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+    }
+    
+    @PUT
+	@Path("/create/{prvi}&{drugi}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public void Update2(@PathParam("prvi") int id,@PathParam("drugi") int idd) throws Exception {
+        try {
+            SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
+            RecreationTypeService ss = (RecreationTypeService) ctx.getAttribute("RecreationTypeService");
+            RecreationType t = ss.Read(idd);
+            SportFacility sf = service.Read(id);
+            sf.AddRecreationTypes(t);
+            service.Update(sf);
         } catch (Exception e) {
             //TODO: handle exception
         }

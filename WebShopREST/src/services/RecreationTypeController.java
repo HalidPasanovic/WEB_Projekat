@@ -8,6 +8,7 @@ import Service.Facilities.RecreationTypeService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -40,9 +41,19 @@ public class RecreationTypeController implements ICrud<RecreationType> {
     @POST
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public void Create(RecreationType element) throws Exception {
     	RecreationTypeService repo = (RecreationTypeService) ctx.getAttribute("RecreationTypeService");
         repo.Create(element);
+    }
+    
+    @POST
+	@Path("/create")
+	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int Create2(RecreationType element) throws Exception {
+    	RecreationTypeService repo = (RecreationTypeService) ctx.getAttribute("RecreationTypeService");
+        return repo.CreateAndReturn(element);
     }
 
     @GET
