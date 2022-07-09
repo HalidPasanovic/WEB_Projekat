@@ -107,5 +107,19 @@ public class PromoCodeController implements ICrud<PromoCode>{
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
         return service.GetAllWithLogicalyDeleted();
     }
+
+    @GET
+	@Path("/promo/{code}")
+	@Produces(MediaType.APPLICATION_JSON)
+    public PromoCode GetCodeIfExists(@PathParam("code") String code) throws Exception {
+        IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
+        List<PromoCode> codes = service.GetAll();
+        for (PromoCode promoCode : codes) {
+            if(promoCode.getCode().equals(code)){
+                return promoCode;
+            }
+        }
+        throw new Exception("Code doesnt exist");
+    }
     
 }
