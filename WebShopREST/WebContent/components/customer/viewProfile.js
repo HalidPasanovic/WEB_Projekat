@@ -1,12 +1,12 @@
-Vue.component("viewProfile", { 
-	data: function () {
-	    return {
-	        user: {},
+Vue.component("viewProfile", {
+    data: function () {
+        return {
+            user: {},
             membership: {},
             usernameBefore: null
-	    }
-	},
-	    template: ` 
+        }
+    },
+    template: ` 
 <div class="d-flex flex-nowrap">
     <div class="d-flex flex-nowrap" style="width: 100%; margin-top: 2%;">
         <div style="width: 500px">
@@ -45,35 +45,40 @@ Vue.component("viewProfile", {
     </div>
 </div>
     	`,
-    mounted () {
+    mounted() {
         axios
-          .get('rest/login/loginstat')
-          .then(response => 
-            {
+            .get('rest/login/loginstat')
+            .then(response => {
                 this.user = response.data;
                 this.usernameBefore = response.data.username
             })
     },
     methods: {
-    	ChangeUser : function(id) {
-    		axios
-                .post('rest/login/changeUser/' + this.usernameBefore, this.user)
-            router.push(`/`)
-    	},
+        ChangeUser: function (id) {
+            try {
+                axios
+                    .post('rest/login/changeUser/' + this.usernameBefore, this.user)
+                    .catch((e) => {alert(e?.response?.data)})
+                router.push(`/`)
+            } catch (error) {
+                alert(error)
+            }
+
+        },
     },
     computed: {
-    resultQuery(){
-      if(this.searchQuery){
-      return this.facilities.filter((item)=>{
-        return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
-        	|| item.type.name.toLowerCase().includes(v) 
-        	|| item.location.adress.street.toLowerCase().includes(v) 
-        	|| item.location.adress.number.toString().toLowerCase().includes(v)
-        	|| item.location.adress.place.toLowerCase().includes(v))
-      })
-      }else{
-        return this.facilities;
-      }
+        resultQuery() {
+            if (this.searchQuery) {
+                return this.facilities.filter((item) => {
+                    return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v)
+                        || item.type.name.toLowerCase().includes(v)
+                        || item.location.adress.street.toLowerCase().includes(v)
+                        || item.location.adress.number.toString().toLowerCase().includes(v)
+                        || item.location.adress.place.toLowerCase().includes(v))
+                })
+            } else {
+                return this.facilities;
+            }
+        }
     }
-  }
 });

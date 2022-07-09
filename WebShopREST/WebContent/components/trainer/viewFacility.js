@@ -24,7 +24,7 @@ Vue.component("viewFacility", {
 				<input type="text" class="form-control" id="Type" :value="facility?.type?.name" placeholder="" disabled>
 			</div>
 			<div class="form-check" style="margin-top: 25px; margin-bottom: 25px;">
-				<input type="checkbox" class="form-check-input" id="same-address" :value="facility?.status" disabled>
+				<input type="checkbox" class="form-check-input" id="same-address" v-model="getStatus" disabled>
 				<label class="form-check-label" for="same-address">Renovating currently</label>
 			</div>
 			<div v-if="checkIfRatingExists(facility?.rating)">
@@ -130,6 +130,11 @@ Vue.component("viewFacility", {
 							this.training = response.data))
 				})
 		}
+	},
+	computed: {
+		getStatus() {
+            return !this.facility?.status
+        }
 	}
 });
 

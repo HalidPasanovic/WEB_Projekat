@@ -42,7 +42,11 @@ public class CommentController implements ICrud<Comment>{
     @Override
     public void Create(Comment element) throws Exception {
         ICommentService service = (ICommentService) ctx.getAttribute("CommentService");
-        service.Create(element);
+        if(element.getRating() >= 1 && element.getRating() <= 5){
+            service.Create(element);
+            return;
+        }
+        throw new Exception("Rating must be in range of 1-5");
     }
 
     @GET

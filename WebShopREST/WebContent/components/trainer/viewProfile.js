@@ -54,9 +54,15 @@ Vue.component("viewProfile", {
     },
     methods: {
     	ChangeUser : function(id) {
-    		axios
-                .post('rest/login/changeUser/trainer', this.user)
-            router.push(`/`)
+            try {
+                axios
+                    .post('rest/login/changeUser/trainer', this.user)
+                    .catch((e) => {alert(e?.response?.data)})
+                router.push(`/`)
+            } catch (error) {
+                alert(error)
+            }
+    		
     	},
     },
     computed: {

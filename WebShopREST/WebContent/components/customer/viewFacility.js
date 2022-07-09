@@ -24,7 +24,7 @@ Vue.component("viewFacility", {
 				<input type="text" class="form-control" id="Type" :value="facility?.type?.name" placeholder="" disabled>
 			</div>
 			<div class="form-check" style="margin-top: 25px; margin-bottom: 25px;">
-				<input type="checkbox" class="form-check-input" id="same-address" :value="facility?.status" disabled>
+				<input type="checkbox" class="form-check-input" id="same-address" v-model="getStatus" disabled>
 				<label class="form-check-label" for="same-address">Renovating currently</label>
 			</div>
 			<div v-if="checkIfRatingExists(facility?.rating)">
@@ -98,40 +98,46 @@ Vue.component("viewFacility", {
 `
 	,
 	methods: {
-		isEmpty : function(obj) {
+		isEmpty: function (obj) {
 			var result = obj && Object.keys(obj).length === 0 && Object.getPrototypeOf(obj) === Object.prototype
-			if(result === false){
+			if (result === false) {
 				return true;
 			}
 			return result
 		},
 
 
-		checkIfRatingExists: function(rating){
-			if(rating === 0){
+		checkIfRatingExists: function (rating) {
+			if (rating === 0) {
 				return false
 			}
 			return true;
 		},
 
-		CreateComment: function(){
+		CreateComment: function () {
 			router.push(`/createComment/${this.id}`)
 		},
 
-		DeleteComment: function(id, index){
-			r = confirm("Are you sure?")
-    		if (r){
-	    		axios
-	            .delete('rest/comment/' + id)
-	            .then(response => (this.comments.splice(index, 1)))
-    		}
+		DeleteComment: function (id, index) {
+			try {
+				r = confirm("Are you sure?")
+				if (r) {
+					axios
+						.delete('rest/comment/' + id)
+						.then(response => (this.comments.splice(index, 1)))
+						.catch((e) => {alert(e?.response?.data)})
+				}
+			} catch (error) {
+				alert(error)
+			}
+
 		},
 
-		CheckIfCanDeleteComment : function(id) {
+		CheckIfCanDeleteComment: function (id) {
 			return id == this.user.id
 		},
 
-		CreateAppointment: function(id){
+		CreateAppointment: function (id) {
 			router.push(`/createAppointment/${id}`)
 		}
 	},
@@ -139,14 +145,12 @@ Vue.component("viewFacility", {
 		this.id = this.$route.params.id;
 		if (this.id != -1) {
 			axios
-          		.get('rest/login/loginstat')
-          		.then(response => 
-				{
+				.get('rest/login/loginstat')
+				.then(response => {
 					this.user = response.data;
 					axios
-						.post('rest/comment/canComment/'+ this.id, this.user)
-						.then(response => 
-						{
+						.post('rest/comment/canComment/' + this.id, this.user)
+						.then(response => {
 							this.canComment = response.data;
 						})
 					axios
@@ -163,6 +167,11 @@ Vue.component("viewFacility", {
 						.then(response => (
 							this.training = response.data))
 				})
+		}
+	},
+	computed: {
+		getStatus() {
+			return !this.facility?.status
 		}
 	}
 });

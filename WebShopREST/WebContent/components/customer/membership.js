@@ -1,15 +1,15 @@
-Vue.component("membership", { 
-	data: function () {
-	    return {
+Vue.component("membership", {
+    data: function () {
+        return {
             user: {},
-	        membershipTypes: null,
+            membershipTypes: null,
             selectedMembershipType: null,
             promoCodePercentage: 0,
             promoCodeString: null,
             membership: {}
-	    }
-	},
-	    template: ` 
+        }
+    },
+    template: ` 
     <div class="d-flex flex-nowrap">
         <div class="d-flex flex-nowrap" style="width: 100%; margin-top: 2%;">
             <div style="width: 500px">
@@ -44,72 +44,63 @@ Vue.component("membership", {
         </div>
     </div>
     	`,
-    mounted () {
+    mounted() {
         axios
             .get('rest/membershipType/')
             .then(response => (this.membershipTypes = response.data))
         axios
             .get('rest/login/loginstat')
-            .then(response => 
-              {
-                  this.user = response.data;
-              })
+            .then(response => {
+                this.user = response.data;
+            })
     },
     methods: {
-    	
-        GetValidDate : function(){
+
+        GetValidDate: function () {
             var today = new Date()
             var selected = this.GetSelection()
             var type = selected.type
-            if(type === "Yearly"){
+            if (type === "Yearly") {
                 today.setFullYear(today.getFullYear() + 1)
             }
-            else if(type === "Monthly"){
+            else if (type === "Monthly") {
                 today.setMonth(today.getMonth() + 1)
             }
-            else{
+            else {
                 today.setDate(today.getDate() + 7)
             }
             return today.toISOString().slice(0, 10)
         },
 
-        GetSelection : function(){
+        GetSelection: function () {
             return this.membershipTypes.find(item => item.id === this.selectedMembershipType)
         },
 
-        CheckPromo: function(){
+        CheckPromo: function () {
             this.promoCodePercentage = 0.3
         },
 
-        CreateMembership : function(){
-            this.membership.paymentDate = new Date().getDate()
-            this.membership.validUntil = this.GetValidDate()
-            this.membership.type = this.GetSelection()
-            this.membership.buyer = this.user
-            axios.post('rest/membership/', this.membership)
-            router.push(`/`)
+        CreateMembership: function () {
+            try {
+                this.membership.paymentDate = new Date().getDate()
+                this.membership.validUntil = this.GetValidDate()
+                this.membership.type = this.GetSelection()
+                this.membership.buyer = this.user
+                axios.post('rest/membership/', this.membership)
+                .catch((e) => {alert(e?.response?.data)})
+                router.push(`/`)
+            } catch (error) {
+                alert(error)
+            }
+
         }
 
     },
     computed: {
-        resultQuery(){
-        if(this.searchQuery){
-        return this.facilities.filter((item)=>{
-            return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
-                || item.type.name.toLowerCase().includes(v) 
-                || item.location.adress.street.toLowerCase().includes(v) 
-                || item.location.adress.number.toString().toLowerCase().includes(v)
-                || item.location.adress.place.toLowerCase().includes(v))
-        })
-        }else{
-            return this.facilities;
-        }
-        },
-
-        GetPrice(){
+        GetPrice() {
             var startingPrice = this.GetSelection().price
             var userTypeDiscount = this.user.type.discount
             return startingPrice * (1 - userTypeDiscount) * (1 - this.promoCodePercentage)
         }
-  }
+    }
 });

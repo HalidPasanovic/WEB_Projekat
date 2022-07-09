@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.util.List;
 import Model.Memberships.Membership;
 import Model.Memberships.MembershipType;
+import Model.Memberships.MembershipTypeEnum;
 import Model.Users.Customer;
 import Service.Interfaces.Memberships.IMembershipService;
 import Service.Memberships.MembershipService;
@@ -46,6 +47,16 @@ public class MembershipController implements ICrud<Membership>{
     @Override
     public void Create(Membership element) throws Exception {
         IMembershipService service = (IMembershipService) ctx.getAttribute("MembershipService");
+        LocalDate date = LocalDate.now();
+        if(element.getType().gettype().equals(MembershipTypeEnum.Yearly)){
+            date = date.plusYears(1);
+        } else if(element.getType().gettype().equals(MembershipTypeEnum.Monthly)){
+            date = date.plusMonths(1);
+        } else if(element.getType().gettype().equals(MembershipTypeEnum.Weeklong)){
+            date = date.plusWeeks(1);
+        }
+        element.setValidUntil(String.valueOf(date));
+        element.setPaymentDate(String.valueOf(LocalDate.now()));
         service.Create(element);
     }
 
