@@ -6,6 +6,7 @@ Vue.component("membership", {
             selectedMembershipType: null,
             promoCodePercentage: 0,
             promoCodeString: null,
+            promoCode: {id: -1},
             membership: {}
         }
     },
@@ -35,7 +36,7 @@ Vue.component("membership", {
 
                     <div>
                         <label for="Type" class="form-label">PromoCode</label>
-                        <input type="text" class="form-control" :value = "promoCodeString" id="Type" placeholder="">
+                        <input type="text" class="form-control" v-model = "promoCodeString" id="Type" placeholder="">
                         <button class="w-100 btn btn-lg btn-dark" v-on:click = "CheckPromo">Check promocode</button>
                     </div>
                     <button class="w-100 btn btn-lg btn-dark" style="margin-top: 50px;" v-on:click = "CreateMembership">Create</button>
@@ -77,7 +78,17 @@ Vue.component("membership", {
         },
 
         CheckPromo: function () {
-            this.promoCodePercentage = 0.3
+            axios
+                .get('rest/promocodes/promo/' + this.promoCodeString)
+                .then(response => {
+                    this.promoCodePercentage = response.data?.discountPercentage
+                    this.promoCode = response.data
+                })
+                .catch((e) => {
+                    this.promoCodePercentage = 0
+                    this.promoCode = {id: -1}
+                    alert("Code doesnt exist")
+                })
         },
 
         CreateMembership: function () {
@@ -86,8 +97,8 @@ Vue.component("membership", {
                 this.membership.validUntil = this.GetValidDate()
                 this.membership.type = this.GetSelection()
                 this.membership.buyer = this.user
-                axios.post('rest/membership/', this.membership)
-                .catch((e) => {alert(e?.response?.data)})
+                axios.post('rest/membership/' + this.promoCode?.id, this.membership)
+                    .catch((e) => { alert(e?.response?.data) })
                 router.push(`/`)
             } catch (error) {
                 alert(error)
@@ -100,7 +111,7 @@ Vue.component("membership", {
         GetPrice() {
             var startingPrice = this.GetSelection().price
             var userTypeDiscount = this.user.type.discount
-            return startingPrice * (1 - userTypeDiscount) * (1 - this.promoCodePercentage)
+            return startingPrice * (1 - userTypeDiscount) * (1 - this.promoCodePercentage/100)
         }
     }
 });
