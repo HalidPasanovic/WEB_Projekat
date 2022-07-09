@@ -1,12 +1,17 @@
 package Service.Users;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import Model.Trainings.Training;
 import Model.Users.Trainer;
 import Model.Users.User;
 import Repository.Interfaces.Users.ITrainerRepository;
 import Repository.Users.TrainerRepository;
 import Service.Interfaces.Users.ITrainerService;
+import Service.Trainings.TrainingService;
+import services.TrainingController;
 
 public class TrainerService implements ITrainerService {
 

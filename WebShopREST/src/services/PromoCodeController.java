@@ -1,5 +1,10 @@
 package services;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -41,6 +46,10 @@ public class PromoCodeController implements ICrud<PromoCode>{
 	@Produces(MediaType.APPLICATION_JSON)
     @Override
     public void Create(PromoCode element) throws Exception {
+    	if(element.getDiscountPercentage() > 99 || element.getDiscountPercentage() < 1)
+    	{
+    		throw new Exception("Form not inputed correctly");
+    	}
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
         service.Create(element);
     }

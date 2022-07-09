@@ -3,6 +3,7 @@ package Repository.Facilities;
 import java.util.ArrayList;
 import java.util.List;
 import Model.Facilities.RecreationType;
+import Model.Facilities.SportFacility;
 import Repository.Repository;
 import Repository.Interfaces.Facilities.IRecreationTypeRepository;
 import Repository.Interfaces.Facilities.ISportFacilityRepository;
@@ -38,6 +39,26 @@ public class RecreationTypeRepository extends Repository<RecreationType> impleme
             }
         }
         return result;
+    }
+    
+    
+    public int CreateAndReturn(RecreationType element)
+    {
+    	try {
+			super.Create(element);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	List<RecreationType> f = GetAll();
+    	for(RecreationType s : f)
+    	{
+    		if(s.getName().equals(element.getName()))
+    		{
+    			return s.getId();
+    		}
+    	}
+    	return -1;
     }
 
     @Override

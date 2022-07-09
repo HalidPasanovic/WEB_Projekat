@@ -1,5 +1,6 @@
 package Service.Trainings;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import Model.Facilities.SportFacility;
@@ -22,12 +23,14 @@ public class TrainingService implements ITrainingService {
     private ITrainingTypeService trainingTypeService;
     private ISportFacilityService sportFacilityService;
     private ITrainerService trainerService;
+    private String s;
 
     public TrainingService(String contextPath) {
         repository = TrainingRepository.getInstance(contextPath);
         trainingTypeService = new TrainingTypeService(contextPath);
         sportFacilityService = new SportFacilityService(contextPath);
         trainerService = new TrainerService(contextPath);
+        s = contextPath;
     }
 
     @Override
@@ -108,6 +111,41 @@ public class TrainingService implements ITrainingService {
     @Override
     public List<Training> GetAllWithLogicalyDeleted() {
         return repository.GetAllWithLogicalyDeleted();
+    }
+    
+    @Override
+    public List<Trainer> getTrainersFromFacility(int id) throws Exception {
+    	List<Training> tempt = repository.GetAll();
+    	List<Trainer> lista = new ArrayList<Trainer>();
+    	for(Training t :tempt)
+    	{
+    		if(t.getFacility().getId() == id)
+    		{
+    			if(t.getTrainer().getId() != -1)
+    			{
+    				TrainerService ts = new TrainerService(s);
+    				Trainer ttt = ts.Read(t.getTrainer().getId());
+    				lista.add(ttt);
+    			}
+    		}
+    	}
+    	return lista;
+    }
+    
+    @Override
+    public List<Training> getTrainingsForFacility(int id) throws Exception {
+    	
+    	List<Training> all = GetAll();
+    	List<Training> list = new ArrayList<Training>();
+    	
+    	for(Training t : all)
+    	{
+    		if(t.getFacility().getId() == id)
+    		{
+    			list.add(t);
+    		}
+    	}
+    	return list;
     }
     
 }
