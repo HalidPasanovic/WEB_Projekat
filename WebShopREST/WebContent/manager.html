@@ -171,7 +171,7 @@
                 </a>
               </li>
               <li>
-                <a href="#/update" class="nav-link text-white">
+                <a href="#" class="nav-link text-white">
                   <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
                   Update Training
                 </a>
@@ -186,13 +186,12 @@
             <hr>
             <div class="dropdown">
               <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
                 <strong>Manager</strong>
               </a>
               <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><a class="dropdown-item" href="#/profile">Profile</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
+                <li><a class="dropdown-item" onclick="logout()">Sign out</a></li>
               </ul>
             </div>
           </div>
@@ -215,6 +214,14 @@
     <script src="components/manager/managersFacility.js"></script>
     <script src="components/manager/createTraining.js"></script>
     <script src="components/manager/updateTraining.js"></script>
+    <script src="components/manager/viewProfile.js"></script>
     <script src="js/managerApp.js"></script>
+    <script>
+        function logout(){
+            axios
+                .get('rest/logout')
+            window.location.href = 'homepage.html';
+        }
+    </script>
 </body>
 </html>

@@ -80,8 +80,9 @@ public class ManagerController implements ICrud<Manager> {
     }
 
     @PUT
-	@Path("/{id}")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public void Update(Manager element) throws Exception {
     	ManagerService repo = (ManagerService) ctx.getAttribute("managerService");
     	repo.Update(element);

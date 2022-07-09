@@ -5,11 +5,13 @@ const Comments = {template: '<comments></comments>'}
 const CreateFacility = {template: '<create-facility></create-facility>'}
 const UsersList = {template: '<users></users>'}
 const PromoCodes = {template: '<promo-codes></promo-codes>'}
+const Profile = { template: '<viewProfile></viewProfile>' }
 
 const router = new VueRouter({
 	mode: 'hash',
 	  routes: [
 		{ path: '/', name: 'home', component: ViewFacility},
+		{ path: '/profile', component: Profile},
 		{ path: '/create/:id', component: Create},
 		{ path: '/facility/:id', component: Facility},
 		{ path: '/comments', component: Comments},

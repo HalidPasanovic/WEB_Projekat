@@ -6,6 +6,7 @@ import Service.Users.AdministratorService;
 import services.Interfaces.ICrud;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -51,8 +52,9 @@ public class AdministratorController implements ICrud<Administrator> {
     }
 
     @PUT
-	@Path("/{id}")
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public void Update(Administrator element) throws Exception {
     	AdministratorService repo = (AdministratorService) ctx.getAttribute("administratorService");
     	repo.Update(element);
