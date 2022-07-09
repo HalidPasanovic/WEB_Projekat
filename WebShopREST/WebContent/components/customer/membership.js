@@ -97,9 +97,14 @@ Vue.component("membership", {
                 this.membership.validUntil = this.GetValidDate()
                 this.membership.type = this.GetSelection()
                 this.membership.buyer = this.user
-                axios.post('rest/membership/' + this.promoCode?.id, this.membership)
-                    .catch((e) => { alert(e?.response?.data) })
-                router.push(`/`)
+                axios
+                    .post('rest/membership/' + this.promoCode?.id, this.membership)
+                    .then(response => {
+                        router.push(`/`)
+                    })
+                    .catch((e) => { 
+                        alert(e?.response?.data) 
+                    })
             } catch (error) {
                 alert(error)
             }
