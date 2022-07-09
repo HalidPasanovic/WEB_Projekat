@@ -1,150 +1,231 @@
-Vue.component("view-facility", { 
-	data: function () {
-	    return {
-	      facilities: null,
-	      searchQuery: null,
-	      username : null,
-	      facilityView: true,
-	      username2 : "",
-	      password : "",
-	      name : "",
-	      surname : "",
-	      gender : "",
-	      mode: "IDLE",
-	      mode2 : "IDLE",
-	      mode3 : "IDLE",
-	      temp: null,
-	      createView:false,
-	      createType: null,
-	      pomocna: null	
-	    }
-	},
-	    template: `
-	    <div> 
-			<!-- Header -->
-			  <header class="w3-container" style="padding-top:22px">
-			    <h5><b><i class="fa fa-dashboard"></i> My Dashboard</b></h5>
-			  </header>
-			<div style="float: right; margin-right: 1.5%;">
-				<div class="search-container">
-					<input type="text" class="form-control" v-model="searchQuery" placeholder="Search.." name="search">
-				</div>
-			</div>
-			
-			<div style="margin-left: 1%;">
-				<div class="search-container">
-					<button type="submit" v-on:click = "addProduct">Dodaj</button>
-				</div>
-			</div>
-			<h5>{{username}}</h5>
-			<table class="w3-table w3-striped w3-white">
-				<tr>
-					<th>
-						Naziv
-					</th>
-					<th>
-						Tip
-					</th>
-					<th>
-						Lokacija
-					</th>
-					<th>
-						Prosecna ocena
-					</th>
-					<th>
-						Radno vreme
-					</th>
-				</tr>
-				<tr v-for="(f, index) in resultQuery" v-on:click="Proba(f)">
-					<td>{{f.name}}</td>
-					<td>{{f.type.name}}</td>
-					<td>{{f.location.adress.street + " " + f.location.adress.number + " " + f.location.adress.place}}</td>
-					<td>0</td>
-					<td>{{f.workRange}}</td>
-				</tr>
-			</table>
-		</div>
+Vue.component("view-facility", {
+    data: function () {
+        return {
+            facilities: null,
+            nameQuery: null,
+            locationQuery: null,
+            ratingQuery: null,
+            currentSort: 'status',
+            currentSortDir: 'desc',
+            selectedType: '',
+            selectedSearch: '',
+            facilityTypes: null,
+            showOnlyOpened: false
+        }
+    },
+    template: ` 
+		<main class="d-flex flex-nowrap">
+
+            <!-- Content -->
+
+            <div style="width: 100%;">
+                <div style="display: flex; justify-content: center;">
+                    <h1>Welcome</h1>
+                </div>
+                <div style="display: flex; justify-content: center; margin-top: 40px;">
+                    <h3>Sport Facilities</h3>
+                </div>
+                <div style="float: right;" class="d-flex flex-nowrap">
+                    <div class="form-check" style="margin-right: 10px;">
+                        <label class="form-check-label" for="same-address">Open only</label>
+                        <input type="checkbox" class="form-check-input" id="same-address" v-model="showOnlyOpened">
+                    </div>
+                    <div style="width: 150px;">
+                        <select v-model = "selectedType" class="form-control">
+                            <option value = "" disabled selected>Facility type</option>
+                            <option value = "All" >All</option>
+                            <option v-for="(f, index) in facilityTypes" :value = "f.name">{{f.name}}</option>
+                        </select>
+                    </div>
+                    <input style="width: 150px;" type="text" class="form-control btn-dark" v-model="nameQuery" placeholder="Name" name="search">
+                    <input style="width: 150px;" type="text" class="form-control btn-dark" v-model="locationQuery" placeholder="Location" name="search">
+                    <input style="width: 150px;" type="number" class="form-control btn-dark" v-model="ratingQuery" placeholder="Rating" name="search">
+			    </div>
+                <div>
+                    <table class="table table-striped table-hover table-dark">
+                        <thead>
+                            <tr>
+                                <th scope="col">Logo</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Score</th>
+                                <th scope="col">Working hours</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(f, index) in resultQuery" @click="viewFacility(f.id)">
+                        	<template v-if="f.status">
+                            <td><img :src="'pictures/' + f.logoLocation" alt="" width="100" height="100"
+                            class="rounded-circle me-2" style="margin-bottom: 25px;"></td>
+                            <td>{{f.name}}</td>
+                            <td>{{f.type.name}}</td>
+                            <td>{{f.location.adress.street + " " + f.location.adress.number + " " + f.location.adress.place}}</td>
+                            <td>{{getRate(f?.rating)}}</td>
+                            <td>{{f.workRange}}</td>
+                            <td>{{getStatus(f.status)}}</td>
+                            </template>
+                        </tr>
+                        <tr v-for="(f, index) in resultQuery" @click="viewFacility(f.id)">
+                        	<template v-if="!f.status">
+                            <td><img :src="'pictures/' + f.logoLocation" alt="" width="100" height="100"
+                            class="rounded-circle me-2" style="margin-bottom: 25px;"></td>
+                            <td>{{f.name}}</td>
+                            <td>{{f.type.name}}</td>
+                            <td>{{f.location.adress.street + " " + f.location.adress.number + " " + f.location.adress.place}}</td>
+                            <td>{{getRate(f?.rating)}}</td>
+                            <td>{{f.workRange}}</td>
+                            <td>{{getStatus(f.status)}}</td>
+                            </template>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     	`,
-    mounted () {
+    mounted() {
         axios
-          .get('rest/facility/')
-          .then(response => (this.facilities = response.data));
-         
-        this.username = this.$route.params.username;
+            .get('rest/facility/dto')
+            .then(response => {
+                this.facilities = response.data
+            })
+        axios
+            .get('rest/facilitytypes/')
+            .then(response => {
+                this.facilityTypes = response.data
+            })
     },
     methods: {
-    	addProduct : function() {
-    		router.push(`/createFacility/`);
-    	},
-    	editProduct : function(id) {
-    		router.push(`/products/${id}`);
-    	},
-    	promeni: function(){
-			if(!this.facilityView)
-			{
-				this.createView = false;
-				this.facilityView = !(this.facilityView);
-			}	
-		},
-    	deleteProduct : function(id, index) {
-    		r = confirm("Are you sure?")
-    		if (r){
-	    		axios
-	            .delete('rest/products/' + id)
-	            .then(response => (this.facilities.splice(index, 1)))
-    		}
-    	},
-    	Create : function(){
-			this.mode = "IDLE";
-			this.mode2 = "IDLE";
-			this.mode3 = "IDLE";
-			if(this.createType == "manager")
-			{
-				axios
-			.post('rest/managers/add', {"username":''+this.username2,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Manager'})
-				.then(response => (this.mode2 = "ACCEPTED"))
-				.catch((e) => { this.mode = "REJECT";this.temp = this.username2; this.username2="";})
-			}
-			else
-			{
-				axios
-			.post('rest/trainers/addtrainer', {"username":''+this.username2,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Manager'})
-				.then(response => (this.mode3 = "ACCEPTED"))
-				.catch((e) => { this.mode = "REJECT";this.temp = this.username2; this.username2="";})
-			}
-		},
-		promeni_create : function(type){
-			if(!this.createView){
-			this.facilityView = false;
-			this.createView = !(this.createView);
-			}
-			this.createType = type;
-			this.mode = "IDLE";
-			this.mode2 = "IDLE";
-			this.mode3 = "IDLE";
-			this.username2 = "";
-	      	this.password = "";
-	      	this.name = "";
-	      	this.surname = "";
-	      	this.gender = "";
-		},
-		Proba : function(f) {
-			router.push(`/facility/` + f.id);
+        addProduct: function () {
+            router.push(`/createFacility/`);
+        },
+        viewFacility: function (id) {
+            router.push(`/facility/` + id);
+        },
+
+        getRating: function (rating) {
+            if (rating === 0) {
+                return "No ratings"
+            }
+            return rating
+        },
+
+        editProduct: function (id) {
+            router.push(`/products/${id}`);
+        },
+        deleteProduct: function (id, index) {
+            r = confirm("Are you sure?")
+            if (r) {
+                axios
+                    .delete('rest/products/' + id)
+                    .then(response => (this.facilities.splice(index, 1)))
+            }
+        },
+
+        sort: function (s) {
+            //if s == current sort, reverse
+            if (s === this.currentSort) {
+                this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+            }
+            this.currentSort = s;
+        },
+
+        findProp: function (obj, prop, defval) {
+            if (typeof defval == 'undefined') defval = null;
+            prop = prop.split('.');
+            for (var i = 0; i < prop.length; i++) {
+                if (typeof obj[prop[i]] == 'undefined')
+                    return defval;
+                obj = obj[prop[i]];
+            }
+            return obj;
+        },
+
+        filterName: function (item, v) {
+            var value = this.findProp(item, 'name')
+            return value.toLowerCase().includes(v)
+        },
+
+        filterLocation: function (item, v) {
+            var street = this.findProp(item, 'location.adress.street')
+            var number = this.findProp(item, 'location.adress.number')
+            var place = this.findProp(item, 'location.adress.place')
+            return street.toLowerCase().includes(v)
+                || number.toString().toLowerCase().includes(v)
+                || place.toLowerCase().includes(v)
+        },
+
+        filterRating: function (item, v) {
+            var rating = this.getRate(item.rating)
+            return rating.toLowerCase().includes(v)
+        },
+
+        getRate: function (rating) {
+            if (rating === 0) {
+                return "No ratings"
+            }
+            return rating
+        },
+
+        getLocation: function (element) {
+            return element.location.adress.street + " " + element.location.adress.number + " " + element.location.adress.place
+        },
+        
+        getStatus : function(b) {
+		if(b)
+		{
+			return "Opened"
+		}
+			return "Closed"
 		}
     },
     computed: {
-    resultQuery(){
-      if(this.searchQuery){
-      return this.facilities.filter((item)=>{
-        return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
-        	|| item.type.name.toLowerCase().includes(v) 
-        	|| item.location.adress.street.toLowerCase().includes(v) 
-        	|| item.location.adress.number.toString().toLowerCase().includes(v)
-        	|| item.location.adress.place.toLowerCase().includes(v))
-      })
-      }else{
-        return this.facilities;
-      }
+        resultQuery() {
+            if (this.facilities) {
+                this.facilities = this.facilities.sort((a, b) => {
+                    let modifier = 1;
+                    if (this.currentSortDir === 'desc') modifier = -1;
+                    if (this.currentSort == 'location') {
+                        if (this.getLocation(a) < this.getLocation(b)) return -1 * modifier;
+                        if (this.getLocation(a) > this.getLocation(b)) return 1 * modifier;
+                    } else {
+                        if (this.findProp(a, this.currentSort) < this.findProp(b, this.currentSort)) return -1 * modifier;
+                        if (this.findProp(a, this.currentSort) > this.findProp(b, this.currentSort)) return 1 * modifier;
+                    }
+                    return 0;
+                })
+            }
+            var result = this.facilities
+            if (this.showOnlyOpened) {
+                result = result.filter((item) => {
+                    return item.status
+                })
+            }
+            if (this.selectedType != 'All' && this.selectedType != '') {
+                result = result.filter((item) => {
+                    return item.type.name == this.selectedType
+                })
+            }
+            if (this.nameQuery) {
+                result = result.filter((item) => {
+                    return this.nameQuery.toLowerCase().split(' ').every(v => this.filterName(item, v))
+                })
+            }
+            if (this.locationQuery) {
+                result = result.filter((item) => {
+                    return this.locationQuery.toLowerCase().split(' ').every(v => this.filterLocation(item, v))
+                })
+            }
+            if (this.ratingQuery) {
+                var query = this.ratingQuery.toString()
+                result = result.filter((item) => {
+                    return query.toLowerCase().split(' ').every(v => this.filterRating(item, v))
+                })
+            }
+            
+            return result
+        }
     }
-  }
 });

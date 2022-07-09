@@ -8,7 +8,7 @@ Vue.component("viewProfile", {
     },
     template: ` 
 <div class="d-flex flex-nowrap">
-    <div class="d-flex flex-nowrap" style="width: 100%; margin-top: 2%;">
+    <div class="d-flex flex-nowrap" style="width: 100%; margin-top: 5%; margin-left: 28%;">
         <div style="width: 500px">
             <img src="pictures/ProfilePlaceholderSuit.svg" alt="" width="100" height="100"
                 class="rounded-circle me-2" style="margin-bottom: 25px; margin-left: 38%;">

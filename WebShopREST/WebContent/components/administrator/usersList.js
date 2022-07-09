@@ -11,11 +11,13 @@ Vue.component("users", {
 	},
 	    template: `
 	    <div>
-	    <h1>{{this.adminUsername}}</h1><br>
-	    <p>All users:</p>
+	    <div style="display: flex; justify-content: center;">
+                    <h3>All users:</h3><br>
+        </div>
 	    <input type="checkbox" id="checkbox1" name="CheckBox" @change="funkcija">
 	    <label for="CheckBox">Hide Deleted Users</label><br>
-	    <table>
+	    <table class="table table-striped table-hover table-dark">
+	    <thead>
 	    <tr>
 	    <th>ID</th>
 	    <th>Name</th>
@@ -26,6 +28,8 @@ Vue.component("users", {
 	    <th>Role</th>
 	    <th>Logically Deleted</th>
 	    </tr>
+	    </thead>
+	    <tbody>
 	    <tr v-for="(c, index) in customers">
 	    			<td>{{c.id}}</td>
 					<td>{{c.name}}</td>
@@ -66,6 +70,7 @@ Vue.component("users", {
 					<td>{{c.role}}</td>
 					<td>{{c.deleted}}</td>
 		</tr>
+		</tbody>
 		</table>
 		</div>
     	`,

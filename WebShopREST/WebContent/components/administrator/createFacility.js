@@ -1,8 +1,8 @@
 Vue.component("create-facility", {
 	data: function () {
 		    return {
-		      title: "Kreiraj objekat",
-		      value: "Kreiraj",
+		      title: "Create Sport Facility",
+		      value: "Create",
 		      product: {id: '', name:null, type:{id:0 , name:null },logoLocation:null, recreationTypes:[], status: null, workRange: null, location:{latitude: null,  longitude: null, adress: {street: null, number: null, place: null, shipingCode: null}}},
 		      facilityTypes: null,
 		      recreationTypes: null,
@@ -15,53 +15,56 @@ Vue.component("create-facility", {
 	},
 	template: ` 
 	<div>
-		{{title}}
+		<div style="display: flex; justify-content: center;">
+                    <h3>{{title}}</h3><br>
+        </div>
 		<form>
-		<table>
-			<tr><td>Ime</td><td><input type = "text" v-model = "product.name" name = "name"></td></tr>
+		<table style="position: absolute; top:90%; left: 55%; transform: translate(-50%, -50%);">
+			<tr><td style="padding:16px">Ime</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.name" name = "name"></td></tr>
 			<tr>
-				<td>Tip</td>
-				<td>
-					<select v-model = "product.type">
+				<td style="padding:16px">Tip</td>
+				<td style="padding:16px">
+					<select class="form-control" v-model = "product.type">
 						<option v-for="(f, index) in facilityTypes" :value = "f.id">{{f.name}}</option>
 					</select>
 				</td>
 			</tr>
-			<tr><td>Status</td><td><input type = "checkbox" v-model = "product.status" name = "status"></td></tr>
-			<tr><td>Radno vreme</td><td><input type = "text" v-model = "product.workRange" name = "workRange"></td></tr>
-			<tr><td>Logo location</td><td><input type = "text" v-model = "product.logoLocation" name = "logoLocation"></td></tr>
-			<tr><td>Latitude</td><td><input type = "number" v-model = "product.location.latitude" name = "latitude"></td></tr>
-			<tr><td>Longitude</td><td><input type = "number" v-model = "product.location.longitude" name = "longitude"></td></tr>
-			<tr><td>Ulica</td><td><input type = "text" v-model = "product.location.adress.street" name = "street"></td></tr>
-			<tr><td>Broj</td><td><input type = "number" v-model = "product.location.adress.number" name = "number"></td></tr>
-			<tr><td>Mesto</td><td><input type = "text" v-model = "product.location.adress.place" name = "number"></td></tr>
-			<tr><td>Sifra za postu</td><td><input type = "number" v-model = "product.location.adress.shipingCode" name = "number"></td></tr>
+			
+			<tr><td style="padding:16px">Status</td><td style="padding:16px"><input type = "checkbox" v-model = "product.status" name = "status"></td></tr>
+			<tr><td style="padding:16px">Radno vreme</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.workRange" name = "workRange"></td></tr>
+			<tr><td style="padding:16px">Logo location</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.logoLocation" name = "logoLocation"></td></tr>
+			<tr><td style="padding:16px">Latitude</td><td style="padding:16px"><input class="form-control" type = "number" v-model = "product.location.latitude" name = "latitude"></td></tr>
+			<tr><td style="padding:16px">Longitude</td><td style="padding:16px"><input class="form-control" type = "number" v-model = "product.location.longitude" name = "longitude"></td></tr>
+			<tr><td style="padding:16px">Ulica</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.location.adress.street" name = "street"></td></tr>
+			<tr><td style="padding:16px">Broj</td><td style="padding:16px"><input class="form-control" type = "number" v-model = "product.location.adress.number" name = "number"></td></tr>
+			<tr><td style="padding:16px">Mesto</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.location.adress.place" name = "number"></td></tr>
+			<tr><td style="padding:16px">Sifra za postu</td><td style="padding:16px"><input class="form-control" type = "number" v-model = "product.location.adress.shipingCode" name = "number"></td></tr>
 			<template v-if="managersBool">
 			<tr>
-				<td>Managers</td>
-				<td>
-					<select v-model = "selectedManager">
+				<td style="padding:16px">Managers</td>
+				<td style="padding:16px">
+					<select class="form-control" v-model = "selectedManager">
 						<option v-for="(f, index) in managers" :value = "f.id">{{f.name}} {{f.surname}}</option>
 					</select>
 				</td>
 			</tr>
 			</template>
 			<template v-else>
-			<tr><td>Make new Manager:</td></tr>
-			<tr><td>Username</td><td><input type="text" name="username" v-model="manager.username"></td></tr>
-			<tr><td>Password</td><td><input type="password" name="password" v-model="manager.password"></td></tr>
-			<tr><td>Name</td><td><input type="text" name="name" v-model="manager.name"></td></tr>
-			<tr><td>Surname</td><td><input type="text" name="date" v-model="manager.surname"></td></tr>
-			<tr><td>Birthday Date:</td><td><input type="date" v-model="manager.dateOfBirth" name="birthday"></td></tr>
-			<tr><td>Gender</td><td>
-			<select v-model="manager.gender">
+			<tr><td style="padding:16px">Make new Manager:</td></tr>
+			<tr><td style="padding:16px">Username</td><td style="padding:16px"><input class="form-control" type="text" name="username" v-model="manager.username"></td></tr>
+			<tr><td style="padding:16px">Password</td><td style="padding:16px"><input class="form-control" type="password" name="password" v-model="manager.password"></td></tr>
+			<tr><td style="padding:16px">Name</td><td style="padding:16px"><input class="form-control" type="text" name="name" v-model="manager.name"></td></tr>
+			<tr><td style="padding:16px">Surname</td><td style="padding:16px"><input class="form-control" type="text" name="date" v-model="manager.surname"></td></tr>
+			<tr><td style="padding:16px">Birthday Date:</td><td style="padding:16px"><input class="form-control" type="date" v-model="manager.dateOfBirth" name="birthday"></td></tr>
+			<tr><td style="padding:16px">Gender</td><td style="padding:16px">
+			<select class="form-control" v-model="manager.gender">
   				<option disabled value="">Please select one</option>
   				<option>Male</option>
   				<option>Female</option>
   				<option>Other</option>
 			</select></td></tr>
 			</template>
-			<tr><td><input type = "submit" v-on:click = "createFacility" v-bind:value = "this.value"></td></tr>
+			<tr><td colspan="2" style="padding:16px"><input class="w-100 btn btn-lg btn-dark" type = "submit" v-on:click = "createFacility" v-bind:value = "this.value"></td></tr>
 		</table>
 		</form>
 	</div>		  

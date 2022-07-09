@@ -18,32 +18,35 @@ Vue.component("update-training", {
 	},
 	    template: `
 	    <div>
-		<table v-if="training">
-			<tr><td>Name</td><td><input type = "text" v-model = "training.name" name = "name"></td></tr>
+	    <div style="display: flex; justify-content: center;">
+					<h5>Update training</h5>
+				</div>
+		<table v-if="training" style="position: absolute; top: 40%; left: 55%; transform: translate(-50%, -50%);">
+			<tr><td style="padding:16px">Name</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "training.name" name = "name"></td></tr>
 			<template v-if="types">
 			<tr>
-				<td>Training Types</td>
-				<td>
-					<select v-model = "training.type">
+				<td style="padding:16px">Training Types</td>
+				<td style="padding:16px">
+					<select class="form-control" v-model = "training.type">
 						<option v-for="(f, index) in types" :value = "f">{{f.name}}</option>
 					</select>
 				</td>
 			</tr>
 			</template>
-			<tr><td>Duration</td><td><input type = "text" v-model = "training.duration" name = "duration"></td></tr>
-			<tr><td>Description</td><td><input type = "text" v-model = "training.description" name = "description"></td></tr>
-			<tr><td>Additional Cost</td><td><input type = "number" v-model = "training.aditionalCost" name = "cost"></td></tr>
+			<tr><td style="padding:16px">Duration</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "training.duration" name = "duration"></td></tr>
+			<tr><td style="padding:16px">Description</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "training.description" name = "description"></td></tr>
+			<tr><td style="padding:16px">Additional Cost</td><td style="padding:16px"><input class="form-control" type = "number" v-model = "training.aditionalCost" name = "cost"></td></tr>
 			<template v-if="trainers">
 			<tr>
-				<td>Trainers</td>
-				<td>
-					<select v-model = "training.trainer">
+				<td style="padding:16px">Trainers</td>
+				<td style="padding:16px">
+					<select class="form-control" v-model = "training.trainer">
 						<option v-for="(f, index) in trainers" :value = "f">{{f.name}} {{f.surname}}</option>
 					</select>
 				</td>
 			</tr>
 			</template>
-			<tr><td><input type = "submit" v-on:click = "createFacility"></td></tr>
+			<tr><td colspan="2" style="padding:16px"><input class="w-100 btn btn-lg btn-dark" type = "submit" v-on:click = "createFacility"></td></tr>
 		</table>
 	</div>
     	`,
