@@ -52,6 +52,7 @@ Vue.component("view-facility", {
                                 <th scope="col">Score</th>
                                 <th scope="col">Working hours</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,6 +66,7 @@ Vue.component("view-facility", {
                             <td>{{getRate(f?.rating)}}</td>
                             <td>{{f.workRange}}</td>
                             <td>{{getStatus(f.status)}}</td>
+                            <td><button v-on:click="Delete(f.id)" class="w-100 btn btn-lg btn-dark">Delete</button></td>
                             </template>
                         </tr>
                         <tr v-for="(f, index) in resultQuery" @click="viewFacility(f.id)">
@@ -77,6 +79,7 @@ Vue.component("view-facility", {
                             <td>{{getRate(f?.rating)}}</td>
                             <td>{{f.workRange}}</td>
                             <td>{{getStatus(f.status)}}</td>
+                            <td><button v-on:click="Delete(f.id)" class="w-100 btn btn-lg btn-dark">Delete</button></td>
                             </template>
                         </tr>
                         </tbody>
@@ -104,6 +107,12 @@ Vue.component("view-facility", {
         viewFacility: function (id) {
             router.push(`/facility/` + id);
         },
+        
+        Delete : function(id) {
+			axios.delete('rest/admins/'+ id)
+				.then(alert("Deleted succesfully!"))
+				.catch((e) => { alert("Exception")})
+		},
 
         getRating: function (rating) {
             if (rating === 0) {

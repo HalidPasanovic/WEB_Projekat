@@ -18,6 +18,7 @@ Vue.component("facilitym", {
             selectedSearch: '',
             facilityTypes: null,
             trainingTypes: null,
+            over: false
 	    }
 	},
 	    template: `
@@ -26,7 +27,7 @@ Vue.component("facilitym", {
 	    <div style="display: flex; justify-content: center;">
                     <h3>Facility Details</h3><br>
         </div>
-	    <table v-if="facilities" class="table table-striped table-hover table-dark">
+	    <table v-if="over" class="table table-striped table-hover table-dark">
 	    <tbody>
 	    <tr>
 	    <td>Name:<td>
@@ -147,10 +148,11 @@ Vue.component("facilitym", {
                 		axios.get('rest/training/facility/' + this.facilities.id)
                 		.then(response => {
 							this.trainers = response.data
+							axios.get('rest/training/getfacility/' + this.facilities.id)
+							.then(response => {this.trainings = response.data; this.over = true;})
 							axios.get('rest/customers/getfacility/' + this.facilities.id)
 							.then(response => {this.customers = response.data
-							axios.get('rest/training/getfacility/' + this.facilities.id)
-							.then(response => (this.trainings = response.data))
+							
 							})
 							})
 						

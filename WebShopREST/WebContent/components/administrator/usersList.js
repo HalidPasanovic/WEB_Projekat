@@ -49,6 +49,7 @@ Vue.component("users", {
 	    <th>Date Of Birth</th>
 	    <th>Role</th>
 	    <th>Logically Deleted</th>
+	    <th>Delete</th>
 	    </tr>
 	    </thead>
 	    <tbody>
@@ -61,6 +62,7 @@ Vue.component("users", {
 					<td>{{c.dateOfBirth}}</td>
 					<td>{{c.role}}</td>
 					<td>{{c.deleted}}</td>
+					<td><button v-on:click="Delete(c.id,c.role)" class="w-100 btn btn-lg btn-dark">Delete</button></td>
 		</tr>
 		<tr v-for="(c, index) in resultQueryA" class="item">
 	    			<td>{{c.id}}</td>
@@ -71,6 +73,7 @@ Vue.component("users", {
 					<td>{{c.dateOfBirth}}</td>
 					<td>{{c.role}}</td>
 					<td>{{c.deleted}}</td>
+					<td><button v-on:click="Delete(c.id,c.role)" class="w-100 btn btn-lg btn-dark">Delete</button></td>
 		</tr>
 		<tr v-for="(c, index) in resultQueryM" class="item">
 	    			<td>{{c.id}}</td>
@@ -81,6 +84,7 @@ Vue.component("users", {
 					<td>{{c.dateOfBirth}}</td>
 					<td>{{c.role}}</td>
 					<td>{{c.deleted}}</td>
+					<td><button v-on:click="Delete(c.id,c.role)" class="w-100 btn btn-lg btn-dark">Delete</button></td>
 		</tr>
 		<tr v-for="(c, index) in resultQueryT" class="item">
 	    			<td>{{c.id}}</td>
@@ -91,6 +95,7 @@ Vue.component("users", {
 					<td>{{c.dateOfBirth}}</td>
 					<td>{{c.role}}</td>
 					<td>{{c.deleted}}</td>
+					<td><button v-on:click="Delete(c.id,c.role)" class="w-100 btn btn-lg btn-dark">Delete</button></td>
 		</tr>
 		</tbody>
 		</table>
@@ -106,6 +111,29 @@ Vue.component("users", {
     },
     
     methods: {
+	
+		Delete : function(id,role){
+			if(role == "Administrator"){
+				axios.delete('rest/admins/physically/'+ id)
+				.then(alert("Deleted succesfully!"))
+				.catch((e) => { alert("Exception")})
+			}
+			else if(role == "Manager"){
+				axios.delete('rest/managers/physically/'+ id)
+				.then(alert("Deleted succesfully!"))
+				.catch((e) => { alert("Exception")})
+			}
+			else if(role == "Trainer"){
+				axios.delete('rest/trainers/physically/'+ id)
+				.then(alert("Deleted succesfully!"))
+				.catch((e) => { alert("Exception")})
+			}
+			else{
+				axios.delete('rest/facility/physically/'+ id)
+				.then(alert("Deleted succesfully!"))
+				.catch((e) => { alert("Exception")})
+			}
+		},
 		
 		funkcija : function() {
 			this.checked = !this.checked

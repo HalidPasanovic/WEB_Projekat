@@ -20,6 +20,7 @@ Vue.component("comments", {
 	    <th>Status</th>
 	    <th>Accept</th>
 	    <th>Reject</th>
+	    <th>Delete</th>
 	    </tr>
 	    </thead>
 	    <tbody>
@@ -29,8 +30,9 @@ Vue.component("comments", {
 					<td>{{c.content}}</td>
 					<td>{{c.rating}}</td>
 					<td>{{c.status}}</td>
-					<td><button v-on:click="Kliknuto('accept')">Accept</button></td>
-					<td><button v-on:click="Kliknuto('reject')">Reject</button></td>
+					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Kliknuto('accept')">Accept</button></td>
+					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Kliknuto('reject')">Reject</button></td>
+					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Delete(c.id)">Delete</button></td>
 		</tr>
 		</tbody>
 		</table>
@@ -74,7 +76,13 @@ Vue.component("comments", {
 			.get('rest/comment/')
 				.then(response => (this.comments = response.data))
 				.catch((e) => { alert("Exception")})
-		}
+		},
+		
+		Delete : function(id) {
+			axios.delete('rest/comment/physically/'+ id)
+				.then(alert("Deleted succesfully!"))
+				.catch((e) => { alert("Exception")})
+		},
 	},
     computed: {
     resultQuery(){
