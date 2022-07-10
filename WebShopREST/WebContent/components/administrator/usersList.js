@@ -6,7 +6,11 @@ Vue.component("users", {
 	      admins : null,
 	      managers : null,
 	      trainers : null,
-	      checked : false
+	      checked : false,
+	      selectedType : '',
+	      name: null,
+	      surname: null,
+	      username: null
 	    }
 	},
 	    template: `
@@ -14,9 +18,27 @@ Vue.component("users", {
 	    <div style="display: flex; justify-content: center;">
                     <h3>All users:</h3><br>
         </div>
-	    <input type="checkbox" id="checkbox1" name="CheckBox" @change="funkcija">
-	    <label for="CheckBox">Hide Deleted Users</label><br>
-	    <table class="table table-striped table-hover table-dark">
+        <div style="float: right;" class="d-flex flex-nowrap">
+                    <div class="form-check" style="margin-right: 10px;">
+                        <label class="form-check-label" for="same-address">Hide Deleted</label>
+                        <input v-on:click="funkcija" type="checkbox" class="form-check-input" id="same-address">
+                    </div>
+                    <div style="width: 150px;">
+                        <select v-model = "selectedType" class="form-control">
+                            <option value = "" disabled selected>User type</option>
+                            <option value = "All" >All</option>
+                            <option value = "Manager" >Manager</option>
+                            <option value = "Administrator" >Administrator</option>
+                            <option value = "Trainer" >Trainer</option>
+                            <option value = "Customer" >Customer</option>
+                        </select>
+                    </div>
+                    <input style="width: 150px;" type="text" class="form-control btn-dark" v-model="name" placeholder="Name" name="search">
+                    <input style="width: 150px;" type="text" class="form-control btn-dark" v-model="surname" placeholder="Surname" name="search">
+                    <input style="width: 150px;" type="text" class="form-control btn-dark" v-model="username" placeholder="Username" name="search">
+			    </div>
+	    
+	    <table class="table table-striped table-hover table-dark sortable">
 	    <thead>
 	    <tr>
 	    <th>ID</th>
@@ -30,7 +52,7 @@ Vue.component("users", {
 	    </tr>
 	    </thead>
 	    <tbody>
-	    <tr v-for="(c, index) in customers">
+	    <tr v-for="(c, index) in resultQueryC" class="item">
 	    			<td>{{c.id}}</td>
 					<td>{{c.name}}</td>
 					<td>{{c.surname}}</td>
@@ -40,7 +62,7 @@ Vue.component("users", {
 					<td>{{c.role}}</td>
 					<td>{{c.deleted}}</td>
 		</tr>
-		<tr v-for="(c, index) in admins">
+		<tr v-for="(c, index) in resultQueryA" class="item">
 	    			<td>{{c.id}}</td>
 					<td>{{c.name}}</td>
 					<td>{{c.surname}}</td>
@@ -50,7 +72,7 @@ Vue.component("users", {
 					<td>{{c.role}}</td>
 					<td>{{c.deleted}}</td>
 		</tr>
-		<tr v-for="(c, index) in managers">
+		<tr v-for="(c, index) in resultQueryM" class="item">
 	    			<td>{{c.id}}</td>
 					<td>{{c.name}}</td>
 					<td>{{c.surname}}</td>
@@ -60,7 +82,7 @@ Vue.component("users", {
 					<td>{{c.role}}</td>
 					<td>{{c.deleted}}</td>
 		</tr>
-		<tr v-for="(c, index) in trainers">
+		<tr v-for="(c, index) in resultQueryT" class="item">
 	    			<td>{{c.id}}</td>
 					<td>{{c.name}}</td>
 					<td>{{c.surname}}</td>
@@ -113,18 +135,107 @@ Vue.component("users", {
 		} 
 	},
     computed: {
-    resultQuery(){
-      if(this.searchQuery){
-      return this.facilities.filter((item)=>{
-        return this.searchQuery.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
-        	|| item.type.name.toLowerCase().includes(v) 
-        	|| item.location.adress.street.toLowerCase().includes(v) 
-        	|| item.location.adress.number.toString().toLowerCase().includes(v)
-        	|| item.location.adress.place.toLowerCase().includes(v))
-      })
-      }else{
-        return this.facilities;
+    resultQueryC(){
+	var c = this.customers
+      if(this.name){
+      c = c.filter((item)=>{
+        return this.name.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
+      )})
       }
+      if(this.surname)
+      {
+		c = c.filter((item)=>{
+        return this.surname.toLowerCase().split(' ').every(v => item.surname.toLowerCase().includes(v) 
+      )})
+	  }
+	  if(this.username)
+      {
+		c = c.filter((item)=>{
+        return this.username.toLowerCase().split(' ').every(v => item.username.toLowerCase().includes(v) 
+      )})
+	  }
+	  if(this.selectedType == "" || this.selectedType == "All" || this.selectedType == "Customer")
+	  {
+		return c;
+	  }
+	  return undefined;
+      
+    },
+    
+    resultQueryM(){
+      var c = this.managers
+      if(this.name){
+      c = c.filter((item)=>{
+        return this.name.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
+      )})
+      }
+      if(this.surname)
+      {
+		c = c.filter((item)=>{
+        return this.surname.toLowerCase().split(' ').every(v => item.surname.toLowerCase().includes(v) 
+      )})
+	  }
+	  if(this.username)
+      {
+		c = c.filter((item)=>{
+        return this.username.toLowerCase().split(' ').every(v => item.username.toLowerCase().includes(v) 
+      )})
+	  }
+      if(this.selectedType == "" || this.selectedType == "All" || this.selectedType == "Manager")
+	  {
+		return c;
+	  }
+	  return undefined;
+    },
+    resultQueryA(){
+      var c = this.admins
+      if(this.name){
+      c = c.filter((item)=>{
+        return this.name.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
+      )})
+      }
+      if(this.surname)
+      {
+		c = c.filter((item)=>{
+        return this.surname.toLowerCase().split(' ').every(v => item.surname.toLowerCase().includes(v) 
+      )})
+	  }
+	  if(this.username)
+      {
+		c = c.filter((item)=>{
+        return this.username.toLowerCase().split(' ').every(v => item.username.toLowerCase().includes(v) 
+      )})
+	  }
+      if(this.selectedType == "" || this.selectedType == "All" || this.selectedType == "Administrator")
+	  {
+		return c;
+	  }
+	  return undefined;
+    },
+    resultQueryT(){
+      var c = this.trainers
+      if(this.name){
+      c = c.filter((item)=>{
+        return this.name.toLowerCase().split(' ').every(v => item.name.toLowerCase().includes(v) 
+      )})
+      }
+      if(this.surname)
+      {
+		c = c.filter((item)=>{
+        return this.surname.toLowerCase().split(' ').every(v => item.surname.toLowerCase().includes(v) 
+      )})
+	  }
+	  if(this.username)
+      {
+		c = c.filter((item)=>{
+        return this.username.toLowerCase().split(' ').every(v => item.username.toLowerCase().includes(v) 
+      )})
+	  }
+      if(this.selectedType == "" || this.selectedType == "All" || this.selectedType == "Trainer")
+	  {
+		return c;
+	  }
+	  return undefined;
     }
   }
 });
