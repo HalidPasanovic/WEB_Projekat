@@ -15,9 +15,7 @@ Vue.component("view-facility", {
     },
     template: ` 
 		<main class="d-flex flex-nowrap">
-
             <!-- Content -->
-
             <div style="width: 100%;">
                 <div style="display: flex; justify-content: center;">
                     <h1>Welcome</h1>

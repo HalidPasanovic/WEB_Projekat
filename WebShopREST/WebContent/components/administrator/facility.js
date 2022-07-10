@@ -5,16 +5,17 @@ Vue.component("facillity", {
 	      searchQuery: null,
 	      pomocna: null,
 	      trainings: null,
-	      comments : null	
+	      comments : null,
+	      temp : null	
 	    }
 	},
 	    template: `
-	    <main class="d-flex flex-nowrap">
+	    <main class="d-flex flex-nowrap" style="overflow-y: auto;">
 	    <div style="width: 70%; margin: auto;">
 	    <div style="display: flex; justify-content: center;">
                     <h3>Facility Details</h3><br>
         </div>
-	    <table v-if="facilities" class="table table-striped table-hover table-dark">
+        <table v-if="facilities" class="table table-striped table-hover table-dark">
 	    <tbody>
 	    <tr>
 	    <td>Name:<td>
@@ -42,12 +43,18 @@ Vue.component("facillity", {
 	    </tr>
 	    <tr>
 	    <td>Logo:<td>
-	    <td><img src="pictures/picture.png" alt="Logo of the Sport Facillity" width="50" height="50"></td>
+	    <td><img v-bind:src="this.temp" alt="Logo of the Sport Facillity" width="50" height="50"></td>
 	    </tr>
 	    </tbody>
 	    </table>
-	    <br><h5>Trainings in this facility:</h5>
-	                    <div>
+	    <div style="margin-left: 18%;">
+			<div id="map" style="width: 600px; height: 410px;"></div>
+			<div id="popup" class="ol-popup">
+				<a href="#" id="popup-closer" class="ol-popup-closer"></a>
+				<div id="popup-content"></div>
+			</div>
+		</div>
+        <br><h5>Trainings in this facility:</h5>
                     <table class="table table-striped table-hover table-dark">
                     		<thead>
                             <tr>
@@ -65,11 +72,10 @@ Vue.component("facillity", {
 						<td>{{t.duration}}</td>
 						<td>{{t.description}}</td>
 						<td>{{t.trainer.name}}</td>
-						</tbody>
 						</tr>
+						</tbody>
                     </table>
-                </div>
-		<br><h5>Comments for this facility:</h5>
+        <br><h5>Comments for this facility:</h5>
 	    <table class="table table-striped table-hover table-dark">
 	    <thead>
 	    <tr>
@@ -86,14 +92,14 @@ Vue.component("facillity", {
 		</tr>
 		</tbody>
 		</table>
-		</div>
-		</main>
+	    </div>
+	    </main>
     	`,
     mounted () {
 		this.pomocna = this.$route.params.id;
 		axios
 			.get('rest/facility/' + this.pomocna)
-				.then(response => (this.facilities = response.data))
+				.then(response => {this.facilities = response.data; instantiateMap(response.data); this.temp = "pictures/" + this.facilities.logoLocation;})
 				.catch((e) => { alert("Exception")})
 				
 		axios
@@ -124,3 +130,73 @@ Vue.component("facillity", {
     }
   }
 });
+
+function instantiateMap(data) {
+	var attribution = new ol.control.Attribution({
+		collapsible: false
+	});
+
+	var position = [data.location.longitude, data.location.latitude]
+	var location = data?.location?.adress?.street + " " + data?.location?.adress?.number + " " + data?.location?.adress?.place
+
+	var map = new ol.Map({
+		controls: ol.control.defaults({ attribution: false }).extend([attribution]),
+		layers: [
+			new ol.layer.Tile({
+				source: new ol.source.OSM()
+			})
+		],
+		target: 'map',
+		view: new ol.View({
+			center: ol.proj.fromLonLat(position),
+			maxZoom: 18,
+			zoom: 9
+		})
+	});
+
+	var layer = new ol.layer.Vector({
+		source: new ol.source.Vector({
+			features: [
+				new ol.Feature({
+					geometry: new ol.geom.Point(ol.proj.fromLonLat(position))
+				})
+			]
+		})
+	});
+
+	map.addLayer(layer);
+
+	var container = document.getElementById('popup');
+	var content = document.getElementById('popup-content');
+	var closer = document.getElementById('popup-closer');
+
+	var overlay = new ol.Overlay({
+		element: container,
+		autoPan: true,
+		autoPanAnimation: {
+			duration: 250
+		}
+	});
+	map.addOverlay(overlay);
+
+	closer.onclick = function f() {
+		overlay.setPosition(undefined);
+		closer.blur();
+		return false;
+	};
+
+	map.on('singleclick', function (event) {
+		if (map.hasFeatureAtPixel(event.pixel) === true) {
+			var coordinate = event.coordinate;
+
+			content.innerHTML = '<b>' + location + '</b>';
+			overlay.setPosition(coordinate);
+		} else {
+			overlay.setPosition(undefined);
+			closer.blur();
+		}
+	});
+
+	content.innerHTML = '<b>' + location + '</b>';
+	overlay.setPosition(ol.proj.fromLonLat(position));
+}

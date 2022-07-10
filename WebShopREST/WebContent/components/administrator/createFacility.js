@@ -18,7 +18,6 @@ Vue.component("create-facility", {
 		<div style="display: flex; justify-content: center;">
                     <h3>{{title}}</h3><br>
         </div>
-		<form>
 		<table style="position: absolute; top:90%; left: 55%; transform: translate(-50%, -50%);">
 			<tr><td style="padding:16px">Ime</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.name" name = "name"></td></tr>
 			<tr>
@@ -32,7 +31,7 @@ Vue.component("create-facility", {
 			
 			<tr><td style="padding:16px">Status</td><td style="padding:16px"><input type = "checkbox" v-model = "product.status" name = "status"></td></tr>
 			<tr><td style="padding:16px">Radno vreme</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.workRange" name = "workRange"></td></tr>
-			<tr><td style="padding:16px">Logo location</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.logoLocation" name = "logoLocation"></td></tr>
+			<tr><td style="padding:16px">Logo</td><td style="padding:16px"><input class="form-control" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"></td></tr>
 			<tr><td style="padding:16px">Latitude</td><td style="padding:16px"><input class="form-control" type = "number" v-model = "product.location.latitude" name = "latitude"></td></tr>
 			<tr><td style="padding:16px">Longitude</td><td style="padding:16px"><input class="form-control" type = "number" v-model = "product.location.longitude" name = "longitude"></td></tr>
 			<tr><td style="padding:16px">Ulica</td><td style="padding:16px"><input class="form-control" type = "text" v-model = "product.location.adress.street" name = "street"></td></tr>
@@ -64,14 +63,18 @@ Vue.component("create-facility", {
   				<option>Other</option>
 			</select></td></tr>
 			</template>
-			<tr><td colspan="2" style="padding:16px"><input class="w-100 btn btn-lg btn-dark" type = "submit" v-on:click = "createFacility" v-bind:value = "this.value"></td></tr>
+			<tr><td colspan="2" style="padding:16px"><button class="w-100 btn btn-lg btn-dark" v-on:click = "createFacility">Create Facility</button></td></tr>
 		</table>
-		</form>
 	</div>		  
 	`
 	, 
 	methods : {
 		createFacility : function () {
+			
+			var input = document.getElementById("avatar");
+			var file = input.value.split("\\");
+			var fileName = file[file.length-1];
+			this.product.logoLocation = fileName;
 			event.preventDefault();
 			axios.post('rest/facility/createandreturn', this.product).
 			then(response => {
@@ -94,7 +97,8 @@ Vue.component("create-facility", {
 					.catch((e) => { alert("Exception")})
 				}			
 			});
-		}
+			}
+
 	},
 	mounted () {
 		try {
