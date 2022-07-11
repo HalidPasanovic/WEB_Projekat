@@ -82,8 +82,8 @@ Vue.component("create-facility", {
 		createFacility : function () {
 			var loc = document.getElementById('location');
 			var position = loc.value.split(",");
-			this.product.location.latitude = position[0];
-			this.product.location.longitude = position[1];
+			this.product.location.longitude = position[0];
+			this.product.location.latitude = position[1];
 			var input = document.getElementById("avatar");
 			var file = input.value.split("\\");
 			var fileName = file[file.length-1];

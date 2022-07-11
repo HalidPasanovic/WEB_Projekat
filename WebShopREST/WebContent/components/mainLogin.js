@@ -28,7 +28,7 @@ Vue.component("mainLogin", {
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
-                        <a href="#/" class="nav-link active" aria-current="page">
+                        <a href="#/" class="nav-link text-white" aria-current="page">
                             <svg class="bi pe-none me-2" width="16" height="16">
                                 <use xlink:href="#home" />
                             </svg>
@@ -77,11 +77,11 @@ Vue.component("mainLogin", {
                         <thead>
                             <tr>
                                 <th scope="col">Logo</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Location</th>
-                                <th scope="col">Score</th>
-                                <th scope="col">Working hours</th>
+                                <th @click="sort('name')" scope="col">Name</th>
+                                <th @click="sort('type.name')" scope="col">Type</th>
+                                <th @click="sort('location')" scope="col">Location</th>
+                                <th @click="sort('rating')" scope="col">Score</th>
+                                <th @click="sort('workRange')" scope="col">Working hours</th>
                             </tr>
                         </thead>
                         <tbody>
