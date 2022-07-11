@@ -98,7 +98,7 @@ Vue.component("create-facility", {
 					.then(response => {
 					this.selectedManager = response.data;
 					axios.post('rest/managers/updatefacility/' + this.selectedManager + '&' + this.recreationTypes)
-					.then(alert("Updated successfully!"))
+					.then(alert("Created successfully!"))
 					.catch((e) => { alert("Exception")})
 					})
 					.catch((e) => { alert("Exception")})
@@ -106,7 +106,7 @@ Vue.component("create-facility", {
 				else
 				{
 					axios.post('rest/managers/updatefacility/' + this.selectedManager + '&' + this.recreationTypes)
-					.then(alert("Updated successfully!"))
+					.then(alert("Created successfully!"))
 					.catch((e) => { alert("Exception")})
 				}			
 			});

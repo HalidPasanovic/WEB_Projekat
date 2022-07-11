@@ -54,7 +54,7 @@ Vue.component("view-facility", {
                             </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(f, index) in resultQuery" @click="viewFacility(f.id)">
+                        <tr v-for="(f, index) in resultQuery" @dblclick="viewFacility(f.id)">
                         	<template v-if="f.status">
                             <td><img :src="'pictures/' + f.logoLocation" alt="" width="100" height="100"
                             class="rounded-circle me-2" style="margin-bottom: 25px;"></td>
@@ -67,7 +67,7 @@ Vue.component("view-facility", {
                             <td><button v-on:click="Delete(f.id)" class="w-100 btn btn-lg btn-dark">Delete</button></td>
                             </template>
                         </tr>
-                        <tr v-for="(f, index) in resultQuery" @click="viewFacility(f.id)">
+                        <tr v-for="(f, index) in resultQuery" @dblclick="viewFacility(f.id)">
                         	<template v-if="!f.status">
                             <td><img :src="'pictures/' + f.logoLocation" alt="" width="100" height="100"
                             class="rounded-circle me-2" style="margin-bottom: 25px;"></td>
@@ -116,9 +116,18 @@ Vue.component("view-facility", {
         },
         
         Delete : function(id) {
-			axios.delete('rest/facility/'+ id)
-				.then(alert("Deleted succesfully!"))
-				.catch((e) => { alert("Exception")})
+			axios.delete('rest/facility/physically/'+ id)
+				.then(response => {alert("Deleted succesfully!");
+			axios
+            .get('rest/facility/dto')
+            .then(response => {
+                this.facilities = response.data
+            })
+        axios
+            .get('rest/facilitytypes/')
+            .then(response => {
+                this.facilityTypes = response.data
+            }) })
 		},
 
         getRating: function (rating) {

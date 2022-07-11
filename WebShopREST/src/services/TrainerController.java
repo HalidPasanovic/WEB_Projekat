@@ -81,7 +81,7 @@ public class TrainerController implements ICrud<Trainer> {
 	@Path("/physically/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Override
-	public void DeletePhysically(int id) throws Exception {
+	public void DeletePhysically(@PathParam("id") int id) throws Exception {
 		TrainerService repo = (TrainerService) ctx.getAttribute("trainerService");
     	repo.DeletePhysically(id);
 	}

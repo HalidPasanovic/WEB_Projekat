@@ -123,9 +123,20 @@ public class TrainingService implements ITrainingService {
     		{
     			if(t.getTrainer().getId() != -1)
     			{
+    				boolean b = true;
     				TrainerService ts = new TrainerService(s);
     				Trainer ttt = ts.Read(t.getTrainer().getId());
-    				lista.add(ttt);
+    				for(Trainer trt : lista)
+    				{
+    					if(trt.getId() == ttt.getId())
+    					{
+    						b = false;
+    					}
+    				}
+    				if(b)
+    				{
+    					lista.add(ttt);
+    				}
     			}
     		}
     	}

@@ -57,8 +57,8 @@ Vue.component("promo-codes", {
 			this.mode2 = "IDLE";
 			axios
 			.post('rest/promocodes/', {"howLongItWorksDate":''+this.expiration,"ammountOfUsage":''+this.amount, "discountPercentage":''+this.percentage})
-				.then(response => (this.mode2 = "ACCEPTED"))
-				.catch((e) => { this.mode = "REJECT" })
+				.then(response => (alert("Created successfully!")))
+				.catch((e) => { alert("Exception") })
 			}
 	}
 });

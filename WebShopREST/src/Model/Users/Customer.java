@@ -95,15 +95,29 @@ public class Customer extends User {
 	@Override
 	public List<String> ToCSV() {
 		List<String> result = super.ToCSV();
-		result.add(String.valueOf(membership.getId()));
-
+		if(membership == null)
+		{
+			result.add("-1");
+		}
+		else
+		{
+			result.add(String.valueOf(membership.getId()));
+		}
+		
 		result.add(String.valueOf(visitedFacilities.size()));
 		for (SportFacility facility : visitedFacilities) {
 			result.add(String.valueOf(facility.getId()));
 		}
 
 		result.add(String.valueOf(points));
-		result.add(String.valueOf(type.getId()));
+		if(type == null)
+		{
+			result.add("-1");
+		}
+		else
+		{
+			result.add(String.valueOf(type.getId()));
+		}
 		return result;
 	}
 
