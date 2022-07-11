@@ -99,7 +99,7 @@ Vue.component("facillity", {
 		this.pomocna = this.$route.params.id;
 		axios
 			.get('rest/facility/' + this.pomocna)
-				.then(response => {this.facilities = response.data; instantiateMap(response.data); this.temp = "pictures/" + this.facilities.logoLocation;})
+				.then(response => {this.facilities = response.data; instancem(response.data); this.temp = "pictures/" + this.facilities.logoLocation;})
 				.catch((e) => { alert("Exception")})
 				
 		axios
@@ -111,6 +111,7 @@ Vue.component("facillity", {
 			.get('rest/facility/comments/' + this.pomocna)
 				.then(response => (this.comments = response.data))
 				.catch((e) => { alert("Exception")})
+		
     },
     methods: {
 	},
@@ -131,7 +132,7 @@ Vue.component("facillity", {
   }
 });
 
-function instantiateMap(data) {
+function instancem(data) {
 	var attribution = new ol.control.Attribution({
 		collapsible: false
 	});
