@@ -49,8 +49,8 @@ Vue.component("create", {
 			this.mode2 = "IDLE";
 				axios
 			.post('rest/customers/add', {"username":''+this.username,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Customer'})
-				.then(response => (this.mode2 = "ACCEPTED"))
-				.catch((e) => { this.mode = "REJECT";this.temp = this.username; this.username="";})
+				.then(response => (alert("Customer Created Successfully")))
+				.catch((e) => { alert("Exception")})
 			}
 	}
 });
