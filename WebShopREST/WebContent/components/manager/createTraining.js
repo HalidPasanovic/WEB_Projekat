@@ -8,7 +8,7 @@ Vue.component("create-training", {
 	      manager : null,
 	      facilities : null,
 	      trainers : null,
-	      selectedTrainer : {id:null},
+	      selectedTrainer : {id:-1},
 	      types : null,
 	      selectedType : {id: null, deleted: false, name: null},
 	      checked : false

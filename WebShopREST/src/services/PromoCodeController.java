@@ -25,38 +25,37 @@ import Service.Interfaces.IPromoCodeService;
 import services.Interfaces.ICrud;
 
 @Path("/promocodes")
-public class PromoCodeController implements ICrud<PromoCode>{
+public class PromoCodeController implements ICrud<PromoCode> {
 
     @Context
-	ServletContext ctx;
-	
-	public PromoCodeController() {}
-	
-	@PostConstruct
-	public void init() {
-		if (ctx.getAttribute("PromoCodeService") == null) {
-	    	String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("PromoCodeService", new PromoCodeService(contextPath));
-			System.out.println(contextPath);
-		}
-	}
+    ServletContext ctx;
+
+    public PromoCodeController() {}
+
+    @PostConstruct
+    public void init() {
+        if (ctx.getAttribute("PromoCodeService") == null) {
+            String contextPath = ctx.getRealPath("");
+            ctx.setAttribute("PromoCodeService", new PromoCodeService(contextPath));
+            System.out.println(contextPath);
+        }
+    }
 
     @POST
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public void Create(PromoCode element) throws Exception {
-    	if(element.getDiscountPercentage() > 99 || element.getDiscountPercentage() < 1)
-    	{
-    		throw new Exception("Form not inputed correctly");
-    	}
+        if (element.getDiscountPercentage() > 99 || element.getDiscountPercentage() < 1) {
+            throw new Exception("Form not inputed correctly");
+        }
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
         service.Create(element);
     }
 
     @GET
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public PromoCode Read(@PathParam("id") int id) throws Exception {
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
@@ -64,8 +63,8 @@ public class PromoCodeController implements ICrud<PromoCode>{
     }
 
     @PUT
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public void Update(PromoCode element) throws Exception {
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
@@ -73,8 +72,8 @@ public class PromoCodeController implements ICrud<PromoCode>{
     }
 
     @DELETE
-	@Path("/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public void Delete(@PathParam("id") int id) throws Exception {
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
@@ -82,8 +81,8 @@ public class PromoCodeController implements ICrud<PromoCode>{
     }
 
     @DELETE
-	@Path("/physically/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/physically/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public void DeletePhysically(@PathParam("id") int id) throws Exception {
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
@@ -91,8 +90,8 @@ public class PromoCodeController implements ICrud<PromoCode>{
     }
 
     @GET
-	@Path("/")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<PromoCode> GetAll() throws Exception {
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
@@ -100,8 +99,8 @@ public class PromoCodeController implements ICrud<PromoCode>{
     }
 
     @GET
-	@Path("/all")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<PromoCode> GetAllWithLogicalyDeleted() throws Exception {
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
@@ -109,17 +108,24 @@ public class PromoCodeController implements ICrud<PromoCode>{
     }
 
     @GET
-	@Path("/promo/{code}")
-	@Produces(MediaType.APPLICATION_JSON)
+    @Path("/promo/{code}")
+    @Produces(MediaType.APPLICATION_JSON)
     public PromoCode GetCodeIfExists(@PathParam("code") String code) throws Exception {
         IPromoCodeService service = (IPromoCodeService) ctx.getAttribute("PromoCodeService");
         List<PromoCode> codes = service.GetAll();
         for (PromoCode promoCode : codes) {
-            if(promoCode.getCode().equals(code)){
-                return promoCode;
+            if (promoCode.getCode().equals(code)) {
+                LocalDate promoCodeDate = LocalDate.parse(promoCode.getHowLongItWorksDate());
+                if (promoCodeDate.isAfter(LocalDate.now())) {
+                    if (promoCode.getAmmountOfUsage() > 0) {
+                        return promoCode;
+                    }
+                    throw new Exception("Code used up");
+                }
+                throw new Exception("Code expired");
             }
         }
         throw new Exception("Code doesnt exist");
     }
-    
+
 }
