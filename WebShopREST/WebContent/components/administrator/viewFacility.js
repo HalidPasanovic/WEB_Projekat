@@ -116,7 +116,7 @@ Vue.component("view-facility", {
         },
         
         Delete : function(id) {
-			axios.delete('rest/admins/'+ id)
+			axios.delete('rest/facility/'+ id)
 				.then(alert("Deleted succesfully!"))
 				.catch((e) => { alert("Exception")})
 		},
