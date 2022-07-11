@@ -125,22 +125,22 @@ Vue.component("users", {
 		Delete : function(id,role){
 			if(role == "Administrator"){
 				axios.delete('rest/admins/physically/'+ id)
-				.then(alert("Deleted succesfully!"))
+				.then(response => {alert("Deleted successfully"); this.getAllUsers();})
 				.catch((e) => { alert("Exception")})
 			}
 			else if(role == "Manager"){
 				axios.delete('rest/managers/physically/'+ id)
-				.then(alert("Deleted succesfully!"))
+				.then(response => {alert("Deleted successfully"); this.getAllUsers();})
 				.catch((e) => { alert("Exception")})
 			}
 			else if(role == "Trainer"){
 				axios.delete('rest/trainers/physically/'+ id)
-				.then(alert("Deleted succesfully!"))
+				.then(response => {alert("Deleted successfully"); this.getAllUsers();})
 				.catch((e) => { alert("Exception")})
 			}
 			else{
 				axios.delete('rest/facility/physically/'+ id)
-				.then(alert("Deleted succesfully!"))
+				.then(response => {alert("Deleted successfully"); this.getAllUsers();})
 				.catch((e) => { alert("Exception")})
 			}
 		},

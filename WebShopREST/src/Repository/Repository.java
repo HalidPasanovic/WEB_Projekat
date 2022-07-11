@@ -73,7 +73,7 @@ public abstract class Repository<T extends IDClass> implements ICrud<T> {
 	 * @throws Exception
 	 */
 	public void Delete(int id) throws Exception {
-		CheckIfIdExists(id);
+		//CheckIfIdExists(id);
 		List<T> elements = GetAll();
 		for (int i = 0; i < elements.size(); i++) {
 			T element = elements.get(i);

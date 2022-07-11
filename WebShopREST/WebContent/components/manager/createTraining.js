@@ -81,8 +81,9 @@ Vue.component("create-training", {
 			{
 				axios.post('rest/recreationtypes/create' ,{"name":''+this.name})
 				.then(response => {
+					alert("Recreation Type Created Successfully");
 					axios.put('rest/facility/create/' + this.facilities.id + '&' + response.data)
-					.then("Created successfully")
+					.then(alert("Updated successfully"))
 					.catch((e) => { alert("Exception 2")})
 				})
 				.catch((e) => { alert("Exception 1")})

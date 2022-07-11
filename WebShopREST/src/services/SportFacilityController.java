@@ -220,6 +220,9 @@ public class SportFacilityController implements ICrud<SportFacility> {
     }
 
     @Override
+    @DELETE
+	@Path("/physically/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
     public void DeletePhysically(@PathParam("id") int id) throws Exception {
         try {
             SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
