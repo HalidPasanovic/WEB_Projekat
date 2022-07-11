@@ -87,7 +87,7 @@ Vue.component("membership", {
                 .catch((e) => {
                     this.promoCodePercentage = 0
                     this.promoCode = {id: -1}
-                    alert("Code doesnt exist")
+                    alert('Error with promoCode')
                 })
         },
 
