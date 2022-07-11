@@ -230,6 +230,9 @@ public class SportFacilityController implements ICrud<SportFacility> {
     }
 
     @Override
+    @GET
+	@Path("/all")
+	@Produces(MediaType.APPLICATION_JSON)
     public List<SportFacility> GetAllWithLogicalyDeleted() throws Exception {
         SportFacilityService service = (SportFacilityService) ctx.getAttribute("SportFacilityService");
         return service.GetAllWithLogicalyDeleted();

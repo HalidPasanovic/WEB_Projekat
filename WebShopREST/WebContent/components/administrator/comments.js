@@ -7,28 +7,34 @@ Vue.component("comments", {
 	},
 	    template: `
 	    <div>
-	    <h1>{{this.temp}}</h1>
-	    <table>
+	    <div style="display: flex; justify-content: center;">
+                    <h3>All Comments</h3><br>
+        </div>
+	    <table class="table table-striped table-hover table-dark">
+	    <thead>
 	    <tr>
 	    <th>Customer name</th>
 	    <th>Facillity name</th>
 	    <th>Content</th>
 	    <th>Rating</th>
 	    <th>Status</th>
+	    <th>Accept</th>
+	    <th>Reject</th>
+	    <th>Delete</th>
 	    </tr>
+	    </thead>
+	    <tbody>
 	    <tr v-for="(c, index) in comments" v-on:click="Oznaceno(c)">
 					<td>{{c.customer.name}}</td>
 					<td>{{c.facility.name}}</td>
 					<td>{{c.content}}</td>
 					<td>{{c.rating}}</td>
 					<td>{{c.status}}</td>
+					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Kliknuto('accept')">Accept</button></td>
+					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Kliknuto('reject')">Reject</button></td>
+					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Delete(c.id)">Delete</button></td>
 		</tr>
-		</table>
-		<table>
-		<tr>
-		<td><button v-on:click="Kliknuto('accept')">Accept</button></td>
-		<td><button v-on:click="Kliknuto('reject')">Reject</button></td>
-		</tr>
+		</tbody>
 		</table>
 		</div>
     	`,
@@ -70,7 +76,13 @@ Vue.component("comments", {
 			.get('rest/comment/')
 				.then(response => (this.comments = response.data))
 				.catch((e) => { alert("Exception")})
-		}
+		},
+		
+		Delete : function(id) {
+			axios.delete('rest/comment/physically/'+ id)
+				.then(alert("Deleted succesfully!"))
+				.catch((e) => { alert("Exception")})
+		},
 	},
     computed: {
     resultQuery(){

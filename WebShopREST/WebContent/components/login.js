@@ -31,6 +31,7 @@ Vue.component("login", {
 				</div>
 				<p v-bind:hidden="mode == 'IDLE'" style="color:red">Incorrect password or username</p>
 				<button class="w-100 btn btn-lg btn-dark" v-on:click = "Log">Sign in</button>
+				<a href="#/create">Create Account</a>
 				<p class="mt-5 mb-3 text-muted">&copy; 2022–2022</p>
 		</main>	  
     	`,

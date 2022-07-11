@@ -21,25 +21,29 @@ Vue.component("create", {
 	    }
 	},
 	    template: `
-	    <div> 
-    		<table>
-			<tr><td>Username</td><td><input type="text" name="username" v-model="username2"></td></tr>
-			<tr><td>Password</td><td><input type="password" name="password" v-model="password"></td></tr>
-			<tr><td>Name</td><td><input type="text" name="username" v-model="name"></td></tr>
-			<tr><td>Surname</td><td><input type="text" name="username" v-model="surname"></td></tr>
-			<tr><td>Birthday Date:</td><td><input type="date" v-model="birthday" name="birthday"></td></tr>
-			<tr><td>Gender</td><td>
-			<select v-model="gender">
+	    <div>
+	    	<div style="display: flex; justify-content: center;">
+					<h5>Create manager/trainer</h5>
+				</div>
+    		<table style="position: absolute; top: 40%; left: 55%; transform: translate(-50%, -50%);">
+			<tr><td style="padding:16px">Username</td><td style="padding:16px"><input class="form-control" type="text" name="username" v-model="username2"></td></tr>
+			<tr><td style="padding:16px">Password</td><td style="padding:16px"><input class="form-control" type="password" name="password" v-model="password"></td></tr>
+			<tr><td style="padding:16px">Name</td><td style="padding:16px"><input class="form-control" type="text" name="username" v-model="name"></td></tr>
+			<tr><td style="padding:16px">Surname</td><td style="padding:16px"><input class="form-control" type="text" name="username" v-model="surname"></td></tr>
+			<tr><td style="padding:16px">Birthday Date:</td><td style="padding:16px"><input class="form-control" type="date" v-model="birthday" name="birthday"></td></tr>
+			<tr><td style="padding:16px">Gender</td><td style="padding:16px">
+			<select class="form-control" v-model="gender">
   				<option disabled value="">Please select one</option>
   				<option>Male</option>
   				<option>Female</option>
   				<option>Other</option>
 			</select></td></tr>
-			<tr><td><input type="submit" value="Create" v-on:click = "Create"></td></tr>
+			<tr><td colspan="2" style="padding:16px"><input class="w-100 btn btn-lg btn-dark" type="submit" value="Create" v-on:click = "Create"></td></tr>
 			</table>
 			<p v-bind:hidden="mode == 'IDLE'" style="color:red">Username {{this.temp}} already exists</p>
 			<p v-bind:hidden="mode2 == 'IDLE'">Manager added to the list</p>
 			<p v-bind:hidden="mode3 == 'IDLE'">Trainer added to the list</p>
+			
 		</div>
     	`,
     mounted () {
