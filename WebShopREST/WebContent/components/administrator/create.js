@@ -84,15 +84,15 @@ Vue.component("create", {
 			{
 				axios
 			.post('rest/managers/', {"username":''+this.username2,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Manager',"dateOfBirth":''+this.birthday})
-				.then(response => (this.mode2 = "ACCEPTED"))
-				.catch((e) => { this.mode = "REJECT";this.temp = this.username2; this.username2="";})
+				.then(response => {alert("Created successfully")})
+				.catch((e) => { alert("Exception")})
 			}
 			else
 			{
 				axios
 			.post('rest/trainers/', {"username":''+this.username2,"password":''+this.password, "name":''+this.name,"surname":''+this.surname,"gender":''+this.gender,"role":'Trainer',"dateOfBirth":''+this.birthday})
-				.then(response => (this.mode3 = "ACCEPTED"))
-				.catch((e) => { this.mode = "REJECT";this.temp = this.username2; this.username2="";})
+				.then(response => {alert("Created successfully")})
+				.catch((e) => { alert("Exception")})
 			}
 		},
 		promeni_create : function(type){

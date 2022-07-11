@@ -24,14 +24,14 @@ Vue.component("comments", {
 	    </tr>
 	    </thead>
 	    <tbody>
-	    <tr v-for="(c, index) in comments" v-on:click="Oznaceno(c)">
+	    <tr v-for="(c, index) in comments"">
 					<td>{{c.customer.name}}</td>
 					<td>{{c.facility.name}}</td>
 					<td>{{c.content}}</td>
 					<td>{{c.rating}}</td>
 					<td>{{c.status}}</td>
-					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Kliknuto('accept')">Accept</button></td>
-					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Kliknuto('reject')">Reject</button></td>
+					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Kliknuto('accept',c.id)">Accept</button></td>
+					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Kliknuto('reject',c.id)">Reject</button></td>
 					<td><button class="w-100 btn btn-lg btn-dark" v-on:click="Delete(c.id)">Delete</button></td>
 		</tr>
 		</tbody>
@@ -43,27 +43,20 @@ Vue.component("comments", {
     },
     methods: {
 		
-		Kliknuto : function(type) {
-			if(this.id)
-			{
-				if(type == 'accept')
+		Kliknuto : function(type,id) {
+			if(type == 'accept')
 			{
 				axios
-			.put('rest/comment/accept/' + this.id.id)
-			.then(response => {alert("Accepted successfully"); this.id.status = "Accepted"})
+			.put('rest/comment/accept/' + id)
+			.then(response => {alert("Accepted successfully"); this.getComments();})
 				.catch((e) => { alert("Exception")});
 			}
 			else
 			{
 				axios
-			.put('rest/comment/reject/' + this.id.id)
-			.then(response => {alert("Rejected successfully"); this.id.status = "Rejected"})
+			.put('rest/comment/reject/' + id)
+			.then(response => {alert("Rejected successfully"); this.getComments();})
 				.catch((e) => { alert("Exception")});		
-			}
-			}
-			else
-			{
-				alert("You must pick comment from table")
 			}
 			
 		},
@@ -71,18 +64,18 @@ Vue.component("comments", {
 			this.id = id
 		},
 		
+		Delete : function(id) {
+			axios.delete('rest/comment/physically/'+ id)
+				.then(response => {alert("Deleted succesfully!"); this.getComments();})
+		},
+		
 		getComments : function() {
 			axios
 			.get('rest/comment/')
 				.then(response => (this.comments = response.data))
 				.catch((e) => { alert("Exception")})
-		},
+		}
 		
-		Delete : function(id) {
-			axios.delete('rest/comment/physically/'+ id)
-				.then(alert("Deleted succesfully!"))
-				.catch((e) => { alert("Exception")})
-		},
 	},
     computed: {
     resultQuery(){
