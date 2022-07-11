@@ -17,7 +17,7 @@ Vue.component("create-training", {
 	    template: `
 	    <div>
 	    <div style="display: flex; justify-content: center;">
-					<h5>Create training</h5>
+					<h5>Create training/recreation type</h5>
 				</div>
 	    
 		<table style="position: absolute; top: 40%; left: 55%; transform: translate(-50%, -50%);">

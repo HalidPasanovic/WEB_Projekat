@@ -40,7 +40,7 @@ Vue.component("view-facility", {
                     <input style="width: 150px;" type="number" class="form-control btn-dark" v-model="ratingQuery" placeholder="Rating" name="search">
 			    </div>
                 <div>
-                    <table class="table table-striped table-hover table-dark">
+                    <table class="table table-striped table-hover table-dark sortable">
                         <thead>
                             <tr>
                                 <th scope="col">Logo</th>
@@ -97,6 +97,15 @@ Vue.component("view-facility", {
             .then(response => {
                 this.facilityTypes = response.data
             })
+            if (localStorage.getItem('reloaded')) {
+        // The page was just reloaded. Clear the value from local storage
+        // so that it will reload the next time this page is visited.
+        	localStorage.removeItem('reloaded');
+    		} else {
+        // Set a flag so that we know not to reload the page twice.
+        	localStorage.setItem('reloaded', '1');
+        	this.$router.go(0);
+        	}
     },
     methods: {
         addProduct: function () {
